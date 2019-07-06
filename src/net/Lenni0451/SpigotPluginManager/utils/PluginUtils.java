@@ -354,9 +354,10 @@ public class PluginUtils {
 	 */
 	public List<Plugin> getPluginsByLoadOrder() {
 		List<Plugin> plugins = new ArrayList<>();
+		List<String> ignoredPlugins = net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
 		
 		for(Plugin plugin : this.getPlugins()) {
-			if(plugin.equals(net.Lenni0451.SpigotPluginManager.PluginManager.getInstance())) {
+			if(ignoredPlugins.contains(plugin.getName())) {
 				continue;
 			}
 			

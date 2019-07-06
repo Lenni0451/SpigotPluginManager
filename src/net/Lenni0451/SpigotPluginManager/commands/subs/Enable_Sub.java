@@ -18,9 +18,10 @@ public class Enable_Sub implements ISubCommand {
 		
 		if(args[0].equalsIgnoreCase("*")) {
 			List<Plugin> plugins = PluginManager.getInstance().getPluginUtils().getPluginsByLoadOrder();
+			List<String> ignoredPlugins = PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
 			
 			for(Plugin plugin : plugins) {
-				if(plugin.equals(PluginManager.getInstance())) {
+				if(ignoredPlugins.contains(plugin.getName())) {
 					continue;
 				}
 				
