@@ -3,6 +3,7 @@ package net.Lenni0451.SpigotPluginManager.commands;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,7 +11,9 @@ import org.bukkit.command.CommandSender;
 
 import net.Lenni0451.SpigotPluginManager.commands.subs.Commands_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Disable_Sub;
+import net.Lenni0451.SpigotPluginManager.commands.subs.Download_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Enable_Sub;
+import net.Lenni0451.SpigotPluginManager.commands.subs.Find_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.ISubCommand;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Info_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.List_Sub;
@@ -18,6 +21,7 @@ import net.Lenni0451.SpigotPluginManager.commands.subs.Load_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Reload_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Restart_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Unload_Sub;
+import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class PluginManager_Command implements CommandExecutor {
 	
@@ -33,6 +37,8 @@ public class PluginManager_Command implements CommandExecutor {
 		subCommands.put("unload", new Unload_Sub());
 		subCommands.put("reload", new Reload_Sub());
 		subCommands.put("commands", new Commands_Sub());
+		subCommands.put("find", new Find_Sub());
+		subCommands.put("download", new Download_Sub());
 	}
 	
 
@@ -46,7 +52,9 @@ public class PluginManager_Command implements CommandExecutor {
 		if(args.length == 0) {
 			sender.sendMessage("§6--------------------------------------------------");
 			for(Map.Entry<String, ISubCommand> entry : subCommands.entrySet()) {
-				sender.sendMessage(" §7- §6pm " + entry.getKey() + " §7| §2" + entry.getValue().getUsage());
+				for(String usage : entry.getValue().getUsage().split(Pattern.quote("\n"))) {
+					sender.sendMessage(" §7- §6pm " + entry.getKey() + " §7| §2" + usage);
+				}
 			}
 			sender.sendMessage("§6--------------------------------------------------");
 		} else if(args.length >= 1) {
@@ -58,10 +66,12 @@ public class PluginManager_Command implements CommandExecutor {
 				sender.sendMessage("§cThe command could not be found.");
 			} else {
 				if(!sender.hasPermission("pluginmanager.commands." + cmd.toLowerCase())) {
-					sender.sendMessage("§cYou are not allowed to execute this command.");
+					Logger.sendPrefixMessage(sender, "§cYou are not allowed to execute this command.");
 				} else if(!subCommand.execute(sender, args)) {
-					sender.sendMessage("§cInvalid command usage!");
-					sender.sendMessage("§aUse: §6pm " + subCommand.getUsage());
+					Logger.sendPrefixMessage(sender, "§cInvalid command usage!");
+					for(String usage : subCommand.getUsage().split(Pattern.quote("\n"))) {
+						Logger.sendPrefixMessage(sender, "§aUse: §6pm " + usage);
+					}
 				}
 			}
 		}

@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -412,15 +411,19 @@ public class PluginUtils {
 		Map<String, Map<String, Object>> commandMap = plugin.getDescription().getCommands();
 		if(commandMap != null && !commandMap.isEmpty()) {
 			for(String command : commandMap.keySet()) {
-				commands.add(command);
+				commands.add(command.toLowerCase());
 				if(commandMap.get(command).containsKey("aliases")) {
 					Object aliasesObject = commandMap.get(command).get("aliases");
 					if(aliasesObject instanceof String) {
-						commands.add(aliasesObject.toString());
+						commands.add(" " + aliasesObject.toString().toLowerCase());
 					} else if(aliasesObject instanceof Collection) {
-						commands.addAll((Collection<? extends String>) aliasesObject);
+						for(String alias : (Collection<? extends String>) aliasesObject) {
+							commands.add(" " + alias.toLowerCase());
+						}
 					} else if(aliasesObject instanceof String[]) {
-						commands.addAll(Arrays.asList((String[]) aliasesObject));
+						for(String alias : (String[]) aliasesObject) {
+							commands.add(" " + alias.toLowerCase());
+						}
 					}
 				}
 			}

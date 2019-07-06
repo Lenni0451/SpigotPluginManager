@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class Restart_Sub implements ISubCommand {
 
@@ -28,7 +29,7 @@ public class Restart_Sub implements ISubCommand {
 				try {
 					PluginManager.getInstance().getPluginUtils().disablePlugin(plugin);
 				} catch (Throwable e) {
-					sender.sendMessage("§cThe plugin §6" + plugin.getName() + " §acould not be disabled.");
+					Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §acould not be disabled.");
 				}
 			}
 			
@@ -42,11 +43,11 @@ public class Restart_Sub implements ISubCommand {
 				try {
 					PluginManager.getInstance().getPluginUtils().enablePlugin(plugin);
 				} catch (Throwable e) {
-					sender.sendMessage("§cThe plugin §6" + plugin.getName() + " §acould not be enabled.");
+					Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §acould not be enabled.");
 				}
 			}
 			
-			sender.sendMessage("§aRestarted all plugins §e(" + plugins.size() + ")§a.");
+			Logger.sendPrefixMessage(sender, "§aRestarted all plugins §e(" + plugins.size() + ")§a.");
 		} else {
 			try {
 				Plugin plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
@@ -54,18 +55,18 @@ public class Restart_Sub implements ISubCommand {
 				try {
 					PluginManager.getInstance().getPluginUtils().disablePlugin(plugin);
 				} catch (Throwable e) {
-					sender.sendMessage("§cThe plugin §6" + plugin.getName() + " §acould not be disabled.");
+					Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §acould not be disabled.");
 					return true;
 				}
 				try {
 					PluginManager.getInstance().getPluginUtils().enablePlugin(plugin);
 				} catch (Throwable e) {
-					sender.sendMessage("§cThe plugin §6" + plugin.getName() + " §acould not be enabled.");
+					Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §acould not be enabled.");
 					return true;
 				}
-				sender.sendMessage("§aThe plugin §6" + plugin.getName() + " §ahas been restarted.");
+				Logger.sendPrefixMessage(sender, "§aThe plugin §6" + plugin.getName() + " §ahas been restarted.");
 			} catch (Throwable e) {
-				sender.sendMessage("§cThe plugin could not be found.");
+				Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
 			}
 		}
 		

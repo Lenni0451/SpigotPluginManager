@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class List_Sub implements ISubCommand {
 
@@ -16,7 +17,7 @@ public class List_Sub implements ISubCommand {
 		}
 		
 		Plugin[] plugins = PluginManager.getInstance().getPluginUtils().getPlugins();
-		sender.sendMessage("§6Plugins §e§o(" + plugins.length + ")§6:");
+		Logger.sendPrefixMessage(sender, "§6Plugins §e§o(" + plugins.length + ")§6:");
 		for(Plugin plugin : plugins) {
 			sender.sendMessage(" §7- " + (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §6" + plugin.getDescription().getVersion());
 		}

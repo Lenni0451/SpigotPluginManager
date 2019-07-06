@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class Unload_Sub implements ISubCommand {
 
@@ -26,19 +27,19 @@ public class Unload_Sub implements ISubCommand {
 				try {
 					PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin);
 				} catch (Throwable e) {
-					sender.sendMessage("§cCould not unload the plugin §6" + plugin.getName() + "§c.");
+					Logger.sendPrefixMessage(sender, "§cCould not unload the plugin §6" + plugin.getName() + "§c.");
 				}
 			}
 			
-			sender.sendMessage("§aUnloaded all plugins §e(" + plugins.size() + ")§a.");
+			Logger.sendPrefixMessage(sender, "§aUnloaded all plugins §e(" + plugins.size() + ")§a.");
 		} else {
 			try {
 				PluginManager.getInstance().getPluginUtils().unloadPlugin(args[0]);
-				sender.sendMessage("§aThe plugin has been unloaded.");
+				Logger.sendPrefixMessage(sender, "§aThe plugin has been unloaded.");
 			} catch (IllegalArgumentException e) {
-				sender.sendMessage("§cThe plugin could not be loaded.");
+				Logger.sendPrefixMessage(sender, "§cThe plugin could not be loaded.");
 			} catch (Throwable e) {
-				sender.sendMessage("§cThe plugin could not be found.");
+				Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
 			}
 		}
 		

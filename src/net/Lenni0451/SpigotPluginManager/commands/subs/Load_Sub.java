@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class Load_Sub implements ISubCommand {
 
@@ -45,20 +46,20 @@ public class Load_Sub implements ISubCommand {
 					Bukkit.getConsoleSender().sendMessage("§cCould not load plugin §6" + name + "§c.");
 				}
 			}
-			sender.sendMessage("§aLoaded all plugins §e(" + names.size() + ")§a.");
+			Logger.sendPrefixMessage(sender, "§aLoaded all plugins §e(" + names.size() + ")§a.");
 		} else {
 			try {
 				try {
 					Plugin plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
-					sender.sendMessage("§cThe plugin §6" + plugin.getName() + " §cis already loaded.");
+					Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §cis already loaded.");
 					return true;
 				} catch (Throwable e) {}
 				PluginManager.getInstance().getPluginUtils().loadPlugin(args[0]);
-				sender.sendMessage("§aThe plugin has been loaded.");
+				Logger.sendPrefixMessage(sender, "§aThe plugin has been loaded.");
 			} catch (IllegalStateException e) {
-				sender.sendMessage("§cThe plugin could not be found.");
+				Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
 			} catch (Throwable e) {
-				sender.sendMessage("§cThe plugin could not be enabled.");
+				Logger.sendPrefixMessage(sender, "§cThe plugin could not be enabled.");
 			}
 		}
 		
