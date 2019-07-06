@@ -1,0 +1,2 @@
+#When loading plugins ignore plugins that don't end with .jar
+IgnoreNonJarPlugins: false

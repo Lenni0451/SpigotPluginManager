@@ -1,0 +1,34 @@
+name: PluginManager
+author: Lenni0451
+version: 1.0
+main: net.Lenni0451.SpigotPluginManager.PluginManager
+
+commands:
+  reload:
+    description: Reload the plugins on the server
+    permission: bukkit.command.reload
+    aliases: rl
+  pluginmanager:
+    description: All pluginmanager commands
+    permission: pluginmanager.commands
+    aliases: pm
+
+permissions:
+  pluginmanager.commands:
+    default: op
+  pluginmanager.commands.list:
+    default: op
+  pluginmanager.commands.info:
+    default: op
+  pluginmanager.commands.enable:
+    default: op
+  pluginmanager.commands.disable:
+    default: op
+  pluginmanager.commands.restart:
+    default: op
+  pluginmanager.commands.load:
+    default: op
+  pluginmanager.commands.unload:
+    default: op
+  pluginmanager.commands.reload:
+    default: op
