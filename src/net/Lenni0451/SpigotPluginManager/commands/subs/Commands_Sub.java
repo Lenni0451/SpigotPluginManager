@@ -3,10 +3,15 @@ package net.Lenni0451.SpigotPluginManager.commands.subs;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class Commands_Sub implements ISubCommand {
 
@@ -24,10 +29,20 @@ public class Commands_Sub implements ISubCommand {
 			} else {
 				Logger.sendPrefixMessage(sender, "§6Commands of §a" + plugin.getName() + "§6:");
 				for(String command : commands) {
+					String message;
 					if(command.startsWith(" ")) {
-						sender.sendMessage("  §7- §6" + command.substring(1));
+						message = "  §7- §6" + command.substring(1);
 					} else {
-						sender.sendMessage(" §7- §6" + command);
+						message = " §7- §6" + command;
+					}
+					
+					if(sender instanceof Player) {
+						TextComponent textComponent = new TextComponent(message);
+						textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + command.replace(" ", "")));
+						textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] {new TextComponent("§b/" + command.replace(" ", ""))}));
+						((Player) sender).spigot().sendMessage(textComponent);
+					} else {
+						sender.sendMessage(message);
 					}
 				}
 			}

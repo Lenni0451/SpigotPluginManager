@@ -18,7 +18,7 @@ public class Reload_Sub implements ISubCommand {
 		}
 		
 		if(args[0].equalsIgnoreCase("*")) {
-			Bukkit.dispatchCommand(sender, "pluginmanager:reload");
+			Bukkit.dispatchCommand(sender, PluginManager.getInstance().getName() + ":reload");
 		} else {
 			try {
 				Plugin plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);

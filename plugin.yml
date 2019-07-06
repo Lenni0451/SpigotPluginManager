@@ -32,3 +32,11 @@ permissions:
     default: op
   pluginmanager.commands.reload:
     default: op
+  pluginmanager.commands.commands:
+    default: op
+  pluginmanager.commands.find:
+    default: op
+  pluginmanager.commands.download:
+    default: op
+  pluginmanager.commands.gui:
+    default: op

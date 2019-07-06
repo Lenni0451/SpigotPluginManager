@@ -8,12 +8,14 @@ import java.util.regex.Pattern;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import net.Lenni0451.SpigotPluginManager.commands.subs.Commands_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Disable_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Download_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Enable_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Find_Sub;
+import net.Lenni0451.SpigotPluginManager.commands.subs.Gui_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.ISubCommand;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Info_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.List_Sub;
@@ -22,6 +24,10 @@ import net.Lenni0451.SpigotPluginManager.commands.subs.Reload_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Restart_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Unload_Sub;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class PluginManager_Command implements CommandExecutor {
 	
@@ -39,6 +45,7 @@ public class PluginManager_Command implements CommandExecutor {
 		subCommands.put("commands", new Commands_Sub());
 		subCommands.put("find", new Find_Sub());
 		subCommands.put("download", new Download_Sub());
+		subCommands.put("gui", new Gui_Sub());
 	}
 	
 
@@ -53,7 +60,15 @@ public class PluginManager_Command implements CommandExecutor {
 			sender.sendMessage("§6--------------------------------------------------");
 			for(Map.Entry<String, ISubCommand> entry : subCommands.entrySet()) {
 				for(String usage : entry.getValue().getUsage().split(Pattern.quote("\n"))) {
-					sender.sendMessage(" §7- §6pm " + entry.getKey() + " §7| §2" + usage);
+					String message = " §7- §6pm " + entry.getKey() + " §7| §2" + usage;
+					if(sender instanceof Player) {
+						TextComponent textComponent = new TextComponent(message);
+						textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/pm " + entry.getKey()));
+						textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[] {new TextComponent("§b/pm " + entry.getKey())}));
+						((Player) sender).spigot().sendMessage(textComponent);
+					} else {
+						sender.sendMessage(message);
+					}
 				}
 			}
 			sender.sendMessage("§6--------------------------------------------------");

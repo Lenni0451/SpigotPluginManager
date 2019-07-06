@@ -12,6 +12,7 @@ import java.net.URLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -86,6 +87,27 @@ public class DownloadUtils {
 		}
 		fos.close();
 		bis.close();
+	}
+
+	public static JsonArray getSpigotMcPluginList(final int count, final int page) throws IOException {
+		URL apiUrl = new URL("https://api.spiget.org/v2/resources?size=" + count + "&page=" + page);
+		HttpsURLConnection connection = (HttpsURLConnection) apiUrl.openConnection();
+		connection.setDoInput(true);
+		connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+		
+		if(connection.getResponseCode() != 200) {
+			return null;
+		}
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		StringBuilder responseBuilder = new StringBuilder();
+		String line;
+		while((line = br.readLine()) != null) {
+			responseBuilder.append(line);
+		}
+		br.close();
+		
+		return jsonParser.parse(responseBuilder.toString()).getAsJsonArray();
 	}
 	
 }

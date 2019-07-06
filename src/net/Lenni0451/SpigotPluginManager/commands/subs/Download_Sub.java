@@ -23,6 +23,8 @@ public class Download_Sub implements ISubCommand {
 			return false;
 		}
 		
+		args[2] = args[2].replace("/", "").replace("\\", "");
+		
 		String url = args[1];
 		File file = new File(PluginManager.getInstance().getPluginUtils().getPluginDir(), args[2] + (args[2].toLowerCase().endsWith(".jar") ? "" : ".jar"));
 		if(args[0].equalsIgnoreCase("direct")) {
@@ -37,7 +39,6 @@ public class Download_Sub implements ISubCommand {
 			if(NumberUtils.isInteger(url)) {
 				id = Integer.valueOf(url);
 			} else {
-				//https://www.spigotmc.org/resources/nocheatplus.26/
 				if(url.endsWith("/")) {
 					url = url.substring(0, url.length() - 1);
 				}
@@ -83,7 +84,6 @@ public class Download_Sub implements ISubCommand {
 					Logger.sendPrefixMessage(sender, "§cThe plugin could not be found or has no download.");
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 				Logger.sendPrefixMessage(sender, "§cCould not reach the spiget api. Please try again later.");
 			}
 		}
@@ -104,7 +104,6 @@ public class Download_Sub implements ISubCommand {
 		} else if(args.length == 2 && args[0].equalsIgnoreCase("spigot")) {
 			String url = args[1];
 			
-			//https://www.spigotmc.org/resources/nocheatplus.26/
 			if(url.endsWith("/")) {
 				url = url.substring(0, url.length() - 1);
 			}
