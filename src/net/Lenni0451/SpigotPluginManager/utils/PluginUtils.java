@@ -1,7 +1,9 @@
 package net.Lenni0451.SpigotPluginManager.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.UnknownDependencyException;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginUtils {
 	
@@ -432,6 +435,38 @@ public class PluginUtils {
 		}
 		
 		return commands;
+	}
+
+	
+	/**
+	 * Get the jar file path of a plugin
+	 * 
+	 * @param plugin The plugin you want the jar file path of
+	 * @return File the jar file path of the plugin
+	 * @throws FileNotFoundException if the plugin file could not be found
+	 */
+	public File getPluginFile(Plugin plugin) throws FileNotFoundException {
+		try {
+			Method method = JavaPlugin.class.getDeclaredMethod("getFile");
+			method.setAccessible(true);
+			return (File) method.invoke(plugin);
+		} catch (Throwable e) {
+			for(File pluginFile : this.getPluginDir().listFiles()) {
+				if(pluginFile.isFile() && pluginFile.isFile()) {
+					if(!pluginFile.getName().toLowerCase().endsWith(".jar") && net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
+						continue;
+					}
+					
+					try {
+		                PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(pluginFile);
+		                if (desc.getName().equalsIgnoreCase(plugin.getName())) {
+		                	return pluginFile;
+		                }
+		            } catch (Throwable e2) {}
+				}
+			}
+		}
+		throw new FileNotFoundException();
 	}
 	
 }

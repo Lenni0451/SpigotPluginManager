@@ -38,9 +38,8 @@ public class Unload_Sub implements ISubCommand {
 				PluginManager.getInstance().getPluginUtils().unloadPlugin(args[0]);
 				Logger.sendPrefixMessage(sender, "§aThe plugin has been unloaded.");
 			} catch (IllegalArgumentException e) {
-				Logger.sendPrefixMessage(sender, "§cThe plugin could not be loaded.");
+				Logger.sendPrefixMessage(sender, "§cThe plugin could not be unloaded.");
 			} catch (Throwable e) {
-				e.printStackTrace();
 				Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
 			}
 		}
