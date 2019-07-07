@@ -110,4 +110,27 @@ public class DownloadUtils {
 		return jsonParser.parse(responseBuilder.toString()).getAsJsonArray();
 	}
 	
+	public static String getNewestVersion() throws IOException {
+		//https://github.com/Lenni0451/SpigotPluginManager/releases/tag/1.0
+		URL url = new URL("https://github.com/Lenni0451/SpigotPluginManager/releases/latest");
+		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+		connection.setDoInput(true);
+		connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		StringBuilder responseBuilder = new StringBuilder();
+		String line;
+		while((line = br.readLine()) != null) {
+			responseBuilder.append(line);
+		}
+		br.close();
+		
+		String urlBase = "https://github.com/Lenni0451/SpigotPluginManager/releases/tag/";
+		String source = responseBuilder.toString();
+		String version = source.substring(source.indexOf(urlBase) + urlBase.length());
+		version = version.substring(0, version.indexOf("&"));
+		
+		return version;
+	}
+	
 }

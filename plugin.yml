@@ -1,6 +1,6 @@
 name: PluginManager
 author: Lenni0451
-version: 1.0
+version: 1.1
 main: net.Lenni0451.SpigotPluginManager.PluginManager
 
 commands:
