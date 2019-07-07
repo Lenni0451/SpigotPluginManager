@@ -40,6 +40,7 @@ public class Unload_Sub implements ISubCommand {
 			} catch (IllegalArgumentException e) {
 				Logger.sendPrefixMessage(sender, "§cThe plugin could not be loaded.");
 			} catch (Throwable e) {
+				e.printStackTrace();
 				Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
 			}
 		}

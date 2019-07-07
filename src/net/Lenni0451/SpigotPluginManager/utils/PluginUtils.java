@@ -14,8 +14,8 @@ import java.util.SortedSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
@@ -262,7 +262,7 @@ public class PluginUtils {
 		PluginManager pluginManager = this.getPluginManager();
 		List<Plugin> plugins;
 		Map<String, Plugin> lookupNames;
-		CommandMap commandMap;
+		SimpleCommandMap commandMap;
 		Map<String, Command> knownCommands;
 		Map<Event, SortedSet<RegisteredListener>> listeners;
 		
@@ -283,15 +283,16 @@ public class PluginUtils {
 		try { //Get command map
 			Field f = pluginManager.getClass().getDeclaredField("commandMap");
 			f.setAccessible(true);
-			commandMap = (CommandMap) f.get(pluginManager);
+			commandMap = (SimpleCommandMap) f.get(pluginManager);
 		} catch (Throwable e) {
 			throw new IllegalStateException("Could not unload plugin (could not load command map)");
 		}
 		try { //Get known commands
-			Field f = commandMap.getClass().getDeclaredField("knownCommands");
+			Field f = SimpleCommandMap.class.getDeclaredField("knownCommands");
 			f.setAccessible(true);
 			knownCommands = (Map<String, Command>) f.get(commandMap);
 		} catch (Throwable e) {
+			e.printStackTrace();
 			throw new IllegalStateException("Could not unload plugin (could not load known commands)");
 		}
 		try {
