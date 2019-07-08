@@ -70,13 +70,13 @@ public class Gui_Sub implements ISubCommand, Listener {
 		if(event.getCurrentItem() == null) {
 			return;
 		}
-		if(event.getSlot() >= event.getInventory().getSize() || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
-			event.setCancelled(true);
-			return;
-		}
 		
 		if(event.getInventory().getTitle().equalsIgnoreCase("§3PluginManager")) {
 			event.setCancelled(true);
+			if(event.getSlot() >= event.getInventory().getSize() || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
+				event.setCancelled(true);
+				return;
+			}
 //			event.getWhoClicked().closeInventory();
 			
 			String pluginName = event.getCurrentItem().getItemMeta().getDisplayName().replaceAll("§.", "");
@@ -139,6 +139,10 @@ public class Gui_Sub implements ISubCommand, Listener {
 		} else if(event.getInventory().getTitle().startsWith("§3PM §6")) {
 			event.setCancelled(true);
 			event.getWhoClicked().closeInventory();
+			if(event.getSlot() >= event.getInventory().getSize() || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
+				event.setCancelled(true);
+				return;
+			}
 			
 			String pluginName = event.getInventory().getTitle().substring(7);
 			
