@@ -45,17 +45,19 @@ public class PluginManager extends JavaPlugin {
 		this.getCommand("pluginmanager").setAliases(Arrays.asList("pm"));
 		this.getCommand("pluginmanager").setTabCompleter(new PluginManager_TabComplete());
 		
-		try {
-			String newestVersion = DownloadUtils.getNewestVersion();
-			if(!newestVersion.equals(this.getDescription().getVersion())) {
-				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "A new update of PluginManager is available §e(" + this.getDescription().getVersion() + " -> " + newestVersion + ").");
-				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
-			} else {
-				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You are using the latest version of PluginManager.");
+		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+			try {
+				String newestVersion = DownloadUtils.getNewestVersion();
+				if(!newestVersion.equals(this.getDescription().getVersion())) {
+					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "A new update of PluginManager is available §e(" + this.getDescription().getVersion() + " -> " + newestVersion + ").");
+					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
+				} else {
+					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You are using the latest version of PluginManager.");
+				}
+			} catch (Throwable e) {
+				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not check for updates.");
 			}
-		} catch (Throwable e) {
-			Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not check for updates.");
-		}
+		});
 	}
 	
 }
