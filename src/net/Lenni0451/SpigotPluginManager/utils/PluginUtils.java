@@ -210,7 +210,7 @@ public class PluginUtils {
 	                    break;
 	                }
 	            } catch (InvalidDescriptionException e) {
-	            	Bukkit.getConsoleSender().sendMessage("§cThe plugin §6" + pluginFile.getName() + " §chas an invalid plugin description");
+//	            	Bukkit.getConsoleSender().sendMessage("§cThe plugin §6" + pluginFile.getName() + " §chas an invalid plugin description.");
 	            }
 			}
 		}

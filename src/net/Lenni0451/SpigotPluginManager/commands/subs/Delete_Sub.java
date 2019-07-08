@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
@@ -28,12 +29,15 @@ public class Delete_Sub implements ISubCommand {
 			}
 			
 			File file = PluginManager.getInstance().getPluginUtils().getPluginFile(plugin);
-			if(file.delete()) {
+			try {
+				FileUtils.writeByteArrayToFile(file, new byte[0]);
+				FileUtils.forceDelete(file);
+			} catch (Throwable e) {}
+			if(!file.exists()) {
 				Logger.sendPrefixMessage(sender, "§aThe plugin has been deleted.");
 			} else {
-				file.deleteOnExit();
 				Logger.sendPrefixMessage(sender, "§cThe plugin could not be deleted.");
-				Logger.sendPrefixMessage(sender, "§aIt will get deleted when the server stops.");
+				Logger.sendPrefixMessage(sender, "§cIt got overwritten to prevent it from loading.");
 			}
 		} catch (FileNotFoundException e) {
 			Logger.sendPrefixMessage(sender, "§cThe file of the plugin could not be found.");

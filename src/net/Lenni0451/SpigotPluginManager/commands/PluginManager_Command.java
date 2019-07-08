@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.Lenni0451.SpigotPluginManager.commands.subs.Commands_Sub;
+import net.Lenni0451.SpigotPluginManager.commands.subs.Delete_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Disable_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Download_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Enable_Sub;
@@ -46,7 +47,7 @@ public class PluginManager_Command implements CommandExecutor {
 		subCommands.put("find", new Find_Sub());
 		subCommands.put("download", new Download_Sub());
 		subCommands.put("gui", new Gui_Sub());
-//		subCommands.put("delete", new Delete_Sub());
+		subCommands.put("delete", new Delete_Sub());
 	}
 	
 
