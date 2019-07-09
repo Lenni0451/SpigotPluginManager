@@ -63,15 +63,15 @@ public class Download_Sub implements ISubCommand {
 					Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
 					return true;
 				}
-				if(response.get("external").getAsBoolean()) {
+				if(response.has("external") && response.get("external").getAsBoolean()) {
 					Logger.sendPrefixMessage(sender, "§cThe plugin has an external download link and can not be downloaded automatically.");
 					return true;
 				}
-				if(!response.get("file").getAsJsonObject().get("type").getAsString().toLowerCase().equalsIgnoreCase(".jar")) {
+				if(response.has("file") && response.get("file").getAsJsonObject().has("type") && !response.get("file").getAsJsonObject().get("type").getAsString().toLowerCase().equalsIgnoreCase(".jar")) {
 					Logger.sendPrefixMessage(sender, "§cThe plugin is not a jar file. File type: §6" + response.get("file").getAsJsonObject().get("type").getAsString());
 					return true;
 				}
-				if(response.get("premium").getAsBoolean()) {
+				if(response.has("premium") && response.get("premium").getAsBoolean()) {
 					Logger.sendPrefixMessage(sender, "§cThe plugin is a premium resource and can not be downloaded automatically.");
 					Logger.sendPrefixMessage(sender, "§aThe price is §6" + response.get("price").getAsString() + response.get("currency").getAsString() + "§a.");
 					return true;
