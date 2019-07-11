@@ -52,7 +52,6 @@ public class DownloadUtils {
 		connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
 		
 		if(connection.getResponseCode() != 200) {
-			System.out.println(connection.getResponseCode());
 			return false;
 		}
 		
