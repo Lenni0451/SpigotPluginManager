@@ -16,7 +16,7 @@ public class Delete_Sub implements ISubCommand {
 	public Delete_Sub() {
 		try {
 			for(File file : PluginManager.getInstance().getPluginUtils().getPluginDir().listFiles()) {
-				if(file.getName().toLowerCase().endsWith(".jar")) {
+				if(file.getName().toLowerCase().endsWith(".jar") && file.length() == 0) {
 					FileUtils.deleteQuietly(file);
 				}
 			}
