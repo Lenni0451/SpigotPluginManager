@@ -50,7 +50,27 @@ public class PluginManager extends JavaPlugin {
 				String newestVersion = DownloadUtils.getNewestVersion();
 				if(!newestVersion.equals(this.getDescription().getVersion())) {
 					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "A new update of PluginManager is available §e(" + this.getDescription().getVersion() + " -> " + newestVersion + ").");
-					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
+					if(this.getConfig().getBoolean("AutoUpdate")) {
+						try {
+							DownloadUtils.downloadPlugin("https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar", this.getFile());
+							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "Successfully downloaded new PluginManager version.");
+							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "PluginManager is reloading itself in some seconds...");
+							Bukkit.getScheduler().runTaskLater(this, () -> {
+								try {
+									this.pluginUtils.unloadPlugin(this);
+									this.pluginUtils.loadPlugin(this);
+									Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "PluginManager successfully reloaded itself!");
+								} catch (Throwable e) {
+									e.printStackTrace();
+								}
+							}, 1);
+						} catch (Throwable e) {
+							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not download the latest PluginManager version.");
+							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
+						}
+					} else {
+						Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
+					}
 				} else {
 					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You are using the latest version of PluginManager.");
 				}

@@ -7,3 +7,6 @@ UserAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, 
 #A list of plugins which should be ignored on mass actions
 IgnoredPlugins:
  - PluginManager
+
+#Automatically download the latest PluginManager version
+AutoUpdate: true
