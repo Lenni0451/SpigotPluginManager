@@ -12,6 +12,16 @@ import net.Lenni0451.SpigotPluginManager.PluginManager;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class Delete_Sub implements ISubCommand {
+	
+	public Delete_Sub() {
+		try {
+			for(File file : PluginManager.getInstance().getPluginUtils().getPluginDir().listFiles()) {
+				if(file.getName().toLowerCase().endsWith(".jar")) {
+					FileUtils.deleteQuietly(file);
+				}
+			}
+		} catch (Throwable e) {}
+	}
 
 	@Override
 	public boolean execute(CommandSender sender, String[] args) {
@@ -37,7 +47,8 @@ public class Delete_Sub implements ISubCommand {
 				Logger.sendPrefixMessage(sender, "§aThe plugin has been deleted.");
 			} else {
 				Logger.sendPrefixMessage(sender, "§cThe plugin could not be deleted.");
-				Logger.sendPrefixMessage(sender, "§cIt got overwritten to prevent it from loading.");
+				Logger.sendPrefixMessage(sender, "§aIt will get deleted on the next restart.");
+				Logger.sendPrefixMessage(sender, "§aThere will be an exception in the console which can be ignored without problems.");
 			}
 		} catch (FileNotFoundException e) {
 			Logger.sendPrefixMessage(sender, "§cThe file of the plugin could not be found.");
