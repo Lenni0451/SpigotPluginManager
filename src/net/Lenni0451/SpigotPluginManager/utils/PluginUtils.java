@@ -422,8 +422,8 @@ public class PluginUtils {
 					if(aliasesObject instanceof String) {
 						commands.add(" " + aliasesObject.toString().toLowerCase());
 					} else if(aliasesObject instanceof Collection) {
-						for(String alias : (Collection<? extends String>) aliasesObject) {
-							commands.add(" " + alias.toLowerCase());
+						for(Object alias : (Collection<?>) aliasesObject) {
+							commands.add(" " + alias.toString().toLowerCase());
 						}
 					} else if(aliasesObject instanceof String[]) {
 						for(String alias : (String[]) aliasesObject) {
