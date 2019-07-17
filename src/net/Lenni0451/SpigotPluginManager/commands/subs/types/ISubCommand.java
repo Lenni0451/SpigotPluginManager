@@ -1,4 +1,4 @@
-package net.Lenni0451.SpigotPluginManager.commands.subs;
+package net.Lenni0451.SpigotPluginManager.commands.subs.types;
 
 import java.util.List;
 

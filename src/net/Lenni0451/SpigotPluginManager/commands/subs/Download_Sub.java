@@ -8,11 +8,14 @@ import org.bukkit.command.CommandSender;
 import com.google.gson.JsonObject;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithread;
+import net.Lenni0451.SpigotPluginManager.softdepends.MVdWUpdater_Adapter;
+import net.Lenni0451.SpigotPluginManager.softdepends.SoftDepends;
 import net.Lenni0451.SpigotPluginManager.utils.DownloadUtils;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
 import net.Lenni0451.SpigotPluginManager.utils.NumberUtils;
 
-public class Download_Sub implements ISubCommand {
+public class Download_Sub implements ISubCommandMultithread {
 
 	@Override
 	public boolean execute(CommandSender sender, String[] args) {
@@ -67,17 +70,30 @@ public class Download_Sub implements ISubCommand {
 					Logger.sendPrefixMessage(sender, "§cThe plugin has an external download link and can not be downloaded automatically.");
 					return true;
 				}
-				if(response.has("file") && response.get("file").getAsJsonObject().has("type") && !response.get("file").getAsJsonObject().get("type").getAsString().toLowerCase().equalsIgnoreCase(".jar")) {
-					Logger.sendPrefixMessage(sender, "§cThe plugin is not a jar file. File type: §6" + response.get("file").getAsJsonObject().get("type").getAsString());
-					return true;
-				}
+//				if(response.has("file") && response.get("file").getAsJsonObject().has("type") && !response.get("file").getAsJsonObject().get("type").getAsString().toLowerCase().equalsIgnoreCase(".jar")) {
+//					Logger.sendPrefixMessage(sender, "§cThe plugin is not a jar file. File type: §6" + response.get("file").getAsJsonObject().get("type").getAsString());
+//					return true;
+//				}
 				if(response.has("premium") && response.get("premium").getAsBoolean()) {
-					Logger.sendPrefixMessage(sender, "§cThe plugin is a premium resource and can not be downloaded automatically.");
-					Logger.sendPrefixMessage(sender, "§aThe price is §6" + response.get("price").getAsString() + response.get("currency").getAsString() + "§a.");
-					return true;
+					if(SoftDepends.MVdWUpdater.isInstalled()) {
+						if(!MVdWUpdater_Adapter.hasResource(id)) {
+							Logger.sendPrefixMessage(sender, "§cIt seems like you don't have bought this plugin.");
+							Logger.sendPrefixMessage(sender, "§aThe price is §6" + response.get("price").getAsString() + response.get("currency").getAsString() + "§a.");
+							return true;
+						}
+					} else {
+						Logger.sendPrefixMessage(sender, "§cThe plugin is a premium resource and can not be downloaded automatically.");
+						Logger.sendPrefixMessage(sender, "§aThe price is §6" + response.get("price").getAsString() + response.get("currency").getAsString() + "§a.");
+						return true;
+					}
 				}
 				
-				boolean success = DownloadUtils.downloadSpigotMcPlugin(id, file);
+				boolean success;
+				if(response.has("premium") && response.get("premium").getAsBoolean()) {
+					success = MVdWUpdater_Adapter.downloadPlugin(file, id);
+				} else {
+					success = DownloadUtils.downloadSpigotMcPlugin(id, file);
+				}
 				if(success) {
 					Logger.sendPrefixMessage(sender, "Successfully downloaded the plugin and saved it as §6" + file.getName() + "§a.");
 				} else {

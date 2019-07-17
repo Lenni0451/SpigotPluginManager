@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import net.Lenni0451.SpigotPluginManager.commands.PluginManager_Command;
-import net.Lenni0451.SpigotPluginManager.commands.subs.ISubCommand;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
 
 public class PluginManager_TabComplete implements TabCompleter {
 
@@ -26,6 +26,7 @@ public class PluginManager_TabComplete implements TabCompleter {
 		} else if(args.length >= 2) {
 			String subCommandName = args[0].toLowerCase();
 			ISubCommand subCommand = PluginManager_Command.subCommands.get(subCommandName);
+			if(subCommand == null) return tabs;
 			args = Arrays.copyOfRange(args, 1, args.length - 1);
 			
 			subCommand.getTabComplete(tabs, args);

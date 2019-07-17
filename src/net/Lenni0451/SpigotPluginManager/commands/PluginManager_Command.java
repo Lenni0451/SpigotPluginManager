@@ -5,11 +5,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.Lenni0451.SpigotPluginManager.PluginManager;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Commands_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Delete_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Disable_Sub;
@@ -17,13 +19,14 @@ import net.Lenni0451.SpigotPluginManager.commands.subs.Download_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Enable_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Find_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Gui_Sub;
-import net.Lenni0451.SpigotPluginManager.commands.subs.ISubCommand;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Info_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.List_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Load_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Reload_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Restart_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Unload_Sub;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithread;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -82,13 +85,21 @@ public class PluginManager_Command implements CommandExecutor {
 			if(subCommand == null) {
 				sender.sendMessage("§cThe command could not be found.");
 			} else {
-				if(!sender.hasPermission("pluginmanager.commands." + cmd.toLowerCase())) {
-					Logger.sendPrefixMessage(sender, "§cYou are not allowed to execute this command.");
-				} else if(!subCommand.execute(sender, args)) {
-					Logger.sendPrefixMessage(sender, "§cInvalid command usage!");
-					for(String usage : subCommand.getUsage().split(Pattern.quote("\n"))) {
-						Logger.sendPrefixMessage(sender, "§aUse: §6pm " + usage);
+				final String[] _args = args;
+				Runnable executeRun = () -> {
+					if(!sender.hasPermission("pluginmanager.commands." + cmd.toLowerCase())) {
+						Logger.sendPrefixMessage(sender, "§cYou are not allowed to execute this command.");
+					} else if(!subCommand.execute(sender, _args)) {
+						Logger.sendPrefixMessage(sender, "§cInvalid command usage!");
+						for(String usage : subCommand.getUsage().split(Pattern.quote("\n"))) {
+							Logger.sendPrefixMessage(sender, "§aUse: §6pm " + usage);
+						}
 					}
+				};
+				if(subCommand instanceof ISubCommandMultithread) {
+					Bukkit.getScheduler().runTaskAsynchronously(PluginManager.getInstance(), executeRun);
+				} else {
+					executeRun.run();
 				}
 			}
 		}

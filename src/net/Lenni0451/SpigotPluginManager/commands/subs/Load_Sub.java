@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class Load_Sub implements ISubCommand {

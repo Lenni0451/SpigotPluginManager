@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class Info_Sub implements ISubCommand {

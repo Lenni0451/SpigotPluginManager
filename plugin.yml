@@ -2,6 +2,7 @@ name: PluginManager
 author: Lenni0451
 version: 1.4
 main: net.Lenni0451.SpigotPluginManager.PluginManager
+softdepend: [MVdWUpdater]
 
 commands:
   reload:

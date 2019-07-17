@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.Lenni0451.SpigotPluginManager.commands.PluginManager_Command;
 import net.Lenni0451.SpigotPluginManager.commands.Reload_Command;
+import net.Lenni0451.SpigotPluginManager.softdepends.SoftDepends;
 import net.Lenni0451.SpigotPluginManager.tabcomplete.PluginManager_TabComplete;
 import net.Lenni0451.SpigotPluginManager.utils.DownloadUtils;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
@@ -76,6 +77,13 @@ public class PluginManager extends JavaPlugin {
 				}
 			} catch (Throwable e) {
 				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not check for updates.");
+			}
+		});
+		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+			for(SoftDepends softDepend : SoftDepends.values()) {
+				if(softDepend.isInstalled()) {
+					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§aThe soft depend §6" + softDepend.name() + " §ais installed and will be used.");
+				}
 			}
 		});
 	}
