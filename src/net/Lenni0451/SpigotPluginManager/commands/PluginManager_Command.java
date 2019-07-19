@@ -57,7 +57,7 @@ public class PluginManager_Command implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(!sender.hasPermission("pluginmanager.commands")) {
-			sender.sendMessage("§cYou are not allowed to execute this command.");
+			Logger.sendPrefixMessage(sender, "§cYou are not allowed to execute this command.");
 			return true;
 		}
 		
@@ -83,7 +83,7 @@ public class PluginManager_Command implements CommandExecutor {
 			
 			ISubCommand subCommand = subCommands.get(cmd.toLowerCase());
 			if(subCommand == null) {
-				sender.sendMessage("§cThe command could not be found.");
+				Logger.sendPrefixMessage(sender, "§cThe command could not be found.");
 			} else {
 				final String[] _args = args;
 				Runnable executeRun = () -> {
