@@ -60,7 +60,7 @@ public class Disable_Sub implements ISubCommand {
 	public void getTabComplete(List<String> tabs, String[] args) {
 		if(args.length == 0) {
 			for(Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) {
-				tabs.add(plugin.getName());
+				if(plugin.isEnabled()) tabs.add(plugin.getName());
 			}
 		}
 	}
