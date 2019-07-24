@@ -195,23 +195,27 @@ public class PluginUtils {
 	 * @return the plugin instance if loaded
 	 */
 	public Plugin loadPlugin(final String name) {
-		File targetFile = null;
+		File targetFile = new File(this.getPluginDir(), name + (name.toLowerCase().endsWith(".jar") ? "" : ".jar"));
 		Plugin targetPlugin;
 		
-		for(File pluginFile : this.getPluginDir().listFiles()) {
-			if(pluginFile.isFile() && pluginFile.isFile()) {
-				if(!pluginFile.getName().toLowerCase().endsWith(".jar") && net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
-					continue;
+		if(!targetFile.exists()) {
+			targetFile = null;
+			
+			for(File pluginFile : this.getPluginDir().listFiles()) {
+				if(pluginFile.isFile() && pluginFile.isFile()) {
+					if(!pluginFile.getName().toLowerCase().endsWith(".jar") && net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
+						continue;
+					}
+					try {
+		                PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(pluginFile);
+		                if (desc.getName().equalsIgnoreCase(name)) {
+		                	targetFile = pluginFile;
+		                    break;
+		                }
+		            } catch (InvalidDescriptionException e) {
+//		            	Bukkit.getConsoleSender().sendMessage("§cThe plugin §6" + pluginFile.getName() + " §chas an invalid plugin description.");
+		            }
 				}
-				try {
-	                PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(pluginFile);
-	                if (desc.getName().equalsIgnoreCase(name)) {
-	                	targetFile = pluginFile;
-	                    break;
-	                }
-	            } catch (InvalidDescriptionException e) {
-//	            	Bukkit.getConsoleSender().sendMessage("§cThe plugin §6" + pluginFile.getName() + " §chas an invalid plugin description.");
-	            }
 			}
 		}
 		if(targetFile == null) {
