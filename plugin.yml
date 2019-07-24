@@ -1,6 +1,6 @@
 name: PluginManager
 author: Lenni0451
-version: 1.5
+version: 1.6
 main: net.Lenni0451.SpigotPluginManager.PluginManager
 softdepend: [MVdWUpdater]
 
