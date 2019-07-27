@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
 import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
@@ -19,12 +20,18 @@ public class Info_Sub implements ISubCommand {
 		
 		try {
 			Plugin plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
+			PluginDescriptionFile description = plugin.getDescription();
 			
 			Logger.sendPrefixMessage(sender, "§6Plugin Info:");
-			sender.sendMessage(" §aName: §6" + plugin.getName());
-			sender.sendMessage(" §aVersion: §6" + plugin.getDescription().getVersion());
-			String authors = plugin.getDescription().getAuthors().toString().replace("[", "").replace("]", "");
-			sender.sendMessage(" §aAuthor(s): §6" + (authors.isEmpty() ? "§4-" : authors));
+			sender.sendMessage(" §aName: §6" + description.getName());
+			if(description.getDescription() != null) {
+				sender.sendMessage(" §aDescription: §6" + description.getDescription());
+			}
+			sender.sendMessage(" §aVersion: §6" + description.getVersion());
+			{
+				String authors = description.getAuthors().toString().replace("[", "").replace("]", "");
+				sender.sendMessage(" §aAuthor(s): §6" + (authors.isEmpty() ? "§4-" : authors));
+			}
 			sender.sendMessage(" §aThe plugin is currently " + (plugin.isEnabled() ? "§aEnabled" : "§cDisabled"));
 		} catch (Throwable e) {
 			Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
