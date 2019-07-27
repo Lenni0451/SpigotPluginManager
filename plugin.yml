@@ -43,3 +43,5 @@ permissions:
     default: op
   pluginmanager.commands.delete:
     default: op
+  pluginmanager.commands.permissions:
+    default: op

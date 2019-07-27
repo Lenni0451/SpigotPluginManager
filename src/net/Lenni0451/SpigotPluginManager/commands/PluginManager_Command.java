@@ -22,6 +22,7 @@ import net.Lenni0451.SpigotPluginManager.commands.subs.Gui_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Info_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.List_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Load_Sub;
+import net.Lenni0451.SpigotPluginManager.commands.subs.Permissions_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Reload_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Restart_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Unload_Sub;
@@ -51,6 +52,7 @@ public class PluginManager_Command implements CommandExecutor {
 		subCommands.put("download", new Download_Sub());
 		subCommands.put("gui", new Gui_Sub());
 		subCommands.put("delete", new Delete_Sub());
+		subCommands.put("permissions", new Permissions_Sub());
 	}
 	
 
