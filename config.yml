@@ -1,12 +1,15 @@
-#When loading plugins ignore plugins that don't end with .jar
+#When loading plugins ignore files that don't end with .jar
 IgnoreNonJarPlugins: false
 
-#The user agent used to make internet requests
+#The user agent used to make web requests
 UserAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36
 
 #A list of plugins which should be ignored on mass actions
 IgnoredPlugins:
  - PluginManager
+
+#Check for PluginManager updates on startup
+CheckForUpdates: true
 
 #Automatically download the latest PluginManager version
 AutoUpdate: true

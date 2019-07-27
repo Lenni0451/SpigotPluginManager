@@ -11,13 +11,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.utils.Logger;
 
 public class Reload_Command implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(!sender.hasPermission("bukkit.command.reload")) {
-			sender.sendMessage("§cYou are not allowed to execute this command.");
+			Logger.sendPermissionMessage(sender);
 			return true;
 		}
 		

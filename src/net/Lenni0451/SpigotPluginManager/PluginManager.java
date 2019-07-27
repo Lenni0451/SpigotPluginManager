@@ -46,15 +46,26 @@ public class PluginManager extends JavaPlugin {
 		this.getCommand("pluginmanager").setAliases(Arrays.asList("pm"));
 		this.getCommand("pluginmanager").setTabCompleter(new PluginManager_TabComplete());
 		
+		for(SoftDepends softDepend : SoftDepends.values()) {
+			if(softDepend.isInstalled()) {
+				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§aThe soft depend §6" + softDepend.name() + " §ais installed and will be used.");
+			}
+		}
+		if(this.getConfig().getBoolean("CheckForUpdates")) {
+			this.checkUpdates();
+		}
+	}
+	
+	public void checkUpdates() {
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
 			try {
 				String newestVersion = DownloadUtils.getNewestVersion();
 				if(!newestVersion.equals(this.getDescription().getVersion())) {
-					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "A new update of PluginManager is available §e(" + this.getDescription().getVersion() + " -> " + newestVersion + ").");
+					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "A new update of §6PluginManager §ais available §e(" + this.getDescription().getVersion() + " -> " + newestVersion + ")§a.");
 					if(this.getConfig().getBoolean("AutoUpdate")) {
 						try {
 							DownloadUtils.downloadPlugin("https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar", this.getFile());
-							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "Successfully downloaded new PluginManager version.");
+							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "Successfully downloaded new §6PluginManager §aversion.");
 							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "PluginManager is reloading itself in some seconds...");
 							Bukkit.getScheduler().runTaskLater(this, () -> {
 								try {
@@ -66,24 +77,18 @@ public class PluginManager extends JavaPlugin {
 								}
 							}, 1);
 						} catch (Throwable e) {
-							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not download the latest PluginManager version.");
+							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not auto download the latest §6PluginManager §aversion.");
 							Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
 						}
 					} else {
 						Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
 					}
 				} else {
-					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You are using the latest version of PluginManager.");
+					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You are using the latest version of §6PluginManager§a.");
 				}
 			} catch (Throwable e) {
-				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not check for updates.");
-			}
-		});
-		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-			for(SoftDepends softDepend : SoftDepends.values()) {
-				if(softDepend.isInstalled()) {
-					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§aThe soft depend §6" + softDepend.name() + " §ais installed and will be used.");
-				}
+				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cAn unknown error occurred whilst checking for a new §6PluginManager §aversion!.");
+				e.printStackTrace();
 			}
 		});
 	}
