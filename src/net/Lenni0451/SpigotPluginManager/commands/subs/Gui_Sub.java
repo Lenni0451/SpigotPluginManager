@@ -68,7 +68,7 @@ public class Gui_Sub implements ISubCommand, Listener {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		if(event.getCurrentItem() == null) {
+		if(event.getCurrentItem() == null || event.getInventory().getName() == null) {
 			return;
 		}
 		
