@@ -68,11 +68,11 @@ public class Gui_Sub implements ISubCommand, Listener {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		if(event.getCurrentItem() == null || event.getInventory().getName() == null) {
+		if(event.getCurrentItem() == null || event.getView().getTitle() == null) {
 			return;
 		}
 		
-		if(event.getInventory().getTitle().equalsIgnoreCase("§3PluginManager")) {
+		if(event.getView().getTitle().equalsIgnoreCase("§3PluginManager")) {
 			event.setCancelled(true);
 			if(event.getSlot() >= event.getInventory().getSize() || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
 				event.setCancelled(true);
@@ -137,7 +137,7 @@ public class Gui_Sub implements ISubCommand, Listener {
 				
 				event.getWhoClicked().openInventory(inv);
 			} catch (Throwable e) {}
-		} else if(event.getInventory().getTitle().startsWith("§3PM §6")) {
+		} else if(event.getView().getTitle().startsWith("§3PM §6")) {
 			event.setCancelled(true);
 			event.getWhoClicked().closeInventory();
 			if(event.getSlot() >= event.getInventory().getSize() || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
@@ -145,7 +145,7 @@ public class Gui_Sub implements ISubCommand, Listener {
 				return;
 			}
 			
-			String pluginName = event.getInventory().getTitle().substring(7);
+			String pluginName = event.getView().getTitle().substring(7);
 			
 			try {
 				String action = event.getCurrentItem().getItemMeta().getDisplayName().substring(2);
