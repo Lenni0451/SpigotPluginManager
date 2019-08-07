@@ -70,10 +70,10 @@ public class Download_Sub implements ISubCommandMultithread {
 					Logger.sendPrefixMessage(sender, "§cThe plugin has an external download link and can not be downloaded automatically.");
 					return true;
 				}
-//				if(response.has("file") && response.get("file").getAsJsonObject().has("type") && !response.get("file").getAsJsonObject().get("type").getAsString().toLowerCase().equalsIgnoreCase(".jar")) {
-//					Logger.sendPrefixMessage(sender, "§cThe plugin is not a jar file. File type: §6" + response.get("file").getAsJsonObject().get("type").getAsString());
-//					return true;
-//				}
+				if(response.has("file") && response.get("file").getAsJsonObject().has("type") && !response.get("file").getAsJsonObject().get("type").getAsString().toLowerCase().equalsIgnoreCase(".jar")) {
+					Logger.sendPrefixMessage(sender, "§cThe plugin is not a jar file. File type: §6" + response.get("file").getAsJsonObject().get("type").getAsString());
+					return true;
+				}
 				if(response.has("premium") && response.get("premium").getAsBoolean()) {
 					if(SoftDepends.MVdWUpdater.isInstalled()) {
 						if(!MVdWUpdater_Adapter.hasResource(id)) {
