@@ -82,7 +82,7 @@ public class Download_Sub implements ISubCommandMultithread {
 							return true;
 						}
 					} else {
-						Logger.sendPrefixMessage(sender, "§cThe plugin is a premium resource and can not be downloaded automatically wihout §6MVdWUpdater§c.");
+						Logger.sendPrefixMessage(sender, "§cThe plugin is a premium resource and can not be downloaded automatically without §6MVdWUpdater§c.");
 						Logger.sendPrefixMessage(sender, "§aThe price is §6" + response.get("price").getAsString() + response.get("currency").getAsString() + "§a.");
 						return true;
 					}
