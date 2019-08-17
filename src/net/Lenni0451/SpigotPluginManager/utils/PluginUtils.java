@@ -8,6 +8,8 @@ import java.lang.reflect.Modifier;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -416,24 +418,42 @@ public class PluginUtils {
 	 */
 	public List<String> getCommands(Plugin plugin) {
 		List<String> commands = new ArrayList<>();
+		Map<String, List<String>> aliases = new HashMap<>();
 		
 		Map<String, Map<String, Object>> commandMap = plugin.getDescription().getCommands();
 		if(commandMap != null && !commandMap.isEmpty()) {
 			for(String command : commandMap.keySet()) {
 				commands.add(command.toLowerCase());
+				
 				if(commandMap.get(command).containsKey("aliases")) {
 					Object aliasesObject = commandMap.get(command).get("aliases");
+					List<String> commandAliases = new ArrayList<>();
+					aliases.put(command, commandAliases);
+					
 					if(aliasesObject instanceof String) {
-						commands.add(" " + aliasesObject.toString().toLowerCase());
+						commandAliases.add(aliasesObject.toString().toLowerCase());
 					} else if(aliasesObject instanceof Collection) {
 						for(Object alias : (Collection<?>) aliasesObject) {
-							commands.add(" " + alias.toString().toLowerCase());
+							commandAliases.add(alias.toString().toLowerCase());
 						}
 					} else if(aliasesObject instanceof String[]) {
 						for(String alias : (String[]) aliasesObject) {
-							commands.add(" " + alias.toLowerCase());
+							commandAliases.add(alias.toLowerCase());
 						}
 					}
+				}
+			}
+		}
+		
+		Collections.sort(commands);
+		for(int i = 0; i < commands.size(); i++) {
+			String command = commands.get(i);
+			List<String> commandAliases = aliases.get(command);
+			if(commandAliases != null) {
+				Collections.sort(commandAliases);
+				for(int i2 = commandAliases.size() - 1; i2 >= 0; i2--) {
+					String alias = commandAliases.get(i2);
+					commands.add(i + 1, " " + alias);
 				}
 			}
 		}
