@@ -45,3 +45,5 @@ permissions:
     default: op
   pluginmanager.commands.permissions:
     default: op
+  pluginmanager.commands.dump:
+    default: op
