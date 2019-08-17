@@ -53,6 +53,9 @@ public class Permissions_Sub implements ISubCommand {
 						break;
 					case NOT_OP:
 						hoverMessage += "Not OPs";
+						break;
+					default:
+						hoverMessage += "Undefined";
 					}
 					
 					if(sender instanceof Player) {

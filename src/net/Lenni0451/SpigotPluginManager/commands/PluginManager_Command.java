@@ -16,6 +16,7 @@ import net.Lenni0451.SpigotPluginManager.commands.subs.Commands_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Delete_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Disable_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Download_Sub;
+import net.Lenni0451.SpigotPluginManager.commands.subs.Dump_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Enable_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Find_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Gui_Sub;
@@ -53,6 +54,7 @@ public class PluginManager_Command implements CommandExecutor {
 		subCommands.put("gui", new Gui_Sub());
 		subCommands.put("delete", new Delete_Sub());
 		subCommands.put("permissions", new Permissions_Sub());
+		subCommands.put("dump", new Dump_Sub());
 	}
 	
 
