@@ -1,5 +1,7 @@
 package net.Lenni0451.SpigotPluginManager.commands.subs;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -18,8 +20,16 @@ public class List_Sub implements ISubCommand {
 		}
 		
 		Plugin[] plugins = PluginManager.getInstance().getPluginUtils().getPlugins();
+		List<Plugin> sortedList = new ArrayList<>();
+		for(Plugin plugin : plugins) sortedList.add(plugin);
+		sortedList.sort(new Comparator<Plugin>() {
+			@Override
+			public int compare(Plugin o1, Plugin o2) {
+				return o1.getName().compareToIgnoreCase(o2.getName());
+			}
+		});
 		Logger.sendPrefixMessage(sender, "§6Plugins §e§o(" + plugins.length + ")§6:");
-		for(Plugin plugin : plugins) {
+		for(Plugin plugin : sortedList) {
 			sender.sendMessage(" §7- " + (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §6" + plugin.getDescription().getVersion());
 		}
 		
