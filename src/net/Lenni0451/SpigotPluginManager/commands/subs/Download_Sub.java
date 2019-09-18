@@ -25,6 +25,10 @@ public class Download_Sub implements ISubCommandMultithread {
 		if(!args[0].equalsIgnoreCase("direct") && !args[0].equalsIgnoreCase("spigot")) {
 			return false;
 		}
+		if(PluginManager.getInstance().getConfig().getBoolean("ExtraDownloadPermissions") && !sender.hasPermission("pluginmanager.commands.download." + args[0].toLowerCase())) {
+			Logger.sendPermissionMessage(sender);
+			return true;
+		}
 		
 		args[2] = args[2].replace("/", "").replace("\\", "");
 		
