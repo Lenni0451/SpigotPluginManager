@@ -57,6 +57,12 @@ public class Permissions_Sub implements ISubCommand {
 					default:
 						hoverMessage += "Undefined";
 					}
+					if(!permission.getChildren().keySet().isEmpty()) {
+						hoverMessage += "\n§aChild Permissions:";
+						for(String subPerm : permission.getChildren().keySet()) {
+							hoverMessage += "\n §7- §6" + subPerm;
+						}
+					}
 					
 					if(sender instanceof Player) {
 						TextComponent textComponent = new TextComponent(message);

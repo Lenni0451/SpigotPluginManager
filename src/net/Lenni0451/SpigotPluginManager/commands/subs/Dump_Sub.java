@@ -150,6 +150,12 @@ public class Dump_Sub implements ISubCommandMultithread {
 				lines.add(" - " + permName);
 				if(!permDescription.isEmpty()) lines.add("   Description: " + permDescription);
 				lines.add("   Default: " + readablePermDefault);
+				if(!permission.getChildren().keySet().isEmpty()) {
+					lines.add("   Child Permissions:");
+					for(String subPerm : permission.getChildren().keySet()) {
+						lines.add("    - " + subPerm);
+					}
+				}
 			}
 		}
 		
