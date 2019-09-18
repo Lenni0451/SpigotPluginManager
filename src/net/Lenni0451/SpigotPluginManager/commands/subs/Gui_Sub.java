@@ -127,6 +127,14 @@ public class Gui_Sub implements ISubCommand, Listener {
 					inv.addItem(stack);
 				}
 				{
+					ItemStack stack = new ItemStack(Material.BOOK_AND_QUILL);
+					ItemMeta meta = stack.getItemMeta();
+					meta.setDisplayName("§aPermissions");
+					stack.setItemMeta(meta);
+					
+					inv.addItem(stack);
+				}
+				{
 					ItemStack stack = new ItemStack(Material.ARROW);
 					ItemMeta meta = stack.getItemMeta();
 					meta.setDisplayName("§aBack");
