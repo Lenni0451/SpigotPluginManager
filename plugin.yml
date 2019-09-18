@@ -39,6 +39,9 @@ permissions:
     default: op
   pluginmanager.commands.download:
     default: op
+    children:
+      pluginmanager.commands.download.direct: false
+      pluginmanager.commands.download.spigot: false
   pluginmanager.commands.gui:
     default: op
   pluginmanager.commands.delete:
