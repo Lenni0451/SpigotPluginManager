@@ -87,7 +87,7 @@ public class PluginManager extends JavaPlugin {
 					Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You are using the latest version of §6PluginManager§a.");
 				}
 			} catch (Throwable e) {
-				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cAn unknown error occurred whilst checking for a new §6PluginManager §aversion!.");
+				Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cAn unknown error occurred whilst checking for a new §6PluginManager §cversion!.");
 				e.printStackTrace();
 			}
 		});
