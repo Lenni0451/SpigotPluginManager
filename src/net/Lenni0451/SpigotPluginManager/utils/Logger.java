@@ -1,5 +1,6 @@
 package net.Lenni0451.SpigotPluginManager.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class Logger {
@@ -33,6 +34,15 @@ public class Logger {
 	 */
 	public static void sendPermissionMessage(CommandSender receiver) {
 		sendPrefixMessage(receiver, "§cI'm sorry but you don't have access to this command.");
+	}
+
+	/**
+	 * Send a message into the console
+	 * 
+	 * @param message
+	 */
+	public static void sendConsole(String message) {
+		sendPrefixMessage(Bukkit.getConsoleSender(), message);
 	}
 	
 }

@@ -10,6 +10,7 @@ import net.Lenni0451.SpigotPluginManager.commands.Reload_Command;
 import net.Lenni0451.SpigotPluginManager.softdepends.SoftDepends;
 import net.Lenni0451.SpigotPluginManager.tabcomplete.PluginManager_TabComplete;
 import net.Lenni0451.SpigotPluginManager.utils.DownloadUtils;
+import net.Lenni0451.SpigotPluginManager.utils.InstalledPluginsConfig;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
 import net.Lenni0451.SpigotPluginManager.utils.PluginUtils;
 
@@ -23,6 +24,7 @@ public class PluginManager extends JavaPlugin {
 	
 	
 	private final PluginUtils pluginUtils;
+	private final InstalledPluginsConfig installedPluginsInfo;
 	
 	public PluginManager() {
 		instance = this;
@@ -30,10 +32,15 @@ public class PluginManager extends JavaPlugin {
 		this.saveDefaultConfig();
 		
 		this.pluginUtils = new PluginUtils();
+		this.installedPluginsInfo = new InstalledPluginsConfig();
 	}
 	
 	public PluginUtils getPluginUtils() {
 		return this.pluginUtils;
+	}
+	
+	public InstalledPluginsConfig getInstalledPlugins() {
+		return this.installedPluginsInfo;
 	}
 	
 	

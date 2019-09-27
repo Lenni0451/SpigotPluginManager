@@ -26,3 +26,7 @@ ExtraDownloadPermissions: true
 #Hide the PluginManager commands from a player if he/she does not have permission for it
 #Default: false
 HideNoPermissionCommands: false
+
+#Automatically reload the updated plugins
+#default: false
+AutoReloadUpdated: false

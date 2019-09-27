@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.google.gson.JsonObject;
 
@@ -25,7 +27,7 @@ public class Download_Sub implements ISubCommandMultithread {
 		if(!args[0].equalsIgnoreCase("direct") && !args[0].equalsIgnoreCase("spigot")) {
 			return false;
 		}
-		if(PluginManager.getInstance().getConfig().getBoolean("ExtraDownloadPermissions") && !sender.hasPermission("pluginmanager.commands.download." + args[0].toLowerCase())) {
+		if(sender instanceof Player && PluginManager.getInstance().getConfig().getBoolean("ExtraDownloadPermissions") && !sender.hasPermission("pluginmanager.commands.download." + args[0].toLowerCase())) {
 			Logger.sendPermissionMessage(sender);
 			return true;
 		}
@@ -100,6 +102,12 @@ public class Download_Sub implements ISubCommandMultithread {
 				}
 				if(success) {
 					Logger.sendPrefixMessage(sender, "Successfully downloaded the plugin and saved it as §6" + file.getName() + "§a.");
+					try {
+						PluginDescriptionFile desc = PluginManager.getInstance().getPluginLoader().getPluginDescription(file);
+						PluginManager.getInstance().getInstalledPlugins().setPlugin(desc.getName(), id, response.get("version").getAsJsonObject().get("id").getAsString(), file.getName());
+					} catch (Throwable e) {
+						Logger.sendPrefixMessage(sender, "§cCould not add plugin into config for later updates.");
+					}
 				} else {
 					Logger.sendPrefixMessage(sender, "§cThe plugin could not be found or has no download.");
 				}

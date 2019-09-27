@@ -27,6 +27,7 @@ import net.Lenni0451.SpigotPluginManager.commands.subs.Permissions_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Reload_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Restart_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.Unload_Sub;
+import net.Lenni0451.SpigotPluginManager.commands.subs.Update_Sub;
 import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
 import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithread;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
@@ -55,6 +56,7 @@ public class PluginManager_Command implements CommandExecutor {
 		subCommands.put("delete", new Delete_Sub());
 		subCommands.put("permissions", new Permissions_Sub());
 		subCommands.put("dump", new Dump_Sub());
+		subCommands.put("update", new Update_Sub());
 	}
 	
 

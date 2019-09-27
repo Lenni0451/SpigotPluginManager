@@ -41,6 +41,7 @@ public class Delete_Sub implements ISubCommand {
 			
 			File file = PluginManager.getInstance().getPluginUtils().getPluginFile(plugin);
 			try {
+				PluginManager.getInstance().getInstalledPlugins().removePlugin(plugin.getName());
 				FileUtils.writeByteArrayToFile(file, new byte[0]);
 				FileUtils.forceDelete(file);
 			} catch (Throwable e) {}
