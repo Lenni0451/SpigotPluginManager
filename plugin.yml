@@ -2,7 +2,7 @@ name: PluginManager
 author: Lenni0451
 version: 1.9
 main: net.Lenni0451.SpigotPluginManager.PluginManager
-softdepend: [MVdWUpdater]
+softdepend: [MVdWUpdater, Gson-Spigot]
 
 commands:
   reload:
@@ -39,9 +39,10 @@ permissions:
     default: op
   pluginmanager.commands.download:
     default: op
-    children:
-      pluginmanager.commands.download.direct: false
-      pluginmanager.commands.download.spigot: false
+  pluginmanager.commands.download.direct:
+    default: op
+  pluginmanager.commands.download.spigot:
+    default: op
   pluginmanager.commands.gui:
     default: op
   pluginmanager.commands.delete:
