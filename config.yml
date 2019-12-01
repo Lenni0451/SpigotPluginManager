@@ -21,6 +21,7 @@ AutoUpdate: true
 #Have extra permission for 'download direct' and 'download spigot'
 #Permission for 'download direct': pluginmanager.commands.download.direct
 #Permission for 'download spigot': pluginmanager.commands.download.spigot
+#Default: true
 ExtraDownloadPermissions: true
 
 #Hide the PluginManager commands from a player if he/she does not have permission for it
