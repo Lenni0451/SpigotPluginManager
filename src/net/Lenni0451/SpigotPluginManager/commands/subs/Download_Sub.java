@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.google.gson.JsonObject;
@@ -27,7 +26,7 @@ public class Download_Sub implements ISubCommandMultithread {
 		if(!args[0].equalsIgnoreCase("direct") && !args[0].equalsIgnoreCase("spigot")) {
 			return false;
 		}
-		if(sender instanceof Player && PluginManager.getInstance().getConfig().getBoolean("ExtraDownloadPermissions") && !sender.hasPermission("pluginmanager.commands.download." + args[0].toLowerCase())) {
+		if(PluginManager.getInstance().getConfig().getBoolean("ExtraDownloadPermissions") && !sender.hasPermission("pluginmanager.commands.download." + args[0].toLowerCase())) {
 			Logger.sendPermissionMessage(sender);
 			return true;
 		}
