@@ -34,26 +34,7 @@ public class Gui_Sub implements ISubCommand, Listener {
 			return true;
 		}
 		
-		Plugin[] plugins = PluginManager.getInstance().getPluginUtils().getPlugins();
-		int rowCount = Double.valueOf(Math.ceil((double) plugins.length / 9D)).intValue();
-		int slotCount = rowCount * 9;
-		
-		Inventory inv = Bukkit.createInventory(null, slotCount, "§3PluginManager");
-		
-		for(Plugin plugin : plugins) {
-			ItemStack stack = new ItemStack(Material.WOOL, 1, (byte) (plugin.isEnabled() ? 5 : 14));
-			ItemMeta meta = stack.getItemMeta();
-			meta.setDisplayName("§a" + plugin.getName());
-			String authors = plugin.getDescription().getAuthors().toString().replace("[", "").replace("]", "");
-			
-			meta.setLore(Arrays.asList("§2Name: §6" + plugin.getName(), "§2Version: §6" + plugin.getDescription().getVersion(), "§2Author(s): §6" + (authors.isEmpty() ? "§4-" : authors)));
-			
-			stack.setItemMeta(meta);
-			
-			inv.addItem(stack);
-		}
-		
-		((Player) sender).openInventory(inv);
+		this.openGui((Player) sender, 0);
 		
 		return true;
 	}
@@ -66,21 +47,93 @@ public class Gui_Sub implements ISubCommand, Listener {
 		return "gui";
 	}
 	
+	public void openGui(final Player player, final int currentPage) {
+		Plugin[] allPlugins = PluginManager.getInstance().getPluginUtils().getPlugins();
+		{
+			Plugin[] fakePlugins = new Plugin[100];
+			Arrays.fill(fakePlugins, PluginManager.getInstance());
+			allPlugins = fakePlugins;
+		}
+		final int pageCount = Double.valueOf(Math.ceil((double) allPlugins.length / (5 * 9))).intValue();
+		Plugin[] plugins = allPlugins;
+		if(allPlugins.length > 5 * 9) {
+			plugins = Arrays.copyOfRange(allPlugins, 5 * 9 * currentPage, Math.min(allPlugins.length, 5 * 9 * (currentPage + 1)));
+		}
+		final int rowCount = Double.valueOf(Math.ceil((double) plugins.length / 9D)).intValue() + 1;
+		
+		this.openGui(player, currentPage, rowCount, plugins, currentPage > 0, currentPage < pageCount - 1);
+	}
+	
+	public void openGui(final Player player, final int currentPage, final int rowCount, final Plugin[] plugins, final boolean hasPageBefore, final boolean hasPageAfter) {
+		Inventory inv = Bukkit.createInventory(null, rowCount * 9, "§3PluginManager §2Page " + (currentPage + 1));
+		
+		for(int i = 0; i < inv.getSize() - 9 && plugins.length > i; i++) {
+			final Plugin plugin = plugins[i];
+			
+			ItemStack stack = new ItemStack(Material.WOOL, 1, (byte) (plugin.isEnabled() ? 5 : 14));
+			ItemMeta meta = stack.getItemMeta();
+			meta.setDisplayName("§a" + plugin.getName());
+			String authors = plugin.getDescription().getAuthors().toString().replace("[", "").replace("]", "");
+			
+			meta.setLore(Arrays.asList("§2Name: §6" + plugin.getName(), "§2Version: §6" + plugin.getDescription().getVersion(), "§2Author(s): §6" + (authors.isEmpty() ? "§4-" : authors)));
+			
+			stack.setItemMeta(meta);
+			
+			inv.setItem(i, stack);
+		}
+		
+		for(int i = 0; i < 9; i++) {
+			ItemStack spaceFiller = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 7);
+			ItemMeta meta = spaceFiller.getItemMeta();
+			meta.setDisplayName(" ");
+			spaceFiller.setItemMeta(meta);
+			
+			inv.setItem(i + inv.getSize() - 9, spaceFiller);
+		}
+		if(hasPageBefore) {
+			ItemStack backArrow = new ItemStack(Material.ARROW, currentPage);
+			ItemMeta meta = backArrow.getItemMeta();
+			meta.setDisplayName("§7Back to page §6" + currentPage);
+			backArrow.setItemMeta(meta);
+			
+			inv.setItem(inv.getSize() - 9, backArrow);
+		}
+		if(hasPageAfter) {
+			ItemStack forwardArrow = new ItemStack(Material.ARROW, currentPage + 2);
+			ItemMeta meta = forwardArrow.getItemMeta();
+			meta.setDisplayName("§7Go to page §6" + (currentPage + 2));
+			forwardArrow.setItemMeta(meta);
+			
+			inv.setItem(inv.getSize() - 1, forwardArrow);
+		}
+		
+		player.openInventory(inv);
+	}
+	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if(event.getCurrentItem() == null || event.getView().getTitle() == null) {
 			return;
 		}
 		
-		if(event.getView().getTitle().equalsIgnoreCase("§3PluginManager")) {
+		if(event.getView().getTitle().startsWith("§3PluginManager")) {
 			event.setCancelled(true);
 			if(event.getSlot() >= event.getInventory().getSize() || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
-				event.setCancelled(true);
 				return;
 			}
 //			event.getWhoClicked().closeInventory();
 			
 			String pluginName = event.getCurrentItem().getItemMeta().getDisplayName().replaceAll("§.", "");
+			if(pluginName.equalsIgnoreCase(" ")) {
+				event.setCancelled(true);
+				return;
+			} else if(pluginName.startsWith("Back to page ")) {
+				this.openGui((Player) event.getWhoClicked(), Integer.valueOf(pluginName.substring(pluginName.length() - 1)) - 1);
+				return;
+			} else if(pluginName.startsWith("Go to page ")) {
+				this.openGui((Player) event.getWhoClicked(), Integer.valueOf(pluginName.substring(pluginName.length() - 1)) - 1);
+				return;
+			}
 			
 			try {
 				Plugin plugin = PluginManager.getInstance().getPluginUtils().getPlugin(pluginName);
