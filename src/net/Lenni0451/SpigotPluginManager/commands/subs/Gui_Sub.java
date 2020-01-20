@@ -49,11 +49,6 @@ public class Gui_Sub implements ISubCommand, Listener {
 	
 	public void openGui(final Player player, final int currentPage) {
 		Plugin[] allPlugins = PluginManager.getInstance().getPluginUtils().getPlugins();
-		{
-			Plugin[] fakePlugins = new Plugin[100];
-			Arrays.fill(fakePlugins, PluginManager.getInstance());
-			allPlugins = fakePlugins;
-		}
 		final int pageCount = Double.valueOf(Math.ceil((double) allPlugins.length / (5 * 9))).intValue();
 		Plugin[] plugins = allPlugins;
 		if(allPlugins.length > 5 * 9) {
