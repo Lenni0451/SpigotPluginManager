@@ -140,7 +140,7 @@ public class PluginUtils {
 	/**
 	 * Disable a plugin by its instance
 	 * 
-	 * @param name The plugin you want to disable
+	 * @param plugin The plugin you want to disable
 	 * @return if the plugin could be disabled (false if already disabled)
 	 */
 	public boolean disablePlugin(final Plugin plugin) {
@@ -215,7 +215,7 @@ public class PluginUtils {
 		                    break;
 		                }
 		            } catch (InvalidDescriptionException e) {
-//		            	Bukkit.getConsoleSender().sendMessage("§cThe plugin §6" + pluginFile.getName() + " §chas an invalid plugin description.");
+//		            	Bukkit.getConsoleSender().sendMessage("Â§cThe plugin Â§6" + pluginFile.getName() + " Â§chas an invalid plugin description.");
 		            }
 				}
 			}
