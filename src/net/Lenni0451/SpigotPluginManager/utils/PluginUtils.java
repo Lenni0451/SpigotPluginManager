@@ -1,4 +1,4 @@
-package fr.arismc.api.utils;
+package net.Lenni0451.SpigotPluginManager.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import fr.arismc.api.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
@@ -46,7 +45,7 @@ public class PluginUtils {
 	 * @return The current PluginLoader instance
 	 */
 	public PluginLoader getPluginLoader() {
-		return Main.getInstance().getPluginLoader();
+		return net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getPluginLoader();
 	}
 	
 	/**
@@ -191,7 +190,7 @@ public class PluginUtils {
 		
 		if(!targetFile.get().exists()) {
 			Arrays.stream(this.getPluginsDirectory().listFiles())
-					.filter(file -> file.getName().toLowerCase().endsWith(".jar") || (!file.getName().toLowerCase().endsWith(".jar") && !Main.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")))
+					.filter(file -> file.getName().toLowerCase().endsWith(".jar") || (!file.getName().toLowerCase().endsWith(".jar") && !net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")))
 					.filter(file -> {
 						try {
 							PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(file);
@@ -342,7 +341,7 @@ public class PluginUtils {
 	 */
 	public List<Plugin> getPluginsByLoadOrder() {
 		List<Plugin> plugins = new ArrayList<>();
-		List<String> ignoredPlugins = Main.getInstance().getConfig().getStringList("IgnoredPlugins");
+		List<String> ignoredPlugins = net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
 
 		Arrays.stream(this.getPlugins()).forEach(plugin -> {
 			if(!ignoredPlugins.contains(plugin.getName())){
@@ -456,7 +455,7 @@ public class PluginUtils {
 		} catch (Throwable e) {
 			for(File pluginFile : this.getPluginsDirectory().listFiles()) {
 				if(pluginFile.isFile() && pluginFile.isFile()) {
-					if(!pluginFile.getName().toLowerCase().endsWith(".jar") && Main.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
+					if(!pluginFile.getName().toLowerCase().endsWith(".jar") && net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
 						continue;
 					}
 					
