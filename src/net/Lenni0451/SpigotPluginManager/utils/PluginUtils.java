@@ -1,4 +1,4 @@
-package net.Lenni0451.SpigotPluginManager.utils;
+package fr.arismc.api.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,16 +6,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
+import fr.arismc.api.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
@@ -36,7 +31,7 @@ public class PluginUtils {
 	/**
 	 * @return The plugin directory
 	 */
-	public File getPluginDir() {
+	public File getPluginsDirectory() {
 		return new File(".", "plugins");
 	}
 	
@@ -51,7 +46,7 @@ public class PluginUtils {
 	 * @return The current PluginLoader instance
 	 */
 	public PluginLoader getPluginLoader() {
-		return net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getPluginLoader();
+		return Main.getInstance().getPluginLoader();
 	}
 	
 	/**
@@ -65,16 +60,10 @@ public class PluginUtils {
 	 * Get a plugin by its name.
 	 * 
 	 * @param name The name of the plugin you want to get
-	 * @return The plugin instance of the plugin
-	 * @throws IllegalArgumentException if the plugin could not be found
+	 * @return An optional of the plugin instance of the plugin
 	 */
-	public Plugin getPlugin(final String name) {
-		for(Plugin plugin : this.getPlugins()) {
-			if(plugin.getName().equalsIgnoreCase(name)) {
-				return plugin;
-			}
-		}
-		throw new IllegalArgumentException("The plugin does not exist");
+	public Optional<Plugin> getPlugin(final String name) {
+		return Arrays.stream(this.getPlugins()).filter(plugin -> plugin.getName().equalsIgnoreCase(name)).findFirst();
 	}
 	
 	/**
@@ -85,7 +74,7 @@ public class PluginUtils {
 		try {
 			this.getPlugin(name);
 			return true;
-		} catch (RuntimeException e) {}
+		} catch (RuntimeException ignored) {}
 		
 		return false;
 	}
@@ -93,10 +82,10 @@ public class PluginUtils {
 	/**
 	 * @param name The name of the plugin you want to check if its enabled
 	 * @return if the plugin is enabled
-	 * @throws IllegalArgumentException if the plugin could not be found
 	 */
 	public boolean isPluginEnabled(final String name) {
-		return this.getPlugin(name).isEnabled();
+		Optional<Plugin> plugin = this.getPlugin(name);
+		return plugin.map(Plugin::isEnabled).orElse(false);
 	}
 
 	/**
@@ -104,10 +93,10 @@ public class PluginUtils {
 	 * 
 	 * @param name The name of the plugin you want to enable
 	 * @return if the plugin could be enabled (false if already enabled)
-	 * @throws IllegalArgumentException if the plugin could not be found
 	 */
 	public boolean enablePlugin(final String name) {
-		return this.enablePlugin(this.getPlugin(name));
+		Optional<Plugin> plugin = this.getPlugin(name);
+		return plugin.filter(this::enablePlugin).isPresent();
 	}
 	
 	/**
@@ -131,10 +120,10 @@ public class PluginUtils {
 	 * 
 	 * @param name The name of the plugin you want to disable
 	 * @return if the plugin could be disabled (false if already disabled)
-	 * @throws IllegalArgumentException if the plugin could not be found
 	 */
 	public boolean disablePlugin(final String name) {
-		return this.disablePlugin(this.getPlugin(name));
+		Optional<Plugin> plugin = this.getPlugin(name);
+		return plugin.filter(this::disablePlugin).isPresent();
 	}
 	
 	/**
@@ -158,10 +147,10 @@ public class PluginUtils {
 	 * Reload the config of a plugin by its name
 	 * 
 	 * @param name The name of the plugin you want the config of to be reloaded
-	 * @throws IllegalArgumentException if the plugin could not be found
 	 */
 	public void reloadConfig(final String name) {
-		this.reloadConfig(this.getPlugin(name));
+		Optional<Plugin> plugin = this.getPlugin(name);
+		plugin.ifPresent(this::reloadConfig);
 	}
 	
 	/**
@@ -197,35 +186,28 @@ public class PluginUtils {
 	 * @return the plugin instance if loaded
 	 */
 	public Plugin loadPlugin(final String name) {
-		File targetFile = new File(this.getPluginDir(), name + (name.toLowerCase().endsWith(".jar") ? "" : ".jar"));
+		AtomicReference<File> targetFile = new AtomicReference<>(new File(this.getPluginsDirectory(), name + (name.toLowerCase().endsWith(".jar") ? "" : ".jar")));
 		Plugin targetPlugin;
 		
-		if(!targetFile.exists()) {
-			targetFile = null;
-			
-			for(File pluginFile : this.getPluginDir().listFiles()) {
-				if(pluginFile.isFile() && pluginFile.isFile()) {
-					if(!pluginFile.getName().toLowerCase().endsWith(".jar") && net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
-						continue;
-					}
-					try {
-		                PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(pluginFile);
-		                if (desc.getName().equalsIgnoreCase(name)) {
-		                	targetFile = pluginFile;
-		                    break;
-		                }
-		            } catch (InvalidDescriptionException e) {
-//		            	Bukkit.getConsoleSender().sendMessage("§cThe plugin §6" + pluginFile.getName() + " §chas an invalid plugin description.");
-		            }
-				}
-			}
+		if(!targetFile.get().exists()) {
+			Arrays.stream(this.getPluginsDirectory().listFiles())
+					.filter(file -> file.getName().toLowerCase().endsWith(".jar") || (!file.getName().toLowerCase().endsWith(".jar") && !Main.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")))
+					.filter(file -> {
+						try {
+							PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(file);
+							return desc.getName().equalsIgnoreCase(name);
+						}catch (InvalidDescriptionException ignored){
+//							Bukkit.getConsoleSender().sendMessage("§cThe plugin §6" + pluginFile.getName() + " §chas an invalid plugin description.");
+						}
+						return false;
+					}).findAny().ifPresent(targetFile::set);
 		}
-		if(targetFile == null) {
+		if(targetFile.get() == null) {
 			throw new IllegalStateException("The plugin file could not be found");
 		}
 		
 		try {
-			targetPlugin = this.getPluginLoader().loadPlugin(targetFile);
+			targetPlugin = this.getPluginLoader().loadPlugin(targetFile.get());
 		} catch (UnknownDependencyException e) {
 			throw new IllegalStateException("The plugin could not be loaded because there is a missing dependency");
 		} catch (InvalidPluginException e) {
@@ -255,7 +237,8 @@ public class PluginUtils {
 	 * @throws IllegalArgumentException if the plugin could not be found
 	 */
 	public void unloadPlugin(final String name) {
-		this.unloadPlugin(this.getPlugin(name));
+		Optional<Plugin> plugin = this.getPlugin(name);
+		plugin.ifPresent(this::unloadPlugin);
 	}
 	
 	/**
@@ -328,12 +311,7 @@ public class PluginUtils {
 		}
 		if(listeners != null) {
 			for(Set<RegisteredListener> registeredListeners : listeners.values()) {
-				Iterator<RegisteredListener> iterator = registeredListeners.iterator();
-				while(iterator.hasNext()) {
-					if(iterator.next().getPlugin().equals(plugin)) {
-						iterator.remove();
-					}
-				}
+				registeredListeners.removeIf(registeredListener -> registeredListener.getPlugin().equals(plugin));
 			}
 		}
 		
@@ -364,16 +342,15 @@ public class PluginUtils {
 	 */
 	public List<Plugin> getPluginsByLoadOrder() {
 		List<Plugin> plugins = new ArrayList<>();
-		List<String> ignoredPlugins = net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
-		
-		for(Plugin plugin : this.getPlugins()) {
-			if(ignoredPlugins.contains(plugin.getName())) {
-				continue;
+		List<String> ignoredPlugins = Main.getInstance().getConfig().getStringList("IgnoredPlugins");
+
+		Arrays.stream(this.getPlugins()).forEach(plugin -> {
+			if(!ignoredPlugins.contains(plugin.getName())){
+				plugins.add(plugin);
 			}
-			
-			plugins.add(plugin);
-		}
-		
+		});
+
+
 		for(int i = 0; i < plugins.size(); i++) {
 			Plugin plugin = plugins.get(i);
 
@@ -391,17 +368,19 @@ public class PluginUtils {
 			if(!deps.isEmpty()) {
 				for(String dependName : deps) {
 					try {
-						Plugin depend = this.getPlugin(dependName);
-						int dependPos = plugins.indexOf(depend);
-						int pluginPos = plugins.indexOf(plugin);
-						
-						if(dependPos > pluginPos) {
-							plugins.remove(pluginPos);
-							plugins.add(dependPos + 1, plugin);
-							
-							i = 0;
+						Optional<Plugin> depend = this.getPlugin(dependName);
+						if(depend.isPresent()) {
+							int dependPos = plugins.indexOf(depend.get());
+							int pluginPos = plugins.indexOf(plugin);
+
+							if (dependPos > pluginPos) {
+								plugins.remove(pluginPos);
+								plugins.add(dependPos + 1, plugin);
+
+								i = 0;
+							}
 						}
-					} catch (Throwable e) {}
+					} catch (Throwable ignored) {}
 				}
 			}
 		}
@@ -421,7 +400,7 @@ public class PluginUtils {
 		Map<String, List<String>> aliases = new HashMap<>();
 		
 		Map<String, Map<String, Object>> commandMap = plugin.getDescription().getCommands();
-		if(commandMap != null && !commandMap.isEmpty()) {
+		if(!commandMap.isEmpty()) {
 			for(String command : commandMap.keySet()) {
 				commands.add(command.toLowerCase());
 				
@@ -475,9 +454,9 @@ public class PluginUtils {
 			method.setAccessible(true);
 			return (File) method.invoke(plugin);
 		} catch (Throwable e) {
-			for(File pluginFile : this.getPluginDir().listFiles()) {
+			for(File pluginFile : this.getPluginsDirectory().listFiles()) {
 				if(pluginFile.isFile() && pluginFile.isFile()) {
-					if(!pluginFile.getName().toLowerCase().endsWith(".jar") && net.Lenni0451.SpigotPluginManager.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
+					if(!pluginFile.getName().toLowerCase().endsWith(".jar") && Main.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
 						continue;
 					}
 					
@@ -486,7 +465,7 @@ public class PluginUtils {
 		                if (desc.getName().equalsIgnoreCase(plugin.getName())) {
 		                	return pluginFile;
 		                }
-		            } catch (Throwable e2) {}
+		            } catch (Throwable ignored) {}
 				}
 			}
 		}
