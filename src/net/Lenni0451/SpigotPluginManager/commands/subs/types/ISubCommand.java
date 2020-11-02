@@ -1,13 +1,15 @@
 package net.Lenni0451.SpigotPluginManager.commands.subs.types;
 
-import java.util.List;
-
 import org.bukkit.command.CommandSender;
 
+import java.util.List;
+
 public interface ISubCommand {
-	
-	public boolean execute(CommandSender sender, String[] args);
-	public void getTabComplete(List<String> tabs, String[] args);
-	public String getUsage();
-	
+
+    boolean execute(CommandSender sender, String[] args);
+
+    void getTabComplete(List<String> tabs, String[] args);
+
+    String getUsage();
+
 }

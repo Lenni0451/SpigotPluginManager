@@ -1,56 +1,55 @@
 package net.Lenni0451.SpigotPluginManager.commands;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.bukkit.Bukkit;
+import net.Lenni0451.SpigotPluginManager.PluginManager;
+import net.Lenni0451.SpigotPluginManager.utils.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
-import net.Lenni0451.SpigotPluginManager.PluginManager;
-import net.Lenni0451.SpigotPluginManager.utils.Logger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Reload_Command implements CommandExecutor {
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(!sender.hasPermission("bukkit.command.reload")) {
-			Logger.sendPermissionMessage(sender);
-			return true;
-		}
-		
-		sender.sendMessage("§aReloading all plugins...");
-		
-		List<Plugin> reloadPlugins = PluginManager.getInstance().getPluginUtils().getPluginsByLoadOrder();
-		
-		Collections.reverse(reloadPlugins);
-		for(Plugin plugin : reloadPlugins) {
-			PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin);
-		}
-		Collections.reverse(reloadPlugins);
-		List<String> pluginNames = new ArrayList<>();
-		reloadPlugins.forEach((plugin) -> pluginNames.add(plugin.getName()));
-		reloadPlugins.clear();
-		
-		for(String plugin : pluginNames) {
-			try {
-				PluginManager.getInstance().getPluginUtils().getPlugin(plugin);
-				Bukkit.getConsoleSender().sendMessage("§cThe plugin §6" + plugin + " §cis already loaded!");
-				continue;
-			} catch (Throwable e) {}
-			try {
-				PluginManager.getInstance().getPluginUtils().loadPlugin(plugin);
-			} catch (Throwable e) {
-				Bukkit.getConsoleSender().sendMessage("§cCould not load plugin §6" + plugin + "§c.");
-			}
-		}
-		
-		sender.sendMessage("§aThe plugins have been reloaded.");
-		
-		return true;
-	}
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("bukkit.command.reload")) {
+            Logger.sendPermissionMessage(sender);
+            return true;
+        }
+
+        sender.sendMessage("Â§aReloading all plugins...");
+
+        List<Plugin> reloadPlugins = PluginManager.getInstance().getPluginUtils().getPluginsByLoadOrder();
+
+        Collections.reverse(reloadPlugins);
+        for (Plugin plugin : reloadPlugins) {
+            try {
+                PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin);
+            } catch (Throwable t) {
+                t.printStackTrace();
+                sender.sendMessage("Â§cCould not unload plugin Â§6" + plugin.getName() + "Â§c." + (t.getMessage() != null ? (" Â§7(" + t.getMessage() + ")") : ""));
+                return true;
+            }
+        }
+        Collections.reverse(reloadPlugins);
+        List<String> pluginNames = new ArrayList<>();
+        reloadPlugins.forEach((plugin) -> pluginNames.add(plugin.getName()));
+        reloadPlugins.clear();
+
+        for (String plugin : pluginNames) {
+            try {
+                PluginManager.getInstance().getPluginUtils().loadPlugin(plugin);
+            } catch (Throwable e) {
+                sender.sendMessage("Â§cCould not load plugin Â§6" + plugin + "Â§c." + (e.getMessage() != null ? (" Â§7(" + e.getMessage() + ")") : ""));
+            }
+        }
+
+        sender.sendMessage("Â§aAll plugins have been reloaded.");
+
+        return true;
+    }
 
 }
