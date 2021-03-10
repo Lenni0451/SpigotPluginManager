@@ -122,9 +122,7 @@ public class Gui_Sub implements ISubCommand, Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getCurrentItem() == null || event.getView().getTitle() == null) {
-            return;
-        }
+        if (event.getCurrentItem() == null || event.getView().getTitle() == null) return;
 
         if (event.getView().getTitle().startsWith("§3PluginManager")) {
             event.setCancelled(true);
@@ -217,7 +215,8 @@ public class Gui_Sub implements ISubCommand, Listener {
                 }
 
                 event.getWhoClicked().openInventory(inv);
-            } catch (Throwable ignored) {
+            } catch (Throwable t) {
+                t.printStackTrace();
             }
         } else if (event.getView().getTitle().startsWith("§3PM §6")) {
             event.setCancelled(true);
