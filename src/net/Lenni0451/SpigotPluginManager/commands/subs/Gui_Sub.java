@@ -2,6 +2,7 @@ package net.Lenni0451.SpigotPluginManager.commands.subs;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
 import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
+import net.Lenni0451.SpigotPluginManager.utils.VersionMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -65,7 +66,15 @@ public class Gui_Sub implements ISubCommand, Listener {
         for (int i = 0; i < inv.getSize() - 9 && plugins.length > i; i++) {
             final Plugin plugin = plugins[i];
 
-            ItemStack stack = new ItemStack(Material.WOOL, 1, (byte) (plugin.isEnabled() ? 5 : 14));
+            Material wool = VersionMaterial.getMaterial("WOOL");
+            ItemStack stack;
+            if (wool != null) {
+                stack = new ItemStack(wool, 1, (byte) (plugin.isEnabled() ? 5 : 14));
+            } else {
+                Material greenWool = VersionMaterial.getMaterial("LIME_WOOL");
+                Material redWool = VersionMaterial.getMaterial("RED_WOOL");
+                stack = new ItemStack(plugin.isEnabled() ? greenWool : redWool);
+            }
             ItemMeta meta = stack.getItemMeta();
             meta.setDisplayName("§a" + plugin.getName());
             String authors = plugin.getDescription().getAuthors().toString().replace("[", "").replace("]", "");
@@ -78,7 +87,13 @@ public class Gui_Sub implements ISubCommand, Listener {
         }
 
         for (int i = 0; i < 9; i++) {
-            ItemStack spaceFiller = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 7);
+            Material glassPane = VersionMaterial.getMaterial("STAINED_GLASS_PANE");
+            ItemStack spaceFiller;
+            if (glassPane != null) {
+                spaceFiller = new ItemStack(glassPane, 1, (byte) 7);
+            } else {
+                spaceFiller = new ItemStack(VersionMaterial.getMaterial("GRAY_STAINED_GLASS_PANE"));
+            }
             ItemMeta meta = spaceFiller.getItemMeta();
             meta.setDisplayName(" ");
             spaceFiller.setItemMeta(meta);
@@ -118,24 +133,34 @@ public class Gui_Sub implements ISubCommand, Listener {
             }
 //			event.getWhoClicked().closeInventory();
 
-            String pluginName = event.getCurrentItem().getItemMeta().getDisplayName().replaceAll("§.", "");
-            if (pluginName.equalsIgnoreCase(" ")) {
+            String itemName = event.getCurrentItem().getItemMeta().getDisplayName().replaceAll("§.", "");
+            if (itemName.equalsIgnoreCase(" ")) {
                 event.setCancelled(true);
                 return;
-            } else if (pluginName.startsWith("Back to page ")) {
-                this.openGui((Player) event.getWhoClicked(), Integer.parseInt(pluginName.substring(pluginName.length() - 1)) - 1);
-                return;
-            } else if (pluginName.startsWith("Go to page ")) {
-                this.openGui((Player) event.getWhoClicked(), Integer.parseInt(pluginName.substring(pluginName.length() - 1)) - 1);
-                return;
+            } else {
+                if (itemName.startsWith("Back to page ")) {
+                    this.openGui((Player) event.getWhoClicked(), Integer.parseInt(itemName.substring(itemName.length() - 1)) - 1);
+                    return;
+                } else if (itemName.startsWith("Go to page ")) {
+                    this.openGui((Player) event.getWhoClicked(), Integer.parseInt(itemName.substring(itemName.length() - 1)) - 1);
+                    return;
+                }
             }
 
             try {
-                Plugin plugin = PluginManager.getInstance().getPluginUtils().getPlugin(pluginName).get();
+                Plugin plugin = PluginManager.getInstance().getPluginUtils().getPlugin(itemName).get();
 
                 Inventory inv = Bukkit.createInventory(null, 9, "§3PM §6" + plugin.getName());
                 {
-                    ItemStack stack = new ItemStack(Material.WOOL, 1, (byte) (plugin.isEnabled() ? 14 : 5));
+                    Material wool = VersionMaterial.getMaterial("WOOL");
+                    ItemStack stack;
+                    if (wool != null) {
+                        stack = new ItemStack(wool, 1, (byte) (plugin.isEnabled() ? 14 : 5));
+                    } else {
+                        Material greenWool = VersionMaterial.getMaterial("LIME_WOOL");
+                        Material redWool = VersionMaterial.getMaterial("RED_WOOL");
+                        stack = new ItemStack(plugin.isEnabled() ? greenWool : redWool);
+                    }
                     ItemMeta meta = stack.getItemMeta();
                     meta.setDisplayName(plugin.isEnabled() ? "§cDisable" : "§aEnable");
                     stack.setItemMeta(meta);
@@ -167,7 +192,7 @@ public class Gui_Sub implements ISubCommand, Listener {
                     inv.addItem(stack);
                 }
                 {
-                    ItemStack stack = new ItemStack(Material.COMMAND);
+                    ItemStack stack = new ItemStack(VersionMaterial.getMaterial("COMMAND", "COMMAND_BLOCK"));
                     ItemMeta meta = stack.getItemMeta();
                     meta.setDisplayName("§aCommands");
                     stack.setItemMeta(meta);
@@ -175,7 +200,7 @@ public class Gui_Sub implements ISubCommand, Listener {
                     inv.addItem(stack);
                 }
                 {
-                    ItemStack stack = new ItemStack(Material.BOOK_AND_QUILL);
+                    ItemStack stack = new ItemStack(VersionMaterial.getMaterial("BOOK_AND_QUILL", "WRITABLE_BOOK"));
                     ItemMeta meta = stack.getItemMeta();
                     meta.setDisplayName("§aPermissions");
                     stack.setItemMeta(meta);
