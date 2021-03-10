@@ -7,12 +7,7 @@ public enum SoftDepends {
     MVdWUpdater;
 
     public boolean isInstalled() {
-        try {
-            PluginManager.getInstance().getPluginUtils().getPlugin(this.name());
-            return true;
-        } catch (Exception ignored) {
-        }
-        return false;
+        return PluginManager.getInstance().getPluginUtils().isPluginLoaded(this.name());
     }
 
 }
