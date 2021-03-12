@@ -308,12 +308,10 @@ public class PluginUtils {
 
             try {
                 for (Field f : classLoader.getClass().getDeclaredFields()) {
+                    if (Modifier.isStatic(f.getModifiers())) continue; //Do not clear static fields
+                    if (f.getType().isPrimitive()) continue; //Primitive variables do not need to be cleared too
+
                     f.setAccessible(true);
-                    if (Modifier.isFinal(f.getModifiers())) {
-                        Field mf = f.getClass().getDeclaredField("modifiers");
-                        mf.setAccessible(true);
-                        mf.setInt(f, f.getModifiers() & ~Modifier.FINAL);
-                    }
                     f.set(classLoader, null);
                 }
             } catch (Throwable e) {
@@ -388,7 +386,7 @@ public class PluginUtils {
         Map<String, List<String>> aliases = new HashMap<>();
 
         Map<String, Map<String, Object>> commandMap = plugin.getDescription().getCommands();
-        if(commandMap == null) return commands;
+        if (commandMap == null) return commands;
         for (String command : commandMap.keySet()) {
             commands.add(command.toLowerCase());
 
