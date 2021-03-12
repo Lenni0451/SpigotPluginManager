@@ -9,6 +9,8 @@ import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -17,6 +19,18 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PluginUtils {
+	
+	private static final VarHandle MODIFIERS;
+
+
+	static {
+        try {
+            var lookup = MethodHandles.privateLookupIn(Field.class, MethodHandles.lookup());
+            MODIFIERS = lookup.findVarHandle(Field.class, "modifiers", int.class);
+        } catch (IllegalAccessException | NoSuchFieldException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     /**
      * @return The plugin directory
@@ -310,9 +324,10 @@ public class PluginUtils {
                 for (Field f : classLoader.getClass().getDeclaredFields()) {
                     f.setAccessible(true);
                     if (Modifier.isFinal(f.getModifiers())) {
-                        Field mf = f.getClass().getDeclaredField("modifiers");
-                        mf.setAccessible(true);
-                        mf.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+                        int modifier = f.getModifiers();
+                        if (Modifier.isFinal(modifier)) {
+                            MODIFIERS.set(f, modifier & ~Modifier.FINAL);
+                        }
                     }
                     f.set(classLoader, null);
                 }
