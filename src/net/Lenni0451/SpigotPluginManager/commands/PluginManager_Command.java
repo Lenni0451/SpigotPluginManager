@@ -3,7 +3,7 @@ package net.Lenni0451.SpigotPluginManager.commands;
 import net.Lenni0451.SpigotPluginManager.PluginManager;
 import net.Lenni0451.SpigotPluginManager.commands.subs.*;
 import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
-import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithread;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithreaded;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -97,7 +97,7 @@ public class PluginManager_Command implements CommandExecutor {
                         t.printStackTrace();
                     }
                 };
-                if (subCommand instanceof ISubCommandMultithread) {
+                if (subCommand instanceof ISubCommandMultithreaded) {
                     Bukkit.getScheduler().runTaskAsynchronously(PluginManager.getInstance(), executeRun);
                 } else {
                     executeRun.run();

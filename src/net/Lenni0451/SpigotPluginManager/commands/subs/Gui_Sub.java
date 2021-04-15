@@ -26,16 +26,13 @@ public class Gui_Sub implements ISubCommand, Listener {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 0) {
-            return false;
-        }
+        if (args.length != 0) return false;
         if (!(sender instanceof Player)) {
             sender.sendMessage("§cYou have to run this command as a player.");
             return true;
         }
 
         this.openGui((Player) sender, 0);
-
         return true;
     }
 
@@ -78,9 +75,7 @@ public class Gui_Sub implements ISubCommand, Listener {
             ItemMeta meta = stack.getItemMeta();
             meta.setDisplayName("§a" + plugin.getName());
             String authors = plugin.getDescription().getAuthors().toString().replace("[", "").replace("]", "");
-
             meta.setLore(Arrays.asList("§2Name: §6" + plugin.getName(), "§2Version: §6" + plugin.getDescription().getVersion(), "§2Author(s): §6" + (authors.isEmpty() ? "§4-" : authors)));
-
             stack.setItemMeta(meta);
 
             inv.setItem(i, stack);

@@ -15,9 +15,7 @@ public class Load_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         if (args[0].equalsIgnoreCase("*") && PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions")) {
             List<String> names = new ArrayList<>();
@@ -67,7 +65,7 @@ public class Load_Sub implements ISubCommand {
 
     @Override
     public String getUsage() {
-        return "load <Plugin>" + (PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions") ? "/*" : "");
+        return "load <Plugin>" + this.getBatchActionSuffix();
     }
 
 }

@@ -19,9 +19,7 @@ public class Commands_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
         if (!plugin.isPresent()) {

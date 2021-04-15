@@ -1,7 +1,7 @@
 package net.Lenni0451.SpigotPluginManager.commands.subs;
 
 import net.Lenni0451.SpigotPluginManager.PluginManager;
-import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithread;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithreaded;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
@@ -17,13 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Dump_Sub implements ISubCommandMultithread {
+public class Dump_Sub implements ISubCommandMultithreaded {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         File dumpsFolder = new File("plugin_dumps");
         dumpsFolder.mkdirs();
@@ -80,7 +78,7 @@ public class Dump_Sub implements ISubCommandMultithread {
 
     @Override
     public String getUsage() {
-        return "dump <Plugin>" + (PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions") ? "/*" : "");
+        return "dump <Plugin>" + this.getBatchActionSuffix();
     }
 
     private List<String> getPluginInfos(final Plugin plugin) {

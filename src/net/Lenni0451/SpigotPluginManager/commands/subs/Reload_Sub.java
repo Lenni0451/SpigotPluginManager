@@ -14,12 +14,10 @@ public class Reload_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         if (args[0].equalsIgnoreCase("*") && PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions")) {
-            Bukkit.dispatchCommand(sender, PluginManager.getInstance().getName() + ":reload");
+            Bukkit.dispatchCommand(sender, PluginManager.getInstance().getName() + ":reload"); //Lazy way to call the /reload command. TODO: Maybe find a better way here?
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
@@ -58,7 +56,7 @@ public class Reload_Sub implements ISubCommand {
 
     @Override
     public String getUsage() {
-        return "reload <Plugin>" + (PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions") ? "/*" : "");
+        return "reload <Plugin>" + this.getBatchActionSuffix();
     }
 
 }

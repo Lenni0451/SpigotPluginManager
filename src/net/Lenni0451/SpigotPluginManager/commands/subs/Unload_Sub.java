@@ -12,18 +12,14 @@ public class Unload_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         if (args[0].equalsIgnoreCase("*") && PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions")) {
             List<Plugin> plugins = PluginManager.getInstance().getPluginUtils().getPluginsByLoadOrder();
             List<String> ignoredPlugins = PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
 
             for (Plugin plugin : plugins) {
-                if (ignoredPlugins.contains(plugin.getName())) {
-                    continue;
-                }
+                if (ignoredPlugins.contains(plugin.getName())) continue;
 
                 try {
                     PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin);
@@ -60,7 +56,7 @@ public class Unload_Sub implements ISubCommand {
 
     @Override
     public String getUsage() {
-        return "unload <Plugin>" + (PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions") ? "/*" : "");
+        return "unload <Plugin>" + this.getBatchActionSuffix();
     }
 
 }

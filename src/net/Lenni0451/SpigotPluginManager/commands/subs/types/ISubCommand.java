@@ -1,5 +1,6 @@
 package net.Lenni0451.SpigotPluginManager.commands.subs.types;
 
+import net.Lenni0451.SpigotPluginManager.PluginManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -11,5 +12,10 @@ public interface ISubCommand {
     void getTabComplete(List<String> tabs, String[] args);
 
     String getUsage();
+
+
+    default String getBatchActionSuffix() {
+        return (PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions") ? "/*" : "");
+    }
 
 }

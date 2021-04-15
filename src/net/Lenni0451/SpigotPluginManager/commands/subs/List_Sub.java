@@ -14,9 +14,7 @@ public class List_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 0) {
-            return false;
-        }
+        if (args.length != 0) return false;
 
         Plugin[] plugins = PluginManager.getInstance().getPluginUtils().getPlugins();
         List<Plugin> sortedList = new ArrayList<>();

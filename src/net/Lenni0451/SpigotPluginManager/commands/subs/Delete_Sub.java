@@ -26,9 +26,7 @@ public class Delete_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
         if (!plugin.isPresent()) {
@@ -58,7 +56,6 @@ public class Delete_Sub implements ISubCommand {
         } else {
             Logger.sendPrefixMessage(sender, "§cThe plugin could not be deleted.");
             Logger.sendPrefixMessage(sender, "§aIt will get deleted on the next restart.");
-//            Logger.sendPrefixMessage(sender, "§aThere will be an exception in the console which can be ignored without problems.");
         }
 
         return true;

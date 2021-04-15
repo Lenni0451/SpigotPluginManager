@@ -2,7 +2,7 @@ package net.Lenni0451.SpigotPluginManager.commands.subs;
 
 import com.google.gson.JsonObject;
 import net.Lenni0451.SpigotPluginManager.PluginManager;
-import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithread;
+import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommandMultithreaded;
 import net.Lenni0451.SpigotPluginManager.softdepends.MVdWUpdater_Adapter;
 import net.Lenni0451.SpigotPluginManager.softdepends.SoftDepends;
 import net.Lenni0451.SpigotPluginManager.utils.DownloadUtils;
@@ -14,16 +14,12 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import java.io.File;
 import java.util.List;
 
-public class Download_Sub implements ISubCommandMultithread {
+public class Download_Sub implements ISubCommandMultithreaded {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 3) {
-            return false;
-        }
-        if (!args[0].equalsIgnoreCase("direct") && !args[0].equalsIgnoreCase("spigot")) {
-            return false;
-        }
+        if (args.length != 3) return false;
+        if (!args[0].equalsIgnoreCase("direct") && !args[0].equalsIgnoreCase("spigot")) return false;
         if (PluginManager.getInstance().getConfig().getBoolean("ExtraDownloadPermissions") && !sender.hasPermission("pluginmanager.commands.download." + args[0].toLowerCase())) {
             Logger.sendPermissionMessage(sender);
             return true;

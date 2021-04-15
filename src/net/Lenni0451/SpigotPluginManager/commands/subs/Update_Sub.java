@@ -18,30 +18,26 @@ public class Update_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         if (args[0].equalsIgnoreCase("*") && PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions")) {
             List<Plugin> plugins = PluginManager.getInstance().getPluginUtils().getPluginsByLoadOrder();
             List<String> ignoredPlugins = PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
 
             for (Plugin plugin : plugins) {
-                if (ignoredPlugins.contains(plugin.getName())) {
-                    continue;
-                }
+                if (ignoredPlugins.contains(plugin.getName())) continue;
 
                 try {
                     this.checkForUpdate(sender, true, plugin);
                     Logger.sendPrefixMessage(sender, "§aSuccessfully updated the plugin §6" + plugin.getName() + " §ato the newest version.");
-                } catch (ArrayIndexOutOfBoundsException e) {
+                } catch (AlreadyUpToDateException e) {
                     Logger.sendPrefixMessage(sender, "§aThe plugin §6" + plugin.getName() + " §ais already up to date.");
                 } catch (IllegalArgumentException e) {
-                    //Do nothing
+                    //Do nothing as it would cause spam with batch actions
                 } catch (IOException e) {
                     e.printStackTrace();
                     Logger.sendPrefixMessage(sender, "§cCould not reach the spiget api or plugin §6" + plugin.getName() + " §cis not on spigotmc. Please try again later.");
-                } catch (IllegalStateException e) {
+                } catch (UpdatedFailedException e) {
                     Logger.sendPrefixMessage(sender, "§cCould not save the plugin file of §6" + plugin.getName() + "§c.");
                 } catch (Throwable e) {
                     Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §ccould not be updated." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
@@ -58,7 +54,7 @@ public class Update_Sub implements ISubCommand {
             try {
                 this.checkForUpdate(sender, false, plugin.get());
                 Logger.sendPrefixMessage(sender, "§aSuccessfully updated the plugin to the newest version.");
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (AlreadyUpToDateException e) {
                 Logger.sendPrefixMessage(sender, "§aThe plugin is already up to date.");
             } catch (IllegalArgumentException e) {
                 Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §cis not in the config file.");
@@ -66,7 +62,7 @@ public class Update_Sub implements ISubCommand {
             } catch (IOException e) {
                 e.printStackTrace();
                 Logger.sendPrefixMessage(sender, "§cCould not reach the spiget api or plugin is not on spigotmc. Please try again later.");
-            } catch (IllegalStateException e) {
+            } catch (UpdatedFailedException e) {
                 Logger.sendPrefixMessage(sender, "§cCould not save the plugin file.");
             } catch (Throwable e) {
                 Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §ccould not be updated." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
@@ -87,14 +83,12 @@ public class Update_Sub implements ISubCommand {
 
     @Override
     public String getUsage() {
-        return "update <Plugin>" + (PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions") ? "/*" : "");
+        return "update <Plugin>" + this.getBatchActionSuffix();
     }
 
     private void checkForUpdate(final CommandSender messageReceiver, final boolean sendPluginName, final Plugin plugin) throws IOException {
         PluginInfo info = PluginManager.getInstance().getInstalledPlugins().getPluginInfo(plugin.getName());
-        if (info == null) {
-            throw new IllegalArgumentException();
-        }
+        if (info == null) throw new IllegalArgumentException();
 
         JsonObject response = DownloadUtils.getSpigotMcPluginInfo(info.getId());
         if (!response.get("version").getAsJsonObject().get("id").getAsString().equalsIgnoreCase(info.getInstalledVersion())) {
@@ -110,11 +104,18 @@ public class Update_Sub implements ISubCommand {
                     PluginManager.getInstance().getPluginUtils().reloadPlugin(plugin);
                 }
             } catch (Throwable e) {
-                throw new IllegalStateException();
+                throw new UpdatedFailedException();
             }
         } else {
-            throw new ArrayIndexOutOfBoundsException(); //Just some random exception to send the correct message if plugin is up to date
+            throw new AlreadyUpToDateException(); //Just some random exception to send the correct message if plugin is up to date
         }
+    }
+
+
+    private static final class UpdatedFailedException extends RuntimeException {
+    }
+
+    private static final class AlreadyUpToDateException extends RuntimeException {
     }
 
 }

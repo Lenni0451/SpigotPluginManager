@@ -13,9 +13,7 @@ public class Find_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         List<Plugin> plugins = new ArrayList<>();
         for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) {

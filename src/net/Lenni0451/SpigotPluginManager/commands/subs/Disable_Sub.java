@@ -14,9 +14,7 @@ public class Disable_Sub implements ISubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
+        if (args.length != 1) return false;
 
         if (args[0].equalsIgnoreCase("*") && PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions")) {
             List<Plugin> plugins = PluginManager.getInstance().getPluginUtils().getPluginsByLoadOrder();
@@ -24,9 +22,7 @@ public class Disable_Sub implements ISubCommand {
             List<String> ignoredPlugins = PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
 
             for (Plugin plugin : plugins) {
-                if (ignoredPlugins.contains(plugin.getName())) {
-                    continue;
-                }
+                if (ignoredPlugins.contains(plugin.getName())) continue;
 
                 try {
                     PluginManager.getInstance().getPluginUtils().disablePlugin(plugin);
@@ -67,7 +63,7 @@ public class Disable_Sub implements ISubCommand {
 
     @Override
     public String getUsage() {
-        return "disable <Plugin>" + (PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions") ? "/*" : "");
+        return "disable <Plugin>" + this.getBatchActionSuffix();
     }
 
 }
