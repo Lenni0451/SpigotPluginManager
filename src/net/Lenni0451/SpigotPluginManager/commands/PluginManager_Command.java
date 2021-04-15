@@ -26,6 +26,7 @@ public class PluginManager_Command implements CommandExecutor {
 
     static {
         //Sub commands need to be added with lowercase names!
+        subCommands.put("help", new Help_Sub());
         subCommands.put("list", new List_Sub());
         subCommands.put("info", new Info_Sub());
         subCommands.put("enable", new Enable_Sub());
@@ -42,7 +43,6 @@ public class PluginManager_Command implements CommandExecutor {
         subCommands.put("permissions", new Permissions_Sub());
         subCommands.put("dump", new Dump_Sub());
         subCommands.put("update", new Update_Sub());
-        subCommands.put("help", new Help_Sub());
     }
 
 
