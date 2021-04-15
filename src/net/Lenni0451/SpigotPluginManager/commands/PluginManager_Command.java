@@ -16,13 +16,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 public class PluginManager_Command implements CommandExecutor {
 
-    public static Map<String, ISubCommand> subCommands = new TreeMap<>();
+    public static Map<String, ISubCommand> subCommands = new LinkedHashMap<>();
 
     static {
         subCommands.put("list", new List_Sub());
@@ -55,9 +55,7 @@ public class PluginManager_Command implements CommandExecutor {
             sender.sendMessage("§6--------------------------------------------------");
             for (Map.Entry<String, ISubCommand> entry : subCommands.entrySet()) {
                 if (PluginManager.getInstance().getConfig().getBoolean("HideNoPermissionCommands")) {
-                    if (!sender.hasPermission("pluginmanager.commands." + entry.getKey().toLowerCase())) {
-                        continue;
-                    }
+                    if (!sender.hasPermission("pluginmanager.commands." + entry.getKey().toLowerCase())) continue;
                 }
                 for (String usage : entry.getValue().getUsage().split(Pattern.quote("\n"))) {
                     String message = " §7- §6pm " + entry.getKey() + " §7| §2" + usage;
