@@ -51,4 +51,15 @@ public class Info_Sub implements ISubCommand {
         return "info <Plugin>";
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("View some infos about a give command.");
+        lines.add("Following things get shown:");
+        lines.add(" - Name");
+        lines.add(" - Description");
+        lines.add(" - Version");
+        lines.add(" - Author(s)");
+        lines.add(" - Plugin status (enabled/disabled)");
+    }
+
 }

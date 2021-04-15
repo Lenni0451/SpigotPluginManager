@@ -93,4 +93,11 @@ public class Permissions_Sub implements ISubCommand {
         return "permissions <Plugin>";
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("List all permissions by a plugin.");
+        lines.add("It is only possible to show permissions which are");
+        lines.add("listed in the plugin.yml.");
+    }
+
 }

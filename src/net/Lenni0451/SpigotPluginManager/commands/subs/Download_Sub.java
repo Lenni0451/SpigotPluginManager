@@ -141,4 +141,17 @@ public class Download_Sub implements ISubCommandMultithreaded {
         return "download spigot <URL/ID> <File name>\ndownload direct <URL> <File name>";
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Download a plugin ingame from spigotmc or a direct link.");
+        lines.add("If the plugin is downloaded from spigotmc the current");
+        lines.add("version is getting saved so you can easily update it");
+        lines.add("using '/pm update' in the future.");
+        lines.add("For spigotmc downloads you can paste the url of the plugin");
+        lines.add("so PluginManager extracts the id directly from the url");
+        lines.add("but you can also just paste it there manually.");
+        lines.add("The id can be found at the end of the url:");
+        lines.add("https://www.spigotmc.org/resources/plugin-name._ID_/");
+    }
+
 }

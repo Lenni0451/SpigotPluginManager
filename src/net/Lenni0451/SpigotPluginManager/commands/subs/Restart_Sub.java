@@ -88,4 +88,12 @@ public class Restart_Sub implements ISubCommand {
         return "restart <Plugin>" + this.getBatchActionSuffix();
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Enable and disable a plugin to release");
+        lines.add("all its loaded resources (eg. config files).");
+        lines.add("This does not reload the classes and actually");
+        lines.add("can break many plugins which can not be restarted!");
+    }
+
 }

@@ -81,6 +81,21 @@ public class Dump_Sub implements ISubCommandMultithreaded {
         return "dump <Plugin>" + this.getBatchActionSuffix();
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Dump all infos about a plugin to a file in the server folder");
+        lines.add("to get an easy overview of all installed plugins and their permissions/commands.");
+        lines.add("The info contains the following things:");
+        lines.add(" - Name");
+        lines.add(" - Description");
+        lines.add(" - Version");
+        lines.add(" - Author(s)");
+        lines.add(" - Website");
+        lines.add(" - Prefix");
+        lines.add(" - Commands");
+        lines.add(" - Permissions with defaults and children");
+    }
+
     private List<String> getPluginInfos(final Plugin plugin) {
         PluginDescriptionFile description = plugin.getDescription();
 

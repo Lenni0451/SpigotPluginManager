@@ -64,4 +64,10 @@ public class Enable_Sub implements ISubCommand {
         return "enable <Plugin>" + this.getBatchActionSuffix();
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Enable a plugin to use it again.");
+        lines.add("You can easily disable it again using '/pm disable'.");
+    }
+
 }

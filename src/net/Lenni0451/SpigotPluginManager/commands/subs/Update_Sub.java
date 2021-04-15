@@ -86,6 +86,13 @@ public class Update_Sub implements ISubCommand {
         return "update <Plugin>" + this.getBatchActionSuffix();
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Update plugins previously downloaded");
+        lines.add("using the '/pm download' command.");
+        lines.add("This only works with plugins from spigotmc.");
+    }
+
     private void checkForUpdate(final CommandSender messageReceiver, final boolean sendPluginName, final Plugin plugin) throws IOException {
         PluginInfo info = PluginManager.getInstance().getInstalledPlugins().getPluginInfo(plugin.getName());
         if (info == null) throw new IllegalArgumentException();

@@ -59,4 +59,11 @@ public class Reload_Sub implements ISubCommand {
         return "reload <Plugin>" + this.getBatchActionSuffix();
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Unload and load a plugin again to release");
+        lines.add("all its loaded resources and update it");
+        lines.add("during runtime or try to fix some issues.");
+    }
+
 }

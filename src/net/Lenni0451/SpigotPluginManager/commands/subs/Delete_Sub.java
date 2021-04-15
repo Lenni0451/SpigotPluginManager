@@ -45,9 +45,8 @@ public class Delete_Sub implements ISubCommand {
             Logger.sendPrefixMessage(sender, "§cThe file of the plugin could not be found.");
             return true;
         }
+        PluginManager.getInstance().getInstalledPlugins().removePlugin(plugin.get().getName());
         try {
-            PluginManager.getInstance().getInstalledPlugins().removePlugin(plugin.get().getName());
-            FileUtils.writeByteArrayToFile(file.get(), new byte[0]);
             FileUtils.forceDelete(file.get());
         } catch (Throwable ignored) {
         }
@@ -55,7 +54,14 @@ public class Delete_Sub implements ISubCommand {
             Logger.sendPrefixMessage(sender, "§aThe plugin has been deleted.");
         } else {
             Logger.sendPrefixMessage(sender, "§cThe plugin could not be deleted.");
-            Logger.sendPrefixMessage(sender, "§aIt will get deleted on the next restart.");
+            try {
+                FileUtils.writeByteArrayToFile(file.get(), new byte[0]);
+                if (file.get().length() != 0) throw new IllegalStateException("Plugin could not be overwritten");
+                Logger.sendPrefixMessage(sender, "§aIt will get deleted on the next restart.");
+            } catch (Throwable t) {
+                Logger.sendPrefixMessage(sender, "§cPluginManger tried to overwrite it but this failed too.");
+                Logger.sendPrefixMessage(sender, "§cYou sadly have to delete it manually.");
+            }
         }
 
         return true;
@@ -73,6 +79,16 @@ public class Delete_Sub implements ISubCommand {
     @Override
     public String getUsage() {
         return "delete <Plugin>";
+    }
+
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Unload and delete a plugin directly from the server.");
+        lines.add("If the plugin could not be deleted because of access");
+        lines.add("restrictions it will be overwritten with an empty");
+        lines.add("file and get deleted the next time if possible.");
+        lines.add("If this fails too there is no way for PluginManager");
+        lines.add("to delete the plugin so you have to do it manually.");
     }
 
 }

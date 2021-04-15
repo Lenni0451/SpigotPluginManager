@@ -66,4 +66,13 @@ public class Commands_Sub implements ISubCommand {
         return "commands <Plugin>";
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Show a list of all commands registered by a given plugin.");
+        lines.add("It is only possible to show commands which are registered");
+        lines.add("using the \"normal\" way of adding them to the plugin.yml.");
+        lines.add("All commands registered differently by eg. using events can");
+        lines.add("not be listed by PluginManager!");
+    }
+
 }

@@ -66,4 +66,10 @@ public class Disable_Sub implements ISubCommand {
         return "disable <Plugin>" + this.getBatchActionSuffix();
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Disable a plugin to stop it from executing.");
+        lines.add("You can easily enable it again using '/pm enable'.");
+    }
+
 }

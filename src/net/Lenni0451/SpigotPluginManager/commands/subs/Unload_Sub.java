@@ -59,4 +59,11 @@ public class Unload_Sub implements ISubCommand {
         return "unload <Plugin>" + this.getBatchActionSuffix();
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Unload a plugin and release all its loaded resources.");
+        lines.add("If you are testing new plugins you can just unload");
+        lines.add("them again if they do not fit your needs.");
+    }
+
 }

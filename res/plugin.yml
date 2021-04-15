@@ -17,37 +17,58 @@ commands:
 permissions:
   pluginmanager.commands:
     default: op
+    description: "Access to the '/pm command' to list all sub commands"
   pluginmanager.commands.list:
     default: op
+    description: "Access to the '/pm list' command"
   pluginmanager.commands.info:
     default: op
+    description: "Access to the '/pm info' command"
   pluginmanager.commands.enable:
     default: op
+    description: "Access to the '/pm enable' command"
   pluginmanager.commands.disable:
     default: op
+    description: "Access to the '/pm disable' command"
   pluginmanager.commands.restart:
     default: op
+    description: "Access to the '/pm restart' command"
   pluginmanager.commands.load:
     default: op
+    description: "Access to the '/pm load' command"
   pluginmanager.commands.unload:
     default: op
+    description: "Access to the '/pm unload' command"
   pluginmanager.commands.reload:
     default: op
+    description: "Access to the '/pm reload' command"
   pluginmanager.commands.commands:
     default: op
+    description: "Access to the '/pm commands' command"
   pluginmanager.commands.find:
     default: op
+    description: "Access to the '/pm find' command"
   pluginmanager.commands.download:
     default: op
+    description: "Access to the '/pm download' command"
   pluginmanager.commands.download.direct:
     default: op
+    description: "Access to the '/pm download direct' command"
   pluginmanager.commands.download.spigot:
     default: op
+    description: "Access to the '/pm download spigot' command"
   pluginmanager.commands.gui:
     default: op
+    description: "Access to the '/pm gui' command"
   pluginmanager.commands.delete:
     default: op
+    description: "Access to the '/pm delete' command"
   pluginmanager.commands.permissions:
     default: op
+    description: "Access to the '/pm permissions' command"
   pluginmanager.commands.dump:
     default: op
+    description: "Access to the '/pm dump' command"
+  pluginmanager.commands.help:
+    default: op
+    description: "Access to the '/pm help' command"

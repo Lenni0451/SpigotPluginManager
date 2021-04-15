@@ -68,4 +68,11 @@ public class Load_Sub implements ISubCommand {
         return "load <Plugin>" + this.getBatchActionSuffix();
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Load a plugin which is not yet loaded.");
+        lines.add("You can enter the file name (if it does not contain spaces)");
+        lines.add("or the name in the plugin.yml.");
+    }
+
 }

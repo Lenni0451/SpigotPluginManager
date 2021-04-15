@@ -37,4 +37,10 @@ public class List_Sub implements ISubCommand {
         return "list";
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Show a list of all installed plugins");
+        lines.add("and their status (enabled/disabled).");
+    }
+
 }

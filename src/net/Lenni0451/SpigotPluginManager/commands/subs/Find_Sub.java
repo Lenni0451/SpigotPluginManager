@@ -43,4 +43,13 @@ public class Find_Sub implements ISubCommand {
         return "find <Command>";
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Find the plugin which registered a specified command.");
+        lines.add("It is only possible to find commands which are registered");
+        lines.add("using the \"normal\" way of adding them to the plugin.yml.");
+        lines.add("All commands registered differently by eg. using events can");
+        lines.add("not be listed by PluginManager!");
+    }
+
 }

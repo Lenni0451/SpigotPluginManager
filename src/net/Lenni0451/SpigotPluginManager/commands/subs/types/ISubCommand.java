@@ -13,6 +13,8 @@ public interface ISubCommand {
 
     String getUsage();
 
+    void getHelp(List<String> lines);
+
 
     default String getBatchActionSuffix() {
         return (PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions") ? "/*" : "");

@@ -45,6 +45,12 @@ public class Gui_Sub implements ISubCommand, Listener {
         return "gui";
     }
 
+    @Override
+    public void getHelp(List<String> lines) {
+        lines.add("Show an easy to use gui to execute all plugin");
+        lines.add("specific commands without actually executing them.");
+    }
+
     public void openGui(final Player player, final int currentPage) {
         Plugin[] allPlugins = PluginManager.getInstance().getPluginUtils().getPlugins();
         final int pageCount = Double.valueOf(Math.ceil((double) allPlugins.length / (5 * 9))).intValue();
