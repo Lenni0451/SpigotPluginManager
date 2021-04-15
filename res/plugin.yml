@@ -72,3 +72,6 @@ permissions:
   pluginmanager.commands.help:
     default: op
     description: "Access to the '/pm help' command"
+  pluginmanager.commands.reloadconfig:
+    default: op
+    description: "Access to the '/pm reloadconfig' command"
