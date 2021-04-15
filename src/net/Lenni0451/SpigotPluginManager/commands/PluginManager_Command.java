@@ -43,6 +43,7 @@ public class PluginManager_Command implements CommandExecutor {
         subCommands.put("permissions", new Permissions_Sub());
         subCommands.put("dump", new Dump_Sub());
         subCommands.put("update", new Update_Sub());
+        subCommands.put("reloadconfig", new ReloadConfig_Sub());
     }
 
 

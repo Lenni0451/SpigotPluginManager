@@ -207,6 +207,14 @@ public class Gui_Sub implements ISubCommand, Listener {
                     inv.addItem(stack);
                 }
                 {
+                    ItemStack stack = new ItemStack(Material.PAPER);
+                    ItemMeta meta = stack.getItemMeta();
+                    meta.setDisplayName("§aReload Config");
+                    stack.setItemMeta(meta);
+
+                    inv.addItem(stack);
+                }
+                {
                     ItemStack stack = new ItemStack(Material.ARROW);
                     ItemMeta meta = stack.getItemMeta();
                     meta.setDisplayName("§aBack");
@@ -236,7 +244,7 @@ public class Gui_Sub implements ISubCommand, Listener {
                     return;
                 }
 
-                String cmd = PluginManager.getInstance().getName() + ":pm " + action.toLowerCase() + " " + pluginName;
+                String cmd = PluginManager.getInstance().getName() + ":pm " + action.replace(" ", "").toLowerCase() + " " + pluginName;
                 Bukkit.dispatchCommand(event.getWhoClicked(), cmd);
                 this.execute(event.getWhoClicked(), new String[]{});
             } catch (Throwable ignored) {
