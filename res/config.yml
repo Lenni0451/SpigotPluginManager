@@ -6,7 +6,7 @@ IgnoreNonJarPlugins: true
 UserAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36
 
 #A list of plugins which should be ignored by batch actions
-#Default: PluginManager
+#Default: [PluginManager]
 IgnoredPlugins:
   - PluginManager
 
@@ -33,5 +33,5 @@ HideNoPermissionCommands: true
 AutoReloadUpdated: false
 
 #Allow the use of batch actions
-#Default: false
+#Default: true
 AllowBatchActions: true
