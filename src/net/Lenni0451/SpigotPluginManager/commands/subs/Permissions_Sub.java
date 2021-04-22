@@ -3,9 +3,9 @@ package net.Lenni0451.SpigotPluginManager.commands.subs;
 import net.Lenni0451.SpigotPluginManager.PluginManager;
 import net.Lenni0451.SpigotPluginManager.commands.subs.types.ISubCommand;
 import net.Lenni0451.SpigotPluginManager.utils.Logger;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -66,7 +66,7 @@ public class Permissions_Sub implements ISubCommand {
                 if (sender instanceof Player) {
                     TextComponent textComponent = new TextComponent(message);
                     hoverMessage = "§7" + permName + ":\n" + hoverMessage;
-                    textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hoverMessage)));
+                    textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(hoverMessage)}));
                     ((Player) sender).spigot().sendMessage(textComponent);
                 } else {
                     sender.sendMessage(message);
