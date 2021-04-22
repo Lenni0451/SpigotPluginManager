@@ -1,6 +1,6 @@
 name: PluginManager
 author: Lenni0451
-version: 2.3
+version: 2.4
 main: net.Lenni0451.SpigotPluginManager.PluginManager
 softdepend: [MVdWUpdater, Gson-Spigot]
 api-version: 1.16
