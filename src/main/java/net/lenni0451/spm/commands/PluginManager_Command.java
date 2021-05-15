@@ -1,10 +1,10 @@
-package net.Lenni0451.spm.commands;
+package net.lenni0451.spm.commands;
 
-import net.Lenni0451.spm.PluginManager;
-import net.Lenni0451.spm.commands.subs.*;
-import net.Lenni0451.spm.commands.subs.types.ISubCommand;
-import net.Lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
-import net.Lenni0451.spm.utils.Logger;
+import net.lenni0451.spm.PluginManager;
+import net.lenni0451.spm.commands.subs.*;
+import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
+import net.lenni0451.spm.utils.Logger;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;

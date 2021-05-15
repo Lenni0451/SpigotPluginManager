@@ -1,9 +1,9 @@
-package net.Lenni0451.spm.softdepends;
+package net.lenni0451.spm.softdepends;
 
 import be.maximvdw.mvdwupdater.MVdWUpdater;
 import be.maximvdw.mvdwupdater.spigotsite.api.exceptions.ConnectionFailedException;
 import be.maximvdw.mvdwupdater.spigotsite.api.resource.Resource;
-import net.Lenni0451.spm.PluginManager;
+import net.lenni0451.spm.PluginManager;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;

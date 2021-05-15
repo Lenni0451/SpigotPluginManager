@@ -1,4 +1,4 @@
-package net.Lenni0451.spm.utils;
+package net.lenni0451.spm.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

@@ -1,6 +1,6 @@
-package net.Lenni0451.spm.softdepends;
+package net.lenni0451.spm.softdepends;
 
-import net.Lenni0451.spm.PluginManager;
+import net.lenni0451.spm.PluginManager;
 
 public enum SoftDepends {
 

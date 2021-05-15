@@ -1,4 +1,4 @@
-package net.Lenni0451.spm.utils;
+package net.lenni0451.spm.utils;
 
 import java.lang.reflect.Field;
 import java.util.Optional;

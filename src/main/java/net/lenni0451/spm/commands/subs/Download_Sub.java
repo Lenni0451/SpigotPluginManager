@@ -1,13 +1,13 @@
-package net.Lenni0451.spm.commands.subs;
+package net.lenni0451.spm.commands.subs;
 
 import com.google.gson.JsonObject;
-import net.Lenni0451.spm.PluginManager;
-import net.Lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
-import net.Lenni0451.spm.softdepends.MVdWUpdater_Adapter;
-import net.Lenni0451.spm.softdepends.SoftDepends;
-import net.Lenni0451.spm.utils.DownloadUtils;
-import net.Lenni0451.spm.utils.Logger;
-import net.Lenni0451.spm.utils.NumberUtils;
+import net.lenni0451.spm.PluginManager;
+import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
+import net.lenni0451.spm.softdepends.MVdWUpdater_Adapter;
+import net.lenni0451.spm.softdepends.SoftDepends;
+import net.lenni0451.spm.utils.DownloadUtils;
+import net.lenni0451.spm.utils.Logger;
+import net.lenni0451.spm.utils.NumberUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 

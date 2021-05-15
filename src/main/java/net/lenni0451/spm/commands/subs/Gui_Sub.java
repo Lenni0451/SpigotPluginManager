@@ -1,8 +1,8 @@
-package net.Lenni0451.spm.commands.subs;
+package net.lenni0451.spm.commands.subs;
 
-import net.Lenni0451.spm.PluginManager;
-import net.Lenni0451.spm.commands.subs.types.ISubCommand;
-import net.Lenni0451.spm.utils.VersionMaterial;
+import net.lenni0451.spm.PluginManager;
+import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.VersionMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;

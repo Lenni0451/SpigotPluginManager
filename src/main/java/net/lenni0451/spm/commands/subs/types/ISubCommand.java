@@ -1,6 +1,6 @@
-package net.Lenni0451.spm.commands.subs.types;
+package net.lenni0451.spm.commands.subs.types;
 
-import net.Lenni0451.spm.PluginManager;
+import net.lenni0451.spm.PluginManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

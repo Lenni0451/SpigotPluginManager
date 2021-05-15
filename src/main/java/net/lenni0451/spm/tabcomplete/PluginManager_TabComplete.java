@@ -1,4 +1,4 @@
-package net.Lenni0451.spm.tabcomplete;
+package net.lenni0451.spm.tabcomplete;
 
 import net.Lenni0451.spm.commands.PluginManager_Command;
 import net.Lenni0451.spm.commands.subs.types.ISubCommand;

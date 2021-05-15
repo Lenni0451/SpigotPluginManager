@@ -1,7 +1,7 @@
-package net.Lenni0451.spm.utils;
+package net.lenni0451.spm.utils;
 
 import com.google.common.collect.Lists;
-import net.Lenni0451.spm.PluginManager;
+import net.lenni0451.spm.PluginManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

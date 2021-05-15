@@ -1,8 +1,8 @@
-package net.Lenni0451.spm.commands.subs;
+package net.lenni0451.spm.commands.subs;
 
-import net.Lenni0451.spm.PluginManager;
-import net.Lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
-import net.Lenni0451.spm.utils.Logger;
+import net.lenni0451.spm.PluginManager;
+import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
+import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;

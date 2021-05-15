@@ -1,7 +1,7 @@
-package net.Lenni0451.spm.commands;
+package net.lenni0451.spm.commands;
 
-import net.Lenni0451.spm.PluginManager;
-import net.Lenni0451.spm.utils.Logger;
+import net.lenni0451.spm.PluginManager;
+import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

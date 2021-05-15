@@ -1,8 +1,8 @@
-package net.Lenni0451.spm.utils;
+package net.lenni0451.spm.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.Lenni0451.spm.PluginManager;
+import net.lenni0451.spm.PluginManager;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;

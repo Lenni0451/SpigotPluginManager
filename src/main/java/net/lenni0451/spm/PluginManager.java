@@ -1,10 +1,10 @@
-package net.Lenni0451.spm;
+package net.lenni0451.spm;
 
-import net.Lenni0451.spm.commands.PluginManager_Command;
-import net.Lenni0451.spm.commands.Reload_Command;
-import net.Lenni0451.spm.softdepends.SoftDepends;
-import net.Lenni0451.spm.tabcomplete.PluginManager_TabComplete;
-import net.Lenni0451.spm.utils.*;
+import net.lenni0451.spm.commands.PluginManager_Command;
+import net.lenni0451.spm.commands.Reload_Command;
+import net.lenni0451.spm.softdepends.SoftDepends;
+import net.lenni0451.spm.tabcomplete.PluginManager_TabComplete;
+import net.lenni0451.spm.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

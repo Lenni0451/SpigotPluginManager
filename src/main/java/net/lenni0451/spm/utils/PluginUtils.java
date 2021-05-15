@@ -1,4 +1,4 @@
-package net.Lenni0451.spm.utils;
+package net.lenni0451.spm.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -35,7 +35,7 @@ public class PluginUtils {
      * @return The current PluginLoader instance
      */
     public PluginLoader getPluginLoader() {
-        return net.Lenni0451.spm.PluginManager.getInstance().getPluginLoader();
+        return net.lenni0451.spm.PluginManager.getInstance().getPluginLoader();
     }
 
     /**
@@ -185,7 +185,7 @@ public class PluginUtils {
 
         if (!targetFile.get().exists()) {
             Arrays.stream(this.getPluginsDirectory().listFiles())
-                    .filter(file -> file.getName().toLowerCase().endsWith(".jar") || (!file.getName().toLowerCase().endsWith(".jar") && !net.Lenni0451.spm.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")))
+                    .filter(file -> file.getName().toLowerCase().endsWith(".jar") || (!file.getName().toLowerCase().endsWith(".jar") && !net.lenni0451.spm.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")))
                     .filter(file -> {
                         try {
                             PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(file);
@@ -332,7 +332,7 @@ public class PluginUtils {
      * @return All plugins in the load order
      */
     public List<Plugin> getPluginsByLoadOrder() {
-        List<String> ignoredPlugins = net.Lenni0451.spm.PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
+        List<String> ignoredPlugins = net.lenni0451.spm.PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
         List<Plugin> plugins = new ArrayList<>();
 
         Arrays.stream(this.getPlugins()).forEach(plugin -> {
@@ -445,7 +445,7 @@ public class PluginUtils {
         } catch (Throwable e) {
             for (File pluginFile : this.getPluginsDirectory().listFiles()) {
                 if (pluginFile.isFile()) {
-                    if (!pluginFile.getName().toLowerCase().endsWith(".jar") && net.Lenni0451.spm.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
+                    if (!pluginFile.getName().toLowerCase().endsWith(".jar") && net.lenni0451.spm.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
                         continue;
                     }
 
