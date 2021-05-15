@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.net.URLClassLoader;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -316,16 +315,13 @@ public class PluginUtils {
             URLClassLoader classLoader = (URLClassLoader) plugin.getClass().getClassLoader();
 
             try {
-                for (Field f : classLoader.getClass().getDeclaredFields()) {
-                    if (Modifier.isStatic(f.getModifiers())) continue; //Do not clear static fields
-                    if (f.getType().isPrimitive()) continue; //Primitive variables do not need to be cleared too
-
-                    f.setAccessible(true);
-                    f.set(classLoader, null);
-                }
-            } catch (Throwable e) {
-                throw new IllegalStateException("Unable to remove class loader handles", e);
+                classLoader.close();
+            } catch (Throwable t) {
+                throw new IllegalStateException("Unable to close the class loader");
             }
+        } else {
+            Logger.sendConsole("§cIt seems like spigot no longer uses URLClassLoader.");
+            Logger.sendConsole("§cPlease report this to the plugin dev!");
         }
 
         System.gc(); //Hopefully remove all leftover plugin classes and references
