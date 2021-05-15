@@ -104,6 +104,35 @@ public class DownloadUtils {
     }
 
     /**
+     * Download a file from a direkt link
+     *
+     * @param url THe URL of the file
+     * @return The bytes of the file
+     * @throws IOException When the URL is invalid
+     */
+    public static byte[] download(final String url) throws IOException {
+        URL downloadUrl = new URL(url);
+        URLConnection connection = downloadUrl.openConnection();
+        connection.setDoInput(true);
+        connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+
+        if (connection.getContentLength() <= 0) {
+            throw new IOException();
+        }
+
+        BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = bis.read(buffer)) != -1) {
+            baos.write(buffer, 0, length);
+        }
+        bis.close();
+
+        return baos.toByteArray();
+    }
+
+    /**
      * Get the newest plugin manager version from github
      *
      * @return String The newest version of PluginManager

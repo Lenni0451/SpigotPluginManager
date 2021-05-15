@@ -4,13 +4,12 @@ import net.Lenni0451.SpigotPluginManager.commands.PluginManager_Command;
 import net.Lenni0451.SpigotPluginManager.commands.Reload_Command;
 import net.Lenni0451.SpigotPluginManager.softdepends.SoftDepends;
 import net.Lenni0451.SpigotPluginManager.tabcomplete.PluginManager_TabComplete;
-import net.Lenni0451.SpigotPluginManager.utils.DownloadUtils;
-import net.Lenni0451.SpigotPluginManager.utils.InstalledPluginsConfig;
-import net.Lenni0451.SpigotPluginManager.utils.Logger;
-import net.Lenni0451.SpigotPluginManager.utils.PluginUtils;
+import net.Lenni0451.SpigotPluginManager.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Collections;
 
 public class PluginManager extends JavaPlugin {
@@ -65,17 +64,30 @@ public class PluginManager extends JavaPlugin {
     public void checkUpdates() {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             try {
-                String newestVersion = DownloadUtils.getNewestVersion();
+                final String newestVersion = DownloadUtils.getNewestVersion();
                 if (!newestVersion.equals(this.getDescription().getVersion())) {
                     Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "A new update of §6PluginManager §ais available §e(" + this.getDescription().getVersion() + " -> " + newestVersion + ")§a.");
                     if (this.getConfig().getBoolean("AutoUpdate")) {
                         try {
-                            DownloadUtils.downloadPlugin("https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar", this.getFile());
+                            { //Load all classes needed for the PluginUtils here because as soon as we overwrite the plugin jar we are no longer able to load classes
+                                Class.forName(ThreadUtils.class.getName());
+                                Class.forName(ReflectionUtils.class.getName());
+                                Class.forName(FileOutputStream.class.getName());
+                            }
+
+                            final File pluginFile = this.getFile();
+                            final byte[] newData = DownloadUtils.download("https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
                             Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "Successfully downloaded new §6PluginManager §aversion.");
                             Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "PluginManager is reloading itself in some seconds...");
                             Bukkit.getScheduler().runTaskLater(this, () -> {
                                 try {
                                     this.pluginUtils.unloadPlugin(this);
+                                    //Here the ClassLoader is already closed. There is no going back now
+                                    {
+                                        FileOutputStream fos = new FileOutputStream(pluginFile);
+                                        fos.write(newData);
+                                        fos.close();
+                                    }
                                     this.pluginUtils.loadPlugin(this);
                                     Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "PluginManager successfully reloaded itself!");
                                 } catch (Throwable e) {
@@ -83,7 +95,8 @@ public class PluginManager extends JavaPlugin {
                                 }
                             }, 1);
                         } catch (Throwable e) {
-                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not auto download the latest §6PluginManager §aversion.");
+                            e.printStackTrace();
+                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not auto download the latest §6PluginManager §cversion.");
                             Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
                         }
                     } else {
