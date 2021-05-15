@@ -117,6 +117,15 @@ public class PluginUtils {
         if (!plugin.isEnabled()) {
             return false;
         } else {
+            for (Thread thread : ThreadUtils.getAllThreadsFromClassLoader(plugin.getClass().getClassLoader())) {
+                try {
+                    thread.interrupt();
+                    thread.join(2000);
+                    if (thread.isAlive()) thread.stop();
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
             this.getPluginManager().disablePlugin(plugin);
             return true;
         }
