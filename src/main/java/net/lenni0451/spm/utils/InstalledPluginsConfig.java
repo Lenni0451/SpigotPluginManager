@@ -17,7 +17,7 @@ public class InstalledPluginsConfig {
         this.file = new File(PluginManager.getInstance().getDataFolder(), "installed.yml");
         this.file.getParentFile().mkdirs();
         try {
-            if (!this.file.createNewFile()) throw new IllegalStateException();
+            this.file.createNewFile();
         } catch (Exception e) {
             new Exception("Unable to create installed.yml file!", e).printStackTrace();
         }
