@@ -24,6 +24,10 @@ public class PluginUtils {
         return new File(".", "plugins");
     }
 
+    public File getUpdateDirectory() {
+        return new File(this.getPluginsDirectory(), "update");
+    }
+
     /**
      * @return The current PluginManager instance
      */
@@ -386,7 +390,7 @@ public class PluginUtils {
      * @param plugin The plugin of which you want the commands from
      * @return The list of commands a plugin has registered
      */
-    public List<String> getCommands(Plugin plugin) {
+    public List<String> getCommands(final Plugin plugin) {
         List<String> commands = new ArrayList<>();
         Map<String, List<String>> aliases = new HashMap<>();
 
@@ -437,7 +441,7 @@ public class PluginUtils {
      * @param plugin The plugin you want the location from
      * @return An optional with the File if found
      */
-    public Optional<File> getPluginFile(Plugin plugin) {
+    public Optional<File> getPluginFile(final Plugin plugin) {
         try {
             Method method = JavaPlugin.class.getDeclaredMethod("getFile");
             method.setAccessible(true);
@@ -460,6 +464,14 @@ public class PluginUtils {
             }
         }
         return Optional.empty();
+    }
+
+    public boolean updatePlugin(final File pluginFile) {
+        final File updateFile = new File(this.getUpdateDirectory(), pluginFile.getName());
+        //TODO: Do some more advanced checking (Load plugin.yml and compare name, author, ...)
+        if (!updateFile.exists()) return false;
+        if (pluginFile.exists() && !pluginFile.delete()) return false;
+        return updateFile.renameTo(pluginFile);
     }
 
 }
