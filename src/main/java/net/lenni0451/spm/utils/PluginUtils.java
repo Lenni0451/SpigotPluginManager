@@ -203,6 +203,7 @@ public class PluginUtils {
         if (targetFile.get() == null) {
             throw new IllegalStateException("Plugin file not found");
         }
+        this.updatePlugin(targetFile.get());
 
         try {
             targetPlugin = this.getPluginLoader().loadPlugin(targetFile.get());
