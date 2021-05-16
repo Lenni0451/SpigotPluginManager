@@ -2,6 +2,7 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.FileUtils;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -19,7 +20,7 @@ public class Load_Sub implements ISubCommand {
 
         if (args[0].equalsIgnoreCase("*") && PluginManager.getInstance().getConfig().getBoolean("AllowBatchActions")) {
             List<String> names = new ArrayList<>();
-            for (File pluginFile : PluginManager.getInstance().getPluginUtils().getPluginsDirectory().listFiles()) {
+            for (File pluginFile : FileUtils.listFiles(PluginManager.getInstance().getPluginUtils().getPluginsDirectory())) {
                 if (pluginFile.isFile() && pluginFile.isFile()) {
                     if (!pluginFile.getName().toLowerCase().endsWith(".jar") && PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
                         continue;

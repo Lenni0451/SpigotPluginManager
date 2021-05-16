@@ -42,7 +42,7 @@ public class PluginUtils {
      * @return The array of all loaded plugins
      */
     public Plugin[] getPlugins() {
-        return Bukkit.getPluginManager().getPlugins();
+        return this.getPluginManager().getPlugins();
     }
 
     /**
@@ -184,7 +184,7 @@ public class PluginUtils {
         Plugin targetPlugin;
 
         if (!targetFile.get().exists()) {
-            Arrays.stream(this.getPluginsDirectory().listFiles())
+            Arrays.stream(FileUtils.listFiles(this.getPluginsDirectory()))
                     .filter(file -> file.getName().toLowerCase().endsWith(".jar") || (!file.getName().toLowerCase().endsWith(".jar") && !net.lenni0451.spm.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")))
                     .filter(file -> {
                         try {
@@ -443,7 +443,7 @@ public class PluginUtils {
             method.setAccessible(true);
             return Optional.of((File) method.invoke(plugin));
         } catch (Throwable e) {
-            for (File pluginFile : this.getPluginsDirectory().listFiles()) {
+            for (File pluginFile : FileUtils.listFiles(this.getPluginsDirectory())) {
                 if (pluginFile.isFile()) {
                     if (!pluginFile.getName().toLowerCase().endsWith(".jar") && net.lenni0451.spm.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")) {
                         continue;

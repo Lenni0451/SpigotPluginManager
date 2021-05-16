@@ -2,12 +2,13 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.FileUtils;
 import net.lenni0451.spm.utils.Logger;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +16,9 @@ public class Delete_Sub implements ISubCommand {
 
     public Delete_Sub() {
         try { //Delete all safely which could not be directly delete before
-            for (File file : PluginManager.getInstance().getPluginUtils().getPluginsDirectory().listFiles()) {
+            for (File file : FileUtils.listFiles(PluginManager.getInstance().getPluginUtils().getPluginsDirectory())) {
                 if (file.getName().toLowerCase().endsWith(".jar") && file.length() == 0) {
-                    FileUtils.deleteQuietly(file);
+                    if (!file.delete()) file.deleteOnExit();
                 }
             }
         } catch (Throwable ignored) {
@@ -47,7 +48,7 @@ public class Delete_Sub implements ISubCommand {
         }
         PluginManager.getInstance().getInstalledPlugins().removePlugin(plugin.get().getName());
         try {
-            FileUtils.forceDelete(file.get());
+            if (!file.get().delete()) file.get().deleteOnExit();
         } catch (Throwable ignored) {
         }
         if (!file.get().exists()) {
@@ -55,7 +56,9 @@ public class Delete_Sub implements ISubCommand {
         } else {
             Logger.sendPrefixMessage(sender, "§cThe plugin could not be deleted.");
             try {
-                FileUtils.writeByteArrayToFile(file.get(), new byte[0]);
+                try (FileOutputStream fos = new FileOutputStream(file.get())) {
+                    fos.write(new byte[0]);
+                }
                 if (file.get().length() != 0) throw new IllegalStateException("Plugin could not be overwritten");
                 Logger.sendPrefixMessage(sender, "§aIt will get deleted on the next restart.");
             } catch (Throwable t) {

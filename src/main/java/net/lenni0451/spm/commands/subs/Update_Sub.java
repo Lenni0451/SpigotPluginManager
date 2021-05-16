@@ -98,6 +98,7 @@ public class Update_Sub implements ISubCommand {
         if (info == null) throw new IllegalArgumentException();
 
         JsonObject response = DownloadUtils.getSpigotMcPluginInfo(info.getId());
+        if (response == null) throw new IOException();
         if (!response.get("version").getAsJsonObject().get("id").getAsString().equalsIgnoreCase(info.getInstalledVersion())) {
             if (sendPluginName) {
                 Logger.sendPrefixMessage(messageReceiver, "§aThe plugin §6" + plugin.getName() + " §ahas an update available.");
