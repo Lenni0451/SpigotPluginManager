@@ -2,6 +2,7 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,15 +25,15 @@ public class Commands_Sub implements ISubCommand {
 
         Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
         if (!plugin.isPresent()) {
-            Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
             return true;
         }
 
         List<String> commands = PluginManager.getInstance().getPluginUtils().getCommands(plugin.get());
         if (commands.isEmpty()) {
-            Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §chas no commands registered.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.commands.noCommands", plugin.get().getName()));
         } else {
-            Logger.sendPrefixMessage(sender, "§6Commands of §a" + plugin.get().getName() + "§6:");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.commands.commandsOf", plugin.get().getName()));
             for (String command : commands) {
                 String message;
                 if (command.startsWith(" ")) {
@@ -68,11 +70,7 @@ public class Commands_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Show a list of all commands registered by a given plugin.");
-        lines.add("It is only possible to show commands which are registered");
-        lines.add("using the \"normal\" way of adding them to the plugin.yml.");
-        lines.add("All commands registered differently by eg. using events can");
-        lines.add("not be listed by PluginManager!");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.commands.help"));
     }
 
 }

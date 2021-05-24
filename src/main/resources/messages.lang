@@ -7,6 +7,7 @@
 
 # General translations
 pm.general.noPermission=&cI'm sorry but you don't have access to this command.
+pm.general.pluginNotFound=&cThe plugin could not be found
 
 # Soft depends
 pm.softdepend.found=The soft depend &6%1 &ais installed and will be used.
@@ -53,3 +54,7 @@ pm.commands.pluginmanager.invalidUsage=&cInvalid command usage!
 pm.commands.pluginmanager.correctUsage=&aUse: &6pm %1
 pm.commands.pluginmanager.unknownException=&cAn unknown error occurred whilst executing this command!\n&cPlease contact the developer of this plugin and provide a copy of the log.
 # Sub commands
+# Commands Sub
+pm.subcommands.commands.noCommands=&cThe plugin &6%1 &chas no commands registered.
+pm.subcommands.commands.commandsOf=&6Commands of &a%1&6:
+pm.subcommands.commands.help=Show a list of all commands registered by a given plugin.\nIt is only possible to show commands which are registered using the "normal" way of adding them to the plugin.yml.\nAll commands registered differently by eg. using events can not be listed by PluginManager!
