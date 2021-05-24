@@ -3,6 +3,7 @@ package net.lenni0451.spm.utils;
 import net.lenni0451.spm.PluginManager;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class I18n {
     public static void init() {
         InputStream is = getMessagesLang();
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.startsWith("#")) continue; //Lines with comments don't get used
