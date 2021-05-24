@@ -28,6 +28,7 @@ public class PluginManager extends JavaPlugin {
         instance = this;
 
         this.saveDefaultConfig();
+        I18n.init();
 
         this.pluginUtils = new PluginUtils();
         this.installedPluginsInfo = new InstalledPluginsConfig();
@@ -53,7 +54,7 @@ public class PluginManager extends JavaPlugin {
 
         for (SoftDepends softDepend : SoftDepends.values()) {
             if (softDepend.isInstalled()) {
-                Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§aThe soft depend §6" + softDepend.name() + " §ais installed and will be used.");
+                Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.softdepend.found", softDepend.name()));
             }
         }
         if (this.getConfig().getBoolean("CheckForUpdates")) {
@@ -62,11 +63,12 @@ public class PluginManager extends JavaPlugin {
     }
 
     public void checkUpdates() {
+        final String downloadURL = "https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar";
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             try {
                 final String newestVersion = DownloadUtils.getNewestVersion();
                 if (!newestVersion.equals(this.getDescription().getVersion())) {
-                    Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "A new update of §6PluginManager §ais available §e(" + this.getDescription().getVersion() + " -> " + newestVersion + ")§a.");
+                    Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.found", this.getDescription().getVersion(), newestVersion));
                     if (this.getConfig().getBoolean("AutoUpdate")) {
                         try {
                             { //Load all classes needed for the PluginUtils here because as soon as we overwrite the plugin jar we are no longer able to load classes
@@ -76,9 +78,9 @@ public class PluginManager extends JavaPlugin {
                             }
 
                             final File pluginFile = this.getFile();
-                            final byte[] newData = DownloadUtils.download("https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
-                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "Successfully downloaded new §6PluginManager §aversion.");
-                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "PluginManager is reloading itself in some seconds...");
+                            final byte[] newData = DownloadUtils.download(downloadURL);
+                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.downloadSuccess"));
+                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.selfReload"));
                             Bukkit.getScheduler().runTaskLater(this, () -> {
                                 try {
                                     this.pluginUtils.unloadPlugin(this);
@@ -89,24 +91,24 @@ public class PluginManager extends JavaPlugin {
                                         fos.close();
                                     }
                                     this.pluginUtils.loadPlugin(this);
-                                    Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "PluginManager successfully reloaded itself!");
+                                    Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.reloadSuccess"));
                                 } catch (Throwable e) {
                                     e.printStackTrace();
                                 }
                             }, 1);
                         } catch (Throwable e) {
                             e.printStackTrace();
-                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cCould not auto download the latest §6PluginManager §cversion.");
-                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
+                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.downloadFail"));
+                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.downloadHere", downloadURL));
                         }
                     } else {
-                        Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You can download it here: §6https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar");
+                        Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.downloadHere", downloadURL));
                     }
                 } else {
-                    Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "You are using the latest version of §6PluginManager§a.");
+                    Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.latestVersion"));
                 }
             } catch (Throwable e) {
-                Logger.sendPrefixMessage(Bukkit.getConsoleSender(), "§cAn unknown error occurred whilst checking for a new §6PluginManager §cversion!.");
+                Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.error"));
                 e.printStackTrace();
             }
         });
