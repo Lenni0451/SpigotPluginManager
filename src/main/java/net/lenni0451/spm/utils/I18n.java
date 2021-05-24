@@ -6,6 +6,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class I18n {
 
@@ -50,12 +51,12 @@ public class I18n {
     /**
      * Get the multi line translation of a translation key
      *
-     * @param translations The translation key
-     * @param args         Arguments the translation can use
+     * @param translation The translation key
+     * @param args        Arguments the translation can use
      * @return The multi line translated string
      */
-    public static String[] mt(final String translations, final Object... args) {
-        return t(translations, args).split("\\n");
+    public static String[] mt(final String translation, final Object... args) {
+        return t(translation, args).split(Pattern.quote("\\n"));
     }
 
     private static InputStream getMessagesLang() {
