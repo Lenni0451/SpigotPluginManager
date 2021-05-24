@@ -41,8 +41,15 @@ pm.installedpluginsconfig.loadError=Unable to load installed.yml file!
 pm.installedpluginsconfig.saveError=Unable to save installed.yml file!
 
 # Commands
+# Reload command
 pm.commands.reload.start=&aReloading all plugins...
 pm.commands.reload.done=&aAll plugins have been reloaded.
 pm.commands.reload.unloadError=&cCould not unload plugin &6%1&c. &7(%2)
 pm.commands.reload.loadError=&cCould not load plugin &6%1&c. &7(%2)
 pm.commands.reload.checkConsole=Check console
+# PluginManager command
+pm.commands.pluginmanager.subNotFound=&cThe command could not be found.
+pm.commands.pluginmanager.invalidUsage=&cInvalid command usage!
+pm.commands.pluginmanager.correctUsage=&aUse: &6pm %1
+pm.commands.pluginmanager.unknownException=&cAn unknown error occurred whilst executing this command!\n&cPlease contact the developer of this plugin and provide a copy of the log.
+# Sub commands

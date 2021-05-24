@@ -4,6 +4,7 @@ import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.*;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
 import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -79,7 +80,7 @@ public class PluginManager_Command implements CommandExecutor {
 
             ISubCommand subCommand = subCommands.get(cmd.toLowerCase());
             if (subCommand == null) {
-                Logger.sendPrefixMessage(sender, "§cThe command could not be found.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.commands.pluginmanager.subNotFound"));
             } else {
                 final String[] _args = args;
                 Runnable executeRun = () -> {
@@ -87,14 +88,15 @@ public class PluginManager_Command implements CommandExecutor {
                         if (!sender.hasPermission("pluginmanager.commands." + cmd.toLowerCase())) {
                             Logger.sendPermissionMessage(sender);
                         } else if (!subCommand.execute(sender, _args)) {
-                            Logger.sendPrefixMessage(sender, "§cInvalid command usage!");
+                            Logger.sendPrefixMessage(sender, I18n.t("pm.commands.pluginmanager.invalidUsage"));
                             for (String usage : subCommand.getUsage().split(Pattern.quote("\n"))) {
-                                Logger.sendPrefixMessage(sender, "§aUse: §6pm " + usage);
+                                Logger.sendPrefixMessage(sender, I18n.t("pm.commands.pluginmanager.correctUsage", usage));
                             }
                         }
                     } catch (Throwable t) {
-                        Logger.sendPrefixMessage(sender, "§cAn unknown error occurred whilst executing this command!");
-                        Logger.sendPrefixMessage(sender, "§cPlease contact the developer of this plugin and provide a copy of the log.");
+                        for (String s : I18n.mt("pm.commands.pluginmanager.unknownException")) {
+                            Logger.sendPrefixMessage(sender, s);
+                        }
                         t.printStackTrace();
                     }
                 };
