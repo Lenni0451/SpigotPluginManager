@@ -19,7 +19,7 @@ public class InstalledPluginsConfig {
         try {
             this.file.createNewFile();
         } catch (Exception e) {
-            new Exception("Unable to create installed.yml file!", e).printStackTrace();
+            new Exception(I18n.t("pm.installedpluginsconfig.createError"), e).printStackTrace();
         }
 
         this.installedPluginsFile = new YamlConfiguration();
@@ -42,7 +42,7 @@ public class InstalledPluginsConfig {
             }
             this.setInstalledPlugins(installedPlugins);
         } catch (Exception e) {
-            new Exception("Unable to load installed.yml file!", e).printStackTrace();
+            new Exception(I18n.t("pm.installedpluginsconfig.loadError"), e).printStackTrace();
         }
     }
 
@@ -50,7 +50,7 @@ public class InstalledPluginsConfig {
         try {
             this.installedPluginsFile.save(this.file);
         } catch (Exception e) {
-            new Exception("Unable to save installed.yml file!", e).printStackTrace();
+            new Exception(I18n.t("pm.installedpluginsconfig.saveError"), e).printStackTrace();
         }
     }
 

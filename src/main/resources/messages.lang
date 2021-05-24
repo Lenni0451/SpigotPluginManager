@@ -5,6 +5,9 @@
 # The default color of messages is &a (green)
 # Some translations support multiple lines. To split the individual lines use \n
 
+# General translations
+pm.general.noPermission=§cI'm sorry but you don't have access to this command.
+
 # Soft depends
 pm.softdepend.found=The soft depend &6%1 &ais installed and will be used.
 
@@ -31,3 +34,8 @@ pm.pluginutils.unloadPlugin.commandMapError=Unable to get command map
 pm.pluginutils.unloadPlugin.knownCommandsError=Unable to get known commands
 pm.pluginutils.unloadPlugin.closeClassLoaderError=Unable to close the class loader
 pm.pluginutils.unloadPlugin.unknownClassLoader=§cIt seems like spigot no longer uses URLClassLoader.\n§cPlease report this to the plugin dev!
+
+# Installed plugins config
+pm.installedpluginsconfig.createError=Unable to create installed.yml file!
+pm.installedpluginsconfig.loadError=Unable to load installed.yml file!
+pm.installedpluginsconfig.saveError=Unable to save installed.yml file!

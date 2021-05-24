@@ -33,7 +33,7 @@ public class Logger {
      * @param receiver The receiver of the message
      */
     public static void sendPermissionMessage(CommandSender receiver) {
-        sendPrefixMessage(receiver, "§cI'm sorry but you don't have access to this command.");
+        sendPrefixMessage(receiver, I18n.t("pm.general.noPermission"));
     }
 
     /**
