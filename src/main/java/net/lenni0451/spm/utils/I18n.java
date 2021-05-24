@@ -11,6 +11,9 @@ public class I18n {
 
     private static final Map<String, String> translations = new HashMap<>();
 
+    /**
+     * Initialize the translations
+     */
     public static void init() {
         InputStream is = getMessagesLang();
         try {
@@ -28,12 +31,30 @@ public class I18n {
         }
     }
 
-    public static String t(final String translation, final Object... args) { //A short name for this method to prevent long lines of code
+    /**
+     * Get the translation of a translation key
+     *
+     * @param translation The translation key
+     * @param args        Arguments the translation can use
+     * @return The translated string
+     */
+    public static String t(final String translation, final Object... args) {
         String s = translations.getOrDefault(translation, translation).replace("&", "§").replace("§§", "&");
         for (int i = 0; i < args.length; i++) {
             s = s.replace("%" + (i + 1), args[i].toString());
         }
         return s;
+    }
+
+    /**
+     * Get the multi line translation of a translation key
+     *
+     * @param translations The translation key
+     * @param args         Arguments the translation can use
+     * @return The multi line translated string
+     */
+    public static String[] mt(final String translations, final Object... args) {
+        return t(translations, args).split("\\n");
     }
 
     private static InputStream getMessagesLang() {
