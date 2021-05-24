@@ -3,9 +3,12 @@
 # Use %1/%2/%... for arguments
 # Use # for comments. They are not supported at the end of the line as you may use # in translations
 # The default color of messages is &a (green)
+# Some translations support multiple lines. To split the individual lines use \n
 
+# Soft depends
 pm.softdepend.found=The soft depend &6%1 &ais installed and will be used.
 
+# Updater
 pm.updater.found=A new update of &6PluginManager &ais available &e(%1 -> %2)&a.
 pm.updater.downloadSuccess=Successfully downloaded new &6PluginManager &aversion.
 pm.updater.selfReload=PluginManager is reloading itself in some seconds...
@@ -14,3 +17,17 @@ pm.updater.downloadFail=&cCould not auto download the latest &6PluginManager &cv
 pm.updater.downloadHere=You can download it here: &6%1
 pm.updater.latestVersion=You are using the latest version of &6PluginManager&a.
 pm.updater.error=&cAn unknown error occurred whilst checking for a new &6PluginManager &cversion!.
+
+# PluginUtils
+# loadPlugin method
+pm.pluginutils.loadPlugin.fileNotFound=Plugin file not found
+pm.pluginutils.loadPlugin.missingDependency=Missing Dependency
+pm.pluginutils.loadPlugin.invalidPluginFile=Invalid plugin file
+pm.pluginutils.loadPlugin.notAdded=Unable to add to plugin list
+# unloadPlugin method
+pm.pluginutils.unloadPlugin.pluginListError=Unable to get plugins list
+pm.pluginutils.unloadPlugin.lookupNamesError=Unable to get lookup names
+pm.pluginutils.unloadPlugin.commandMapError=Unable to get command map
+pm.pluginutils.unloadPlugin.knownCommandsError=Unable to get known commands
+pm.pluginutils.unloadPlugin.closeClassLoaderError=Unable to close the class loader
+pm.pluginutils.unloadPlugin.unknownClassLoader=§cIt seems like spigot no longer uses URLClassLoader.\n§cPlease report this to the plugin dev!
