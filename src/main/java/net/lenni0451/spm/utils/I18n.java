@@ -41,7 +41,8 @@ public class I18n {
     public static String t(final String translation, final Object... args) {
         String s = translations.getOrDefault(translation, translation).replace("&", "§").replace("§§", "&");
         for (int i = 0; i < args.length; i++) {
-            s = s.replace("%" + (i + 1), args[i].toString());
+            final Object arg = args[i];
+            s = s.replace("%" + (i + 1), (arg == null ? "null" : args[i].toString()));
         }
         return s;
     }

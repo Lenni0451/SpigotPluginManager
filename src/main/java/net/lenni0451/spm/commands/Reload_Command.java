@@ -1,6 +1,7 @@
 package net.lenni0451.spm.commands;
 
 import net.lenni0451.spm.PluginManager;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,7 +21,7 @@ public class Reload_Command implements CommandExecutor {
             return true;
         }
 
-        sender.sendMessage("§aReloading all plugins...");
+        sender.sendMessage(I18n.t("pm.commands.reload.start"));
 
         List<Plugin> reloadPlugins = PluginManager.getInstance().getPluginUtils().getPluginsByLoadOrder();
 
@@ -30,7 +31,7 @@ public class Reload_Command implements CommandExecutor {
                 PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin);
             } catch (Throwable t) {
                 t.printStackTrace();
-                sender.sendMessage("§cCould not unload plugin §6" + plugin.getName() + "§c." + (t.getMessage() != null ? (" §7(" + t.getMessage() + ")") : ""));
+                sender.sendMessage(I18n.t("pm.commands.reload.unloadError", plugin.getName(), (t.getMessage() == null ? I18n.t("pm.commands.reload.checkConsole") : t.getMessage())));
                 return true;
             }
         }
@@ -42,12 +43,12 @@ public class Reload_Command implements CommandExecutor {
         for (String plugin : pluginNames) {
             try {
                 PluginManager.getInstance().getPluginUtils().loadPlugin(plugin);
-            } catch (Throwable e) {
-                sender.sendMessage("§cCould not load plugin §6" + plugin + "§c." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+            } catch (Throwable t) {
+                sender.sendMessage(I18n.t("pm.commands.reload.loadError", plugin, (t.getMessage() == null ? I18n.t("pm.commands.reload.checkConsole") : t.getMessage())));
             }
         }
 
-        sender.sendMessage("§aAll plugins have been reloaded.");
+        sender.sendMessage(I18n.t("pm.commands.reload.done"));
 
         return true;
     }
