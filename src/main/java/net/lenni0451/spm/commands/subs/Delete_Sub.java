@@ -3,12 +3,14 @@ package net.lenni0451.spm.commands.subs;
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
 import net.lenni0451.spm.utils.FileUtils;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,19 +33,20 @@ public class Delete_Sub implements ISubCommand {
 
         Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
         if (!plugin.isPresent()) {
-            Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
             return true;
         }
         try {
             PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin.get());
         } catch (Throwable e) {
-            Logger.sendPrefixMessage(sender, "§cThe plugin could not be unloaded." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+            e.printStackTrace();
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.unloadError", e.getMessage() == null ? I18n.t("pm.subcommands.delete.checkConsole") : e.getMessage()));
             return true;
         }
 
         Optional<File> file = PluginManager.getInstance().getPluginUtils().getPluginFile(plugin.get());
         if (!file.isPresent()) {
-            Logger.sendPrefixMessage(sender, "§cThe file of the plugin could not be found.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.fileNotFound"));
             return true;
         }
         PluginManager.getInstance().getInstalledPlugins().removePlugin(plugin.get().getName());
@@ -52,18 +55,20 @@ public class Delete_Sub implements ISubCommand {
         } catch (Throwable ignored) {
         }
         if (!file.get().exists()) {
-            Logger.sendPrefixMessage(sender, "§aThe plugin has been deleted.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.success"));
         } else {
-            Logger.sendPrefixMessage(sender, "§cThe plugin could not be deleted.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.deleteError"));
             try {
                 try (FileOutputStream fos = new FileOutputStream(file.get())) {
                     fos.write(new byte[0]);
                 }
-                if (file.get().length() != 0) throw new IllegalStateException("Plugin could not be overwritten");
-                Logger.sendPrefixMessage(sender, "§aIt will get deleted on the next restart.");
+                if (file.get().length() != 0)
+                    throw new IllegalStateException(I18n.t("pm.subcommands.delete.overwriteError"));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.nextStartDelete"));
             } catch (Throwable t) {
-                Logger.sendPrefixMessage(sender, "§cPluginManger tried to overwrite it but this failed too.");
-                Logger.sendPrefixMessage(sender, "§cYou sadly have to delete it manually.");
+                for (String s : I18n.mt("pm.subcommands.delete.manualDelete")) {
+                    Logger.sendPrefixMessage(sender, s);
+                }
             }
         }
 
@@ -86,12 +91,7 @@ public class Delete_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Unload and delete a plugin directly from the server.");
-        lines.add("If the plugin could not be deleted because of access");
-        lines.add("restrictions it will be overwritten with an empty");
-        lines.add("file and get deleted the next time if possible.");
-        lines.add("If this fails too there is no way for PluginManager");
-        lines.add("to delete the plugin so you have to do it manually.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.delete.help"));
     }
 
 }

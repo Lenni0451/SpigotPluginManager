@@ -58,3 +58,13 @@ pm.commands.pluginmanager.unknownException=&cAn unknown error occurred whilst ex
 pm.subcommands.commands.noCommands=&cThe plugin &6%1 &chas no commands registered.
 pm.subcommands.commands.commandsOf=&6Commands of &a%1&6:
 pm.subcommands.commands.help=Show a list of all commands registered by a given plugin.\nIt is only possible to show commands which are registered using the "normal" way of adding them to the plugin.yml.\nAll commands registered differently by eg. using events can not be listed by PluginManager!
+# Delete sub
+pm.subcommands.delete.unloadError=&cThe plugin could not be unloaded. &7(%2)
+pm.subcommands.delete.checkConsole=Check console
+pm.subcommands.delete.fileNotFound=&cThe file of the plugin could not be found.
+pm.subcommands.delete.success=&aThe plugin has been deleted.
+pm.subcommands.delete.deleteError=&cThe plugin could not be deleted.
+pm.subcommands.delete.overwriteError=Plugin could not be overwritten
+pm.subcommands.delete.nextStartDelete=&aIt will get deleted on the next restart.
+pm.subcommands.delete.manualDelete=&cPluginManger tried to overwrite it but this failed too.\n&cYou sadly have to delete it manually.
+pm.subcommands.delete.help=Unload and delete a plugin directly from the server.\nIf the plugin could not be deleted because of access restrictions it will be overwritten with an empty file and get deleted the next time if possible.\nIf this fails too there is no way for PluginManager to delete the plugin so you have to do it manually.
