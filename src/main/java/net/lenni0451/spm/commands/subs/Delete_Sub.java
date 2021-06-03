@@ -40,7 +40,7 @@ public class Delete_Sub implements ISubCommand {
             PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin.get());
         } catch (Throwable e) {
             e.printStackTrace();
-            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.unloadError", e.getMessage() == null ? I18n.t("pm.subcommands.delete.checkConsole") : e.getMessage()));
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.unloadError", e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
             return true;
         }
 

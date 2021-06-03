@@ -2,6 +2,7 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -27,25 +28,26 @@ public class Disable_Sub implements ISubCommand {
                 try {
                     PluginManager.getInstance().getPluginUtils().disablePlugin(plugin);
                 } catch (Throwable e) {
-                    Logger.sendPrefixMessage(sender, "§cCould not disable the plugin §6" + plugin.getName() + "§c." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                    e.printStackTrace();
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.disableError", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
-            Logger.sendPrefixMessage(sender, "§aDisabled all plugins §e(" + plugins.size() + ")§a.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.batchSuccess", plugins.size()));
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.notFound"));
                 return true;
             }
 
             try {
                 if (PluginManager.getInstance().getPluginUtils().disablePlugin(plugin.get())) {
-                    Logger.sendPrefixMessage(sender, "§aThe plugin §6" + plugin.get().getName() + " §ahas been disabled.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.singleSuccess", plugin.get().getName()));
                 } else {
-                    Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §cis already disabled.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.alreadyDisabled", plugin.get().getName()));
                 }
             } catch (Throwable e) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §ccould not be disabled." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.alreadyDisabled", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
             }
         }
 
@@ -68,8 +70,7 @@ public class Disable_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Disable a plugin to stop it from executing.");
-        lines.add("You can easily enable it again using '/pm enable'.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.delete.help"));
     }
 
 }

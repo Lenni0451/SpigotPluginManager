@@ -31,7 +31,7 @@ public class Reload_Command implements CommandExecutor {
                 PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin);
             } catch (Throwable t) {
                 t.printStackTrace();
-                sender.sendMessage(I18n.t("pm.commands.reload.unloadError", plugin.getName(), (t.getMessage() == null ? I18n.t("pm.commands.reload.checkConsole") : t.getMessage())));
+                sender.sendMessage(I18n.t("pm.commands.reload.unloadError", plugin.getName(), (t.getMessage() == null ? I18n.t("pm.general.checkConsole") : t.getMessage())));
                 return true;
             }
         }
@@ -44,7 +44,7 @@ public class Reload_Command implements CommandExecutor {
             try {
                 PluginManager.getInstance().getPluginUtils().loadPlugin(plugin);
             } catch (Throwable t) {
-                sender.sendMessage(I18n.t("pm.commands.reload.loadError", plugin, (t.getMessage() == null ? I18n.t("pm.commands.reload.checkConsole") : t.getMessage())));
+                sender.sendMessage(I18n.t("pm.commands.reload.loadError", plugin, (t.getMessage() == null ? I18n.t("pm.general.checkConsole") : t.getMessage())));
             }
         }
 
