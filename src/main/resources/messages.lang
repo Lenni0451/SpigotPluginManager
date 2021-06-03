@@ -54,7 +54,7 @@ pm.commands.pluginmanager.invalidUsage=&cInvalid command usage!
 pm.commands.pluginmanager.correctUsage=&aUse: &6pm %1
 pm.commands.pluginmanager.unknownException=&cAn unknown error occurred whilst executing this command!\n&cPlease contact the developer of this plugin and provide a copy of the log.
 # Sub commands
-# Commands Sub
+# Commands sub
 pm.subcommands.commands.noCommands=&cThe plugin &6%1 &chas no commands registered.
 pm.subcommands.commands.commandsOf=&6Commands of &a%1&6:
 pm.subcommands.commands.help=Show a list of all commands registered by a given plugin.\nIt is only possible to show commands which are registered using the "normal" way of adding them to the plugin.yml.\nAll commands registered differently by eg. using events can not be listed by PluginManager!
@@ -67,10 +67,23 @@ pm.subcommands.delete.overwriteError=Plugin could not be overwritten
 pm.subcommands.delete.nextStartDelete=&aIt will get deleted on the next restart.
 pm.subcommands.delete.manualDelete=&cPluginManger tried to overwrite it but this failed too.\n&cYou sadly have to delete it manually.
 pm.subcommands.delete.help=Unload and delete a plugin directly from the server.\nIf the plugin could not be deleted because of access restrictions it will be overwritten with an empty file and get deleted the next time if possible.\nIf this fails too there is no way for PluginManager to delete the plugin so you have to do it manually.
-# Disable Sub
+# Disable sub
 pm.subcommands.disable.disableError=&cCould not disable the plugin &6%1&c. &7(%2)
 pm.subcommands.disable.batchSuccess=&aDisabled all plugins &e(%1)&a.
 pm.subcommands.disable.notFound=&cThe plugin could not be found.
 pm.subcommands.disable.singleSuccess=&aThe plugin &6%1 &ahas been disabled.
 pm.subcommands.disable.alreadyDisabled=&cThe plugin &6%1 &cis already disabled.
 pm.subcommands.disable.help=Disable a plugin to stop it from executing.\nYou can easily enable it again using '/pm enable'.
+# Download sub
+pm.subcommands.download.success=Successfully downloaded the plugin and saved it as &6%1&a.
+pm.subcommands.download.downloadError=&cCould not download the plugin &6%1&c. &7(%2)
+pm.subcommands.download.idExtractError=&cCould not extract the plugin id from the url.\n&aYou can try entering the id manually. You can find the id here:\n&6https://www.spigotmc.org/resources/plugin-name.&aID&6/
+pm.subcommands.download.notFound=&cThe plugin could not be found.
+pm.subcommands.download.externalLink=&cThe plugin has an external download link and can not be downloaded automatically.
+pm.subcommands.download.notJar=&cThe plugin is not a jar file. File type: &6%1
+pm.subcommands.download.notBought=&cIt seems like you don't have bought this plugin.\n&aThe price is &6%1&a.
+pm.subcommands.download.isPremium=&cThe plugin is a premium resource and can not be downloaded automatically without &6MVdWUpdater&c.\n&aThe price is &6%1&a.
+pm.subcommands.download.updateConfigError=&cCould not add plugin into config for later updates.
+pm.subcommands.download.noDownload=&cThe plugin could not be found or has no download.
+pm.subcommands.download.spigetError=&cCould not reach the spiget api. Please try again later. &7(%1)
+pm.subcommands.download.help=Download a plugin ingame from spigotmc or a direct link.\nIf the plugin is downloaded from spigotmc the current version is getting saved so you can easily update it using '/pm update' in the future.\nFor spigotmc downloads you can paste the url of the plugin so PluginManager extracts the id directly from the url but you can also just paste it there manually.\nThe id can be found at the end of the url: https://www.spigotmc.org/resources/plugin-name._ID_/

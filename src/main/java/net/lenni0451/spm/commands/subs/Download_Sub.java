@@ -6,12 +6,14 @@ import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
 import net.lenni0451.spm.softdepends.MVdWUpdater_Adapter;
 import net.lenni0451.spm.softdepends.SoftDepends;
 import net.lenni0451.spm.utils.DownloadUtils;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import net.lenni0451.spm.utils.NumberUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 public class Download_Sub implements ISubCommandMultithreaded {
@@ -32,9 +34,9 @@ public class Download_Sub implements ISubCommandMultithreaded {
         if (args[0].equalsIgnoreCase("direct")) {
             try {
                 DownloadUtils.downloadPlugin(url, file);
-                Logger.sendPrefixMessage(sender, "Successfully downloaded the plugin and saved it as §6" + file.getName() + "§a.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.success", file.getName()));
             } catch (Throwable e) {
-                Logger.sendPrefixMessage(sender, "§cCould not download the plugin." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.downloadError", e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
             }
         } else if (args[0].equalsIgnoreCase("spigot")) {
             int id = -1;
@@ -53,36 +55,36 @@ public class Download_Sub implements ISubCommandMultithreaded {
                 }
             }
             if (id <= 0) {
-                Logger.sendPrefixMessage(sender, "§cCould not extract the plugin id from the url.");
-                Logger.sendPrefixMessage(sender, "§aYou can try entering the id manually. You can find the id here:");
-                Logger.sendPrefixMessage(sender, "§6https://www.spigotmc.org/resources/plugin-name.§aID§6/");
+                for (String s : I18n.mt("pm.subcommands.download.idExtractError")) Logger.sendPrefixMessage(sender, s);
                 return true;
             }
 
             try {
                 JsonObject response = DownloadUtils.getSpigotMcPluginInfo(id);
                 if (response == null) {
-                    Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.notFound"));
                     return true;
                 }
                 if (response.has("external") && response.get("external").getAsBoolean()) {
-                    Logger.sendPrefixMessage(sender, "§cThe plugin has an external download link and can not be downloaded automatically.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.externalLink"));
                     return true;
                 }
                 if (response.has("file") && response.get("file").getAsJsonObject().has("type") && !response.get("file").getAsJsonObject().get("type").getAsString().equalsIgnoreCase(".jar")) {
-                    Logger.sendPrefixMessage(sender, "§cThe plugin is not a jar file. File type: §6" + response.get("file").getAsJsonObject().get("type").getAsString());
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.notJar", response.get("file").getAsJsonObject().get("type").getAsString()));
                     return true;
                 }
                 if (response.has("premium") && response.get("premium").getAsBoolean()) {
                     if (SoftDepends.MVdWUpdater.isInstalled()) {
                         if (!MVdWUpdater_Adapter.hasResource(id)) {
-                            Logger.sendPrefixMessage(sender, "§cIt seems like you don't have bought this plugin.");
-                            Logger.sendPrefixMessage(sender, "§aThe price is §6" + response.get("price").getAsString() + response.get("currency").getAsString() + "§a.");
+                            for (String s : I18n.mt("pm.subcommands.download.notBought", response.get("price").getAsString() + response.get("currency").getAsString())) {
+                                Logger.sendPrefixMessage(sender, s);
+                            }
                             return true;
                         }
                     } else {
-                        Logger.sendPrefixMessage(sender, "§cThe plugin is a premium resource and can not be downloaded automatically without §6MVdWUpdater§c.");
-                        Logger.sendPrefixMessage(sender, "§aThe price is §6" + response.get("price").getAsString() + response.get("currency").getAsString() + "§a.");
+                        for (String s : I18n.mt("pm.subcommands.download.isPremium", response.get("price").getAsString() + response.get("currency").getAsString())) {
+                            Logger.sendPrefixMessage(sender, s);
+                        }
                         return true;
                     }
                 }
@@ -94,18 +96,18 @@ public class Download_Sub implements ISubCommandMultithreaded {
                     success = DownloadUtils.downloadSpigotMcPlugin(id, file);
                 }
                 if (success) {
-                    Logger.sendPrefixMessage(sender, "Successfully downloaded the plugin and saved it as §6" + file.getName() + "§a.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.success", file.getName()));
                     try {
                         PluginDescriptionFile desc = PluginManager.getInstance().getPluginLoader().getPluginDescription(file);
                         PluginManager.getInstance().getInstalledPlugins().setPlugin(desc.getName(), id, response.get("version").getAsJsonObject().get("id").getAsString(), file.getName());
                     } catch (Throwable e) {
-                        Logger.sendPrefixMessage(sender, "§cCould not add plugin into config for later updates.");
+                        Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.updateConfigError"));
                     }
                 } else {
-                    Logger.sendPrefixMessage(sender, "§cThe plugin could not be found or has no download.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.noDownload"));
                 }
             } catch (Exception e) {
-                Logger.sendPrefixMessage(sender, "§cCould not reach the spiget api. Please try again later." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.spigetError", e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
             }
         }
 
@@ -143,15 +145,7 @@ public class Download_Sub implements ISubCommandMultithreaded {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Download a plugin ingame from spigotmc or a direct link.");
-        lines.add("If the plugin is downloaded from spigotmc the current");
-        lines.add("version is getting saved so you can easily update it");
-        lines.add("using '/pm update' in the future.");
-        lines.add("For spigotmc downloads you can paste the url of the plugin");
-        lines.add("so PluginManager extracts the id directly from the url");
-        lines.add("but you can also just paste it there manually.");
-        lines.add("The id can be found at the end of the url:");
-        lines.add("https://www.spigotmc.org/resources/plugin-name._ID_/");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.download.help"));
     }
 
 }
