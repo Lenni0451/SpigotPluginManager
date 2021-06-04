@@ -2,6 +2,7 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
@@ -12,10 +13,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Dump_Sub implements ISubCommandMultithreaded {
 
@@ -41,14 +39,14 @@ public class Dump_Sub implements ISubCommandMultithreaded {
                     }
                     writer.close();
                 } catch (Throwable e) {
-                    Logger.sendPrefixMessage(sender, "§cThe file for §6" + plugin.getName() + " §ccould not be written. Do you have write access to the server folder?" + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.dump.noBatchPermission", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
-            Logger.sendPrefixMessage(sender, "Successfully dumped all Plugin infos. You can find them in the §6plugin_dumps §afolder.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.dump.batchSuccess"));
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.dump.notFound"));
                 return true;
             }
             List<String> lines = this.getPluginInfos(plugin.get());
@@ -61,9 +59,9 @@ public class Dump_Sub implements ISubCommandMultithreaded {
                     writer.flush();
                 }
                 writer.close();
-                Logger.sendPrefixMessage(sender, "Successfully dumped Plugin infos. You can find it in the §6plugin_dumps §afolder.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.dump.success"));
             } catch (Exception e) {
-                Logger.sendPrefixMessage(sender, "§cThe file could not be written. Do you have write access to the server folder?" + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.dump.noPermission", e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
             }
         }
         return true;
@@ -83,17 +81,7 @@ public class Dump_Sub implements ISubCommandMultithreaded {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Dump all infos about a plugin to a file in the server folder");
-        lines.add("to get an easy overview of all installed plugins and their permissions/commands.");
-        lines.add("The info contains the following things:");
-        lines.add(" - Name");
-        lines.add(" - Description");
-        lines.add(" - Version");
-        lines.add(" - Author(s)");
-        lines.add(" - Website");
-        lines.add(" - Prefix");
-        lines.add(" - Commands");
-        lines.add(" - Permissions with defaults and children");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.dump.help"));
     }
 
     private List<String> getPluginInfos(final Plugin plugin) {

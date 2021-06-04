@@ -87,3 +87,10 @@ pm.subcommands.download.updateConfigError=&cCould not add plugin into config for
 pm.subcommands.download.noDownload=&cThe plugin could not be found or has no download.
 pm.subcommands.download.spigetError=&cCould not reach the spiget api. Please try again later. &7(%1)
 pm.subcommands.download.help=Download a plugin ingame from spigotmc or a direct link.\nIf the plugin is downloaded from spigotmc the current version is getting saved so you can easily update it using '/pm update' in the future.\nFor spigotmc downloads you can paste the url of the plugin so PluginManager extracts the id directly from the url but you can also just paste it there manually.\nThe id can be found at the end of the url: https://www.spigotmc.org/resources/plugin-name._ID_/
+# Dump sub
+pm.subcommands.dump.noBatchPermission=&cThe file for &6%1 &ccould not be written. Do you have write access to the server folder? &7(%2)
+pm.subcommands.dump.batchSuccess=Successfully dumped all Plugin infos. You can find them in the &6plugin_dumps &afolder.
+pm.subcommands.dump.notFound=&cThe plugin could not be found.
+pm.subcommands.dump.success=Successfully dumped Plugin infos. You can find it in the &6plugin_dumps &afolder.
+pm.subcommands.dump.noPermission=&cThe file could not be written. Do you have write access to the server folder? &7(%1)
+pm.subcommands.dump.help=Dump all infos about a plugin to a file in the server folder to get an easy overview of all installed plugins and their permissions/commands.\nThe info contains the following things:\n - Name\n - Description\n - Version\n - Author(s)\n - Website\n - Prefix\n - Commands\n - Permissions with defaults and children
