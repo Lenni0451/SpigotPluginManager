@@ -101,3 +101,7 @@ pm.subcommands.enable.notFound=&cThe plugin could not be found.
 pm.subcommands.enable.success=&aThe plugin &6%1 &ahas been enabled.
 pm.subcommands.enable.alreadyEnabled=&cThe plugin &6%1 &cis already enabled.
 pm.subcommands.enable.help=Enable a plugin to use it again.\nYou can easily disable it again using '/pm disable'.
+#Find sub
+pm.subcommands.find.noPlugin=&cThere is no plugin which has this command registered.
+pm.subcommands.find.listHeader=&6The plugins with this command:
+pm.subcommands.find.help=Find the plugin which registered a specified command.\nIt is only possible to find commands which are registered using the "normal" way of adding them to the plugin.yml.\nAll commands registered differently by eg. using events can not be listed by PluginManager!

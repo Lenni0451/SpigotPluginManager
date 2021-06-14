@@ -2,11 +2,13 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Find_Sub implements ISubCommand {
@@ -23,9 +25,9 @@ public class Find_Sub implements ISubCommand {
             }
         }
         if (plugins.isEmpty()) {
-            Logger.sendPrefixMessage(sender, "§cThere is no plugin which has this command registered.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.find.noPlugin"));
         } else {
-            Logger.sendPrefixMessage(sender, "§6The plugins with this command:");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.find.listHeader"));
             for (Plugin plugin : plugins) {
                 sender.sendMessage(" §7- §6" + plugin.getName());
             }
@@ -45,11 +47,7 @@ public class Find_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Find the plugin which registered a specified command.");
-        lines.add("It is only possible to find commands which are registered");
-        lines.add("using the \"normal\" way of adding them to the plugin.yml.");
-        lines.add("All commands registered differently by eg. using events can");
-        lines.add("not be listed by PluginManager!");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.find.help"));
     }
 
 }
