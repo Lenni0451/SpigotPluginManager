@@ -2,10 +2,12 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,25 +27,25 @@ public class Enable_Sub implements ISubCommand {
                 try {
                     PluginManager.getInstance().getPluginUtils().enablePlugin(plugin);
                 } catch (Throwable e) {
-                    Logger.sendPrefixMessage(sender, "§cCould not enable the plugin §6" + plugin.getName() + "§c." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.enableError", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
-            Logger.sendPrefixMessage(sender, "§aEnabled all plugins §e(" + plugins.size() + ")§a.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.batchSuccess", plugins.size()));
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.notFound"));
                 return true;
             }
 
             try {
                 if (PluginManager.getInstance().getPluginUtils().enablePlugin(plugin.get())) {
-                    Logger.sendPrefixMessage(sender, "§aThe plugin §6" + plugin.get().getName() + " §ahas been enabled.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.success", plugin.get().getName()));
                 } else {
-                    Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §cis already enabled.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.alreadyEnabled", plugin.get().getName()));
                 }
             } catch (Throwable e) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §ccould not be enabled." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.enableError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
             }
         }
 
@@ -66,8 +68,7 @@ public class Enable_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Enable a plugin to use it again.");
-        lines.add("You can easily disable it again using '/pm disable'.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.enable.help"));
     }
 
 }

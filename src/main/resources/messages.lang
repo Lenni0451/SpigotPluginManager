@@ -94,3 +94,10 @@ pm.subcommands.dump.notFound=&cThe plugin could not be found.
 pm.subcommands.dump.success=Successfully dumped Plugin infos. You can find it in the &6plugin_dumps &afolder.
 pm.subcommands.dump.noPermission=&cThe file could not be written. Do you have write access to the server folder? &7(%1)
 pm.subcommands.dump.help=Dump all infos about a plugin to a file in the server folder to get an easy overview of all installed plugins and their permissions/commands.\nThe info contains the following things:\n - Name\n - Description\n - Version\n - Author(s)\n - Website\n - Prefix\n - Commands\n - Permissions with defaults and children
+#Enable sub
+pm.subcommands.enable.enableError=&cCould not enable the plugin &6%1&c. &7(%2)
+pm.subcommands.enable.batchSuccess=&aEnabled all plugins &e(%1)&a.
+pm.subcommands.enable.notFound=&cThe plugin could not be found.
+pm.subcommands.enable.success=&aThe plugin &6%1 &ahas been enabled.
+pm.subcommands.enable.alreadyEnabled=&cThe plugin &6%1 &cis already enabled.
+pm.subcommands.enable.help=Enable a plugin to use it again.\nYou can easily disable it again using '/pm disable'.
