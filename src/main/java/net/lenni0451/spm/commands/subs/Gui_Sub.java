@@ -2,6 +2,7 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.VersionMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Gui_Sub implements ISubCommand, Listener {
@@ -28,7 +30,7 @@ public class Gui_Sub implements ISubCommand, Listener {
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 0) return false;
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§cYou have to run this command as a player.");
+            sender.sendMessage(I18n.t("pm.general.onlyPlayer"));
             return true;
         }
 
@@ -47,8 +49,7 @@ public class Gui_Sub implements ISubCommand, Listener {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Show an easy to use gui to execute all plugin");
-        lines.add("specific commands without actually executing them.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.gui.help"));
     }
 
     public void openGui(final Player player, final int currentPage) {
@@ -64,7 +65,7 @@ public class Gui_Sub implements ISubCommand, Listener {
     }
 
     public void openGui(final Player player, final int currentPage, final int rowCount, final Plugin[] plugins, final boolean hasPageBefore, final boolean hasPageAfter) {
-        Inventory inv = Bukkit.createInventory(null, rowCount * 9, "§3PluginManager §2Page " + (currentPage + 1));
+        Inventory inv = Bukkit.createInventory(null, rowCount * 9, "§3PluginManager §2" + I18n.t("pm.subcommands.gui.page") + " " + (currentPage + 1));
 
         for (int i = 0; i < inv.getSize() - 9 && plugins.length > i; i++) {
             final Plugin plugin = plugins[i];
@@ -104,7 +105,7 @@ public class Gui_Sub implements ISubCommand, Listener {
         if (hasPageBefore) {
             ItemStack backArrow = new ItemStack(Material.ARROW, currentPage);
             ItemMeta meta = backArrow.getItemMeta();
-            meta.setDisplayName("§7Back to page §6" + currentPage);
+            meta.setDisplayName("§7" + I18n.t("pm.subcommands.gui.backToPage") + " §6" + currentPage);
             backArrow.setItemMeta(meta);
 
             inv.setItem(inv.getSize() - 9, backArrow);
@@ -112,7 +113,7 @@ public class Gui_Sub implements ISubCommand, Listener {
         if (hasPageAfter) {
             ItemStack forwardArrow = new ItemStack(Material.ARROW, currentPage + 2);
             ItemMeta meta = forwardArrow.getItemMeta();
-            meta.setDisplayName("§7Go to page §6" + (currentPage + 2));
+            meta.setDisplayName("§7" + I18n.t("pm.subcommands.gui.goToPage") + " §6" + (currentPage + 2));
             forwardArrow.setItemMeta(meta);
 
             inv.setItem(inv.getSize() - 1, forwardArrow);
@@ -137,10 +138,10 @@ public class Gui_Sub implements ISubCommand, Listener {
                 event.setCancelled(true);
                 return;
             } else {
-                if (itemName.startsWith("Back to page ")) {
+                if (itemName.startsWith(I18n.t("pm.subcommands.gui.backToPage"))) {
                     this.openGui((Player) event.getWhoClicked(), Integer.parseInt(itemName.substring(itemName.length() - 1)) - 1);
                     return;
-                } else if (itemName.startsWith("Go to page ")) {
+                } else if (itemName.startsWith(I18n.t("pm.subcommands.gui.goToPage"))) {
                     this.openGui((Player) event.getWhoClicked(), Integer.parseInt(itemName.substring(itemName.length() - 1)) - 1);
                     return;
                 }
@@ -217,7 +218,7 @@ public class Gui_Sub implements ISubCommand, Listener {
                 {
                     ItemStack stack = new ItemStack(Material.ARROW);
                     ItemMeta meta = stack.getItemMeta();
-                    meta.setDisplayName("§aBack");
+                    meta.setDisplayName("§a" + I18n.t("pm.subcommands.gui.back"));
                     stack.setItemMeta(meta);
 
                     inv.setItem(8, stack);
@@ -239,7 +240,7 @@ public class Gui_Sub implements ISubCommand, Listener {
 
             try {
                 String action = event.getCurrentItem().getItemMeta().getDisplayName().substring(2);
-                if (action.equalsIgnoreCase("back")) {
+                if (action.equalsIgnoreCase(I18n.t("pm.subcommands.gui.back"))) {
                     this.execute(event.getWhoClicked(), new String[]{});
                     return;
                 }

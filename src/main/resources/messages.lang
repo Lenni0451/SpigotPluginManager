@@ -9,6 +9,7 @@
 pm.general.noPermission=&cI'm sorry but you don't have access to this command.
 pm.general.pluginNotFound=&cThe plugin could not be found
 pm.general.checkConsole=Check console
+pm.general.onlyPlayer=&cYou have to run this command as a player.
 
 # Soft depends
 pm.softdepend.found=The soft depend &6%1 &ais installed and will be used.
@@ -105,3 +106,9 @@ pm.subcommands.enable.help=Enable a plugin to use it again.\nYou can easily disa
 pm.subcommands.find.noPlugin=&cThere is no plugin which has this command registered.
 pm.subcommands.find.listHeader=&6The plugins with this command:
 pm.subcommands.find.help=Find the plugin which registered a specified command.\nIt is only possible to find commands which are registered using the "normal" way of adding them to the plugin.yml.\nAll commands registered differently by eg. using events can not be listed by PluginManager!
+#Gui sub
+pm.subcommands.gui.help=Show an easy to use gui to execute all plugin specific commands without actually executing them.
+pm.subcommands.gui.page=Page
+pm.subcommands.gui.backToPage=Back to page
+pm.subcommands.gui.goToPage=Go to page
+pm.subcommands.gui.back=Back
