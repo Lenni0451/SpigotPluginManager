@@ -3,13 +3,14 @@ package net.lenni0451.spm.commands.subs;
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
 import net.lenni0451.spm.utils.FileUtils;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Load_Sub implements ISubCommand {
@@ -40,20 +41,20 @@ public class Load_Sub implements ISubCommand {
                 try {
                     PluginManager.getInstance().getPluginUtils().loadPlugin(name);
                 } catch (Throwable e) {
-                    Bukkit.getConsoleSender().sendMessage("§cCould not load plugin §6" + name + "§c." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.load.loadError", name, e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
-            Logger.sendPrefixMessage(sender, "§aLoaded all plugins §e(" + names.size() + ")§a.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.load.batchSuccess", names.size()));
         } else {
             if (PluginManager.getInstance().getPluginUtils().isPluginLoaded(args[0])) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin is already loaded.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.load.alreadyLoaded"));
                 return true;
             }
             try {
                 PluginManager.getInstance().getPluginUtils().loadPlugin(args[0]);
-                Logger.sendPrefixMessage(sender, "§aThe plugin has been loaded.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.load.success"));
             } catch (Throwable e) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin could not be enabled." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.load.loadError", args[0], e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
             }
         }
 
@@ -71,9 +72,7 @@ public class Load_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Load a plugin which is not yet loaded.");
-        lines.add("You can enter the file name (if it does not contain spaces)");
-        lines.add("or the name in the plugin.yml.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.load.help"));
     }
 
 }

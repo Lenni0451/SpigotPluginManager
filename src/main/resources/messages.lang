@@ -141,3 +141,9 @@ pm.subcommands.info.pluginDisabled=&aThe plugin is currently &cdisabled
 pm.subcommands.info.help=View some infos about a give command.\nFollowing things get shown:\n - Name\n - Description\n - Version\n - Author(s)\n - Plugin status (enabled/disabled)
 #List sub
 pm.subcommands.list.help=Show a list of all installed plugins and their status (enabled/disabled).
+#Load sub
+pm.subcommands.load.loadError=&cCould not load the plugin &6%1&c. &7(%2)
+pm.subcommands.load.batchSuccess=&aLoaded all plugins &e%1&a.
+pm.subcommands.load.alreadyLoaded=&cThe plugin is already loaded.
+pm.subcommands.load.success=&aThe plugin has been loaded.
+pm.subcommands.load.help=Load a plugin which is not yet loaded.\nYou can enter the file name (if it does not contain spaces) or the name in the plugin.yml.
