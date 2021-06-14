@@ -89,26 +89,26 @@ public class Dump_Sub implements ISubCommandMultithreaded {
 
         List<String> lines = new ArrayList<>();
 
-        lines.add("Name: " + plugin.getName());
+        lines.add(I18n.t("pm.subcommands.dump.name", plugin.getName()));
         if (description.getDescription() != null) {
-            lines.add("Description: " + description.getDescription());
+            lines.add(I18n.t("pm.subcommands.dump.description", description.getDescription()));
         }
-        lines.add("Version: " + description.getVersion());
+        lines.add(I18n.t("pm.subcommands.dump.version", description.getVersion()));
         {
             String authors = description.getAuthors().toString().replace("[", "").replace("]", "");
-            lines.add("Author(s): " + (authors.isEmpty() ? "-" : authors));
+            lines.add(I18n.t("pm.subcommands.dump.authors", authors.isEmpty() ? "-" : authors));
         }
         if (description.getWebsite() != null) {
-            lines.add("Website: " + description.getWebsite());
+            lines.add(I18n.t("pm.subcommands.dump.website", description.getWebsite()));
         }
         if (description.getPrefix() != null) {
-            lines.add("Prefix: " + description.getPrefix());
+            lines.add(I18n.t("pm.subcommands.dump.prefix", description.getPrefix()));
         }
 
         List<String> commands = PluginManager.getInstance().getPluginUtils().getCommands(plugin);
         if (!commands.isEmpty()) {
             lines.add("");
-            lines.add("Commands:");
+            lines.add(I18n.t("pm.subcommands.dump.commands"));
 
             for (String command : commands) {
                 if (command.startsWith(" ")) {
@@ -122,7 +122,7 @@ public class Dump_Sub implements ISubCommandMultithreaded {
         List<Permission> permissions = plugin.getDescription().getPermissions();
         if (!permissions.isEmpty()) {
             lines.add("");
-            lines.add("Permissions:");
+            lines.add(I18n.t("pm.subcommands.dump.permissions"));
 
             for (Permission permission : permissions) {
                 String permName = permission.getName();
@@ -132,26 +132,28 @@ public class Dump_Sub implements ISubCommandMultithreaded {
                 String readablePermDefault;
                 switch (permDefault) {
                     case TRUE:
-                        readablePermDefault = "Everybody";
+                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.everybody");
                         break;
                     case FALSE:
-                        readablePermDefault = "Nobody";
+                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.nobody");
                         break;
                     case OP:
-                        readablePermDefault = "OPs";
+                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.ops");
                         break;
                     case NOT_OP:
-                        readablePermDefault = "Not OPs";
+                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.notops");
                         break;
                     default:
-                        readablePermDefault = "Undefined";
+                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.undefined");
                 }
 
                 lines.add(" - " + permName);
-                if (!permDescription.isEmpty()) lines.add("   Description: " + permDescription);
-                lines.add("   Default: " + readablePermDefault);
+                if (!permDescription.isEmpty()) {
+                    lines.add("   " + I18n.t("pm.subcommands.dump.description", permDescription));
+                }
+                lines.add("   " + I18n.t("pm.subcommands.dump.default", readablePermDefault));
                 if (!permission.getChildren().keySet().isEmpty()) {
-                    lines.add("   Child Permissions:");
+                    lines.add("   " + I18n.t("pm.subcommands.dump.childPermissions"));
                     for (String subPerm : permission.getChildren().keySet()) {
                         lines.add("    - " + subPerm);
                     }
