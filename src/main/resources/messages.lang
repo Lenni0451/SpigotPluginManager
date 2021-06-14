@@ -115,3 +115,12 @@ pm.subcommands.gui.back=Back
 #Help sub
 pm.subcommands.help.header=&6---------- Help for &a%1 &6----------
 pm.subcommands.help.help=Show detailed information about all sub commands so you can see all important aspects directly without specifically searching for them.
+#Info sub
+pm.subcommands.info.pluginInfo=&6Plugin Info:
+pm.subcommands.info.name=&aName: &6%1
+pm.subcommands.info.description=&aDescription: &6%1
+pm.subcommands.info.version=&aVersion: &6%1
+pm.subcommands.info.authors=&aAuthor(s): &6%1
+pm.subcommands.info.pluginEnabled=&aThe plugin is currently &aenabled
+pm.subcommands.info.pluginDisabled=&aThe plugin is currently &cdisabled
+pm.subcommands.info.help=View some infos about a give command.\nFollowing things get shown:\n - Name\n - Description\n - Version\n - Author(s)\n - Plugin status (enabled/disabled)
