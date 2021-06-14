@@ -139,3 +139,5 @@ pm.subcommands.info.authors=&aAuthor(s): &6%1
 pm.subcommands.info.pluginEnabled=&aThe plugin is currently &aenabled
 pm.subcommands.info.pluginDisabled=&aThe plugin is currently &cdisabled
 pm.subcommands.info.help=View some infos about a give command.\nFollowing things get shown:\n - Name\n - Description\n - Version\n - Author(s)\n - Plugin status (enabled/disabled)
+#List sub
+pm.subcommands.list.help=Show a list of all installed plugins and their status (enabled/disabled).

@@ -2,6 +2,7 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -39,8 +40,7 @@ public class List_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Show a list of all installed plugins");
-        lines.add("and their status (enabled/disabled).");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.list.help"));
     }
 
 }
