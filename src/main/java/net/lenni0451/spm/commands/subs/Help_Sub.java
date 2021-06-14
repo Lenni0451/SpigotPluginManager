@@ -2,10 +2,12 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.commands.PluginManager_Command;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -17,15 +19,15 @@ public class Help_Sub implements ISubCommand {
 
         ISubCommand subCommand = PluginManager_Command.subCommands.get(args[0].toLowerCase());
         if (subCommand == null) {
-            Logger.sendPrefixMessage(sender, "§cThe sub command could not be found");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.commands.pluginmanager.subNotFound"));
             return true;
         }
 
         List<String> lines = new ArrayList<>();
         subCommand.getHelp(lines);
-        Logger.sendPrefixMessage(sender, "§6---------- Help for §a" + args[0].toLowerCase() + " §6----------");
+        Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.help.header", args[0].toLowerCase()));
         for (String usage : subCommand.getUsage().split(Pattern.quote("\n"))) {
-            Logger.sendPrefixMessage(sender, "§aUsage: §6pm " + usage);
+            Logger.sendPrefixMessage(sender, I18n.t("pm.commands.pluginmanager.correctUsage", usage));
         }
         sender.sendMessage(" ");
         for (String line : lines) {
@@ -47,9 +49,7 @@ public class Help_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Show detailed information about all sub commands so");
-        lines.add("you can see all important aspects directly without");
-        lines.add("specifically searching for them.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.help.help"));
     }
 
 }

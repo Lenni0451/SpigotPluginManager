@@ -112,3 +112,6 @@ pm.subcommands.gui.page=Page
 pm.subcommands.gui.backToPage=Back to page
 pm.subcommands.gui.goToPage=Go to page
 pm.subcommands.gui.back=Back
+#Help sub
+pm.subcommands.help.header=&6---------- Help for &a%1 &6----------
+pm.subcommands.help.help=Show detailed information about all sub commands so you can see all important aspects directly without specifically searching for them.
