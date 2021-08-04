@@ -2,10 +2,12 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,16 +26,16 @@ public class ReloadConfig_Sub implements ISubCommand {
 
                 plugin.reloadConfig();
             }
-            Logger.sendPrefixMessage(sender, "§aReloaded the config of all plugins §e(" + plugins.length + ")§a.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.reloadconfig.batchSuccess", plugins.length));
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
                 return true;
             }
 
             plugin.get().reloadConfig();
-            Logger.sendPrefixMessage(sender, "§aThe config of the plugin §6" + plugin.get().getName() + " §ahas been reloaded.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.reloadconfig.success", plugin.get().getName()));
         }
         return true;
     }
@@ -54,12 +56,7 @@ public class ReloadConfig_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Reload the config of a given plugin.");
-        lines.add("You can easily reload the config of other plugins");
-        lines.add("even if they do not have an own reload config command.");
-        lines.add("This may have no effect on some plugins if they");
-        lines.add("cache config values or need other things executed on");
-        lines.add("a config reload.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.reloadconfig.help"));
     }
 
 }
