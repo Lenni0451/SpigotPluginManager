@@ -160,3 +160,8 @@ pm.subcommands.permissions.notOps=Not OPs
 pm.subcommands.permissions.undefined=Undefined
 pm.subcommands.permissions.childPermissions=Child Permissions
 pm.subcommands.permissions.help=List all permissions by a plugin.\nIt is only possible to show permissions which are listed in the plugin.yml.
+#Reload sub
+pm.subcommands.reload.unloadError=&cCould not unload the plugin &6%1&c. &7(%2)
+pm.subcommands.reload.loadError=&cCould not load the plugin &6%1&c. &7(%2)
+pm.subcommands.reload.success=The plugin &6%q &ahas been reloaded.
+pm.subcommands.reload.help=Unload and load a plugin again to release all its loaded resources and update it during runtime or try to fix some issues.
