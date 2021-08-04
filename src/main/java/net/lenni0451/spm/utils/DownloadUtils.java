@@ -54,8 +54,8 @@ public class DownloadUtils {
      */
     public static boolean downloadSpigotMcPlugin(final int pluginId, final File file) throws IOException {
         HttpsURLConnection.setFollowRedirects(true);
-        URL apiUrl = new URL("http://aqua.api.spiget.org/v2/resources/" + pluginId + "/download");
-        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+        URL apiUrl = new URL("https://aqua.api.spiget.org/v2/resources/" + pluginId + "/download");
+        HttpsURLConnection connection = (HttpsURLConnection) apiUrl.openConnection();
         connection.setDoInput(true);
         connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
 
