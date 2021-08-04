@@ -148,3 +148,15 @@ pm.subcommands.load.batchSuccess=&aLoaded all plugins &e%1&a.
 pm.subcommands.load.alreadyLoaded=&cThe plugin is already loaded.
 pm.subcommands.load.success=&aThe plugin has been loaded.
 pm.subcommands.load.help=Load a plugin which is not yet loaded.\nYou can enter the file name (if it does not contain spaces) or the name in the plugin.yml.
+#Permissions sub
+pm.subcommands.permissions.noPermissions=&cThe plugin does not have permissions registered.
+pm.subcommands.permissions.header=&6Permissions of &a%1&6:
+pm.subcommands.permissions.description=Description
+pm.subcommands.permissions.default=Default
+pm.subcommands.permissions.everybody=Everybody
+pm.subcommands.permissions.nobody=Nobody
+pm.subcommands.permissions.ops=OPs
+pm.subcommands.permissions.notOps=Not OPs
+pm.subcommands.permissions.undefined=Undefined
+pm.subcommands.permissions.childPermissions=Child Permissions
+pm.subcommands.permissions.help=List all permissions by a plugin.\nIt is only possible to show permissions which are listed in the plugin.yml.

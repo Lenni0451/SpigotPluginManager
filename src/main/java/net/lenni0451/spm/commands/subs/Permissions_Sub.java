@@ -2,6 +2,7 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -12,6 +13,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -24,15 +26,15 @@ public class Permissions_Sub implements ISubCommand {
 
         Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
         if (!plugin.isPresent()) {
-            Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
             return true;
         }
 
         List<Permission> permissions = plugin.get().getDescription().getPermissions();
         if (permissions.isEmpty()) {
-            Logger.sendPrefixMessage(sender, "§cThe plugin does not have permissions registered.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.permissions.noPermissions"));
         } else {
-            Logger.sendPrefixMessage(sender, "§6Permissions of §a" + plugin.get().getName() + "§6:");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.permissions.header", plugin.get().getName()));
             for (Permission permission : permissions) {
                 String permName = permission.getName();
                 String permDescription = permission.getDescription();
@@ -40,26 +42,27 @@ public class Permissions_Sub implements ISubCommand {
 
                 String message = " §7- §6" + permName;
                 String hoverMessage = "";
-                if (!permDescription.isEmpty()) hoverMessage += "§aDescription: §6" + permDescription + "\n";
-                hoverMessage += "§aDefault: §6";
+                if (!permDescription.isEmpty())
+                    hoverMessage += "§" + I18n.t("pm.subcommands.permissions.description") + ": §6" + permDescription + "\n";
+                hoverMessage += "§a" + I18n.t("pm.subcommands.permissions.default") + ": §6";
                 switch (permDefault) {
                     case TRUE:
-                        hoverMessage += "Everybody";
+                        hoverMessage += I18n.t("pm.subcommands.permissions.everybody");
                         break;
                     case FALSE:
-                        hoverMessage += "Nobody";
+                        hoverMessage += I18n.t("pm.subcommands.permissions.nobody");
                         break;
                     case OP:
-                        hoverMessage += "OPs";
+                        hoverMessage += I18n.t("pm.subcommands.permissions.ops");
                         break;
                     case NOT_OP:
-                        hoverMessage += "Not OPs";
+                        hoverMessage += I18n.t("pm.subcommands.permissions.notOps");
                         break;
                     default:
-                        hoverMessage += "Undefined";
+                        hoverMessage += I18n.t("pm.subcommands.permissions.undefined");
                 }
                 if (!permission.getChildren().keySet().isEmpty()) {
-                    hoverMessage += "\n§aChild Permissions:";
+                    hoverMessage += "\n§a" + I18n.t("pm.subcommands.permissions.childPermissions") + ":";
                     for (String subPerm : permission.getChildren().keySet()) hoverMessage += "\n §7- §6" + subPerm;
                 }
 
@@ -95,9 +98,7 @@ public class Permissions_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("List all permissions by a plugin.");
-        lines.add("It is only possible to show permissions which are");
-        lines.add("listed in the plugin.yml.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.permissions.help"));
     }
 
 }
