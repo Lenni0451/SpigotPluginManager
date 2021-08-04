@@ -140,6 +140,7 @@ pm.subcommands.info.pluginEnabled=&aThe plugin is currently &aenabled
 pm.subcommands.info.pluginDisabled=&aThe plugin is currently &cdisabled
 pm.subcommands.info.help=View some infos about a give command.\nFollowing things get shown:\n - Name\n - Description\n - Version\n - Author(s)\n - Plugin status (enabled/disabled)
 #List sub
+pm.subcommands.list.header=&6Plugins &e&o(%1)&6:
 pm.subcommands.list.help=Show a list of all installed plugins and their status (enabled/disabled).
 #Load sub
 pm.subcommands.load.loadError=&cCould not load the plugin &6%1&c. &7(%2)

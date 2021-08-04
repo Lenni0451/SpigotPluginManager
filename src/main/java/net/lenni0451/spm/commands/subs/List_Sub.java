@@ -21,7 +21,7 @@ public class List_Sub implements ISubCommand {
         List<Plugin> sortedList = new ArrayList<>();
         Collections.addAll(sortedList, plugins);
         sortedList.sort((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
-        Logger.sendPrefixMessage(sender, "§6Plugins §e§o(" + plugins.length + ")§6:");
+        Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.list.header", plugins.length));
         for (Plugin plugin : sortedList) {
             sender.sendMessage(" §7- " + (plugin.isEnabled() ? "§a" : "§c") + plugin.getName() + " §6" + plugin.getDescription().getVersion());
         }
