@@ -5,6 +5,7 @@ import net.lenni0451.spm.PluginManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class InstalledPluginsConfig {
         try {
             this.installedPluginsFile.load(this.file);
 
-            List<PluginInfo> installedPlugins;
-            Iterator<PluginInfo> iterator = (installedPlugins = this.getInstalledPlugins()).iterator();
+            List<PluginInfo> installedPlugins = this.getInstalledPlugins();
+            Iterator<PluginInfo> iterator = installedPlugins.iterator();
             while (iterator.hasNext()) {
                 PluginInfo info;
                 if (!new File("plugins", (info = iterator.next()).getFileName()).exists()) {
@@ -79,6 +80,7 @@ public class InstalledPluginsConfig {
 
     public void setInstalledPlugins(final List<PluginInfo> plugins) {
         List<String> installedPlugins = Lists.newArrayList();
+        this.installedPluginsFile.set("Plugins", new HashMap<>());
         for (PluginInfo info : plugins) {
             this.installedPluginsFile.set("Plugins." + info.getName() + ".Id", info.getId());
             this.installedPluginsFile.set("Plugins." + info.getName() + ".InstalledVersion", info.getInstalledVersion());
