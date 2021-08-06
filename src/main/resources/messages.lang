@@ -175,3 +175,8 @@ pm.subcommands.restart.enableError=&cCould not enable the plugin &6%1&c. &7(%2)
 pm.subcommands.restart.batchSuccess=Restarted all plugins &e%1&a.
 pm.subcommands.restart.success=The plugin &6%1 &ahas been restarted.
 pm.subcommands.restart.help=Enable and disable a plugin to release all its loaded resources (eg. config files).\nThis does not reload the classes and actually can break many plugins which can not be restarted!
+#Unload sub
+pm.subcommands.unload.unloadError=&cCould not unload the plugin &6%1&c. &7(%2)
+pm.subcommands.unload.batchSuccess=Unloaded all plugins &e(%1)&a.
+pm.subcommands.unload.success=The plugin has been unloaded.
+pm.subcommands.unload.help=Unload a plugin and release all its loaded resources.\nIf you are testing new plugins you can just unload them again if they do not fit your needs.
