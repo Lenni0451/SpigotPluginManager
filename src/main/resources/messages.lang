@@ -24,6 +24,9 @@ pm.updater.downloadHere=You can download it here: &6%1
 pm.updater.latestVersion=You are using the latest version of &6PluginManager&a.
 pm.updater.error=&cAn unknown error occurred whilst checking for a new &6PluginManager &cversion!.
 
+# Installed plugins
+pm.installedPlugins.notFound=&cThe plugin §6%1 §chas been removed from the config because the file could not be found anymore.
+
 # PluginUtils
 # loadPlugin method
 pm.pluginutils.loadPlugin.fileNotFound=Plugin file not found
@@ -102,26 +105,26 @@ pm.subcommands.dump.commands=Commands:
 pm.subcommands.dump.permissions=Permissions:
 pm.subcommands.dump.default=Default: %1
 pm.subcommands.dump.childPermissions=Child Permissions:
-#Enable sub
+# Enable sub
 pm.subcommands.enable.enableError=&cCould not enable the plugin &6%1&c. &7(%2)
 pm.subcommands.enable.batchSuccess=Enabled all plugins &e(%1)&a.
 pm.subcommands.enable.success=The plugin &6%1 &ahas been enabled.
 pm.subcommands.enable.alreadyEnabled=&cThe plugin &6%1 &cis already enabled.
 pm.subcommands.enable.help=Enable a plugin to use it again.\nYou can easily disable it again using '/pm disable'.
-#Find sub
+# Find sub
 pm.subcommands.find.noPlugin=&cThere is no plugin which has this command registered.
 pm.subcommands.find.listHeader=&6The plugins with this command:
 pm.subcommands.find.help=Find the plugin which registered a specified command.\nIt is only possible to find commands which are registered using the "normal" way of adding them to the plugin.yml.\nAll commands registered differently by eg. using events can not be listed by PluginManager!
-#Gui sub
+# Gui sub
 pm.subcommands.gui.help=Show an easy to use gui to execute all plugin specific commands without actually executing them.
 pm.subcommands.gui.page=Page
 pm.subcommands.gui.backToPage=Back to page
 pm.subcommands.gui.goToPage=Go to page
 pm.subcommands.gui.back=Back
-#Help sub
+# Help sub
 pm.subcommands.help.header=&6---------- Help for &a%1 &6----------
 pm.subcommands.help.help=Show detailed information about all sub commands so you can see all important aspects directly without specifically searching for them.
-#Info sub
+# Info sub
 pm.subcommands.info.pluginInfo=&6Plugin Info:
 pm.subcommands.info.name=&aName: &6%1
 pm.subcommands.info.description=&aDescription: &6%1
@@ -130,16 +133,16 @@ pm.subcommands.info.authors=&aAuthor(s): &6%1
 pm.subcommands.info.pluginEnabled=&aThe plugin is currently &aenabled
 pm.subcommands.info.pluginDisabled=&aThe plugin is currently &cdisabled
 pm.subcommands.info.help=View some infos about a give command.\nFollowing things get shown:\n - Name\n - Description\n - Version\n - Author(s)\n - Plugin status (enabled/disabled)
-#List sub
+# List sub
 pm.subcommands.list.header=&6Plugins &e&o(%1)&6:
 pm.subcommands.list.help=Show a list of all installed plugins and their status (enabled/disabled).
-#Load sub
+# Load sub
 pm.subcommands.load.loadError=&cCould not load the plugin &6%1&c. &7(%2)
 pm.subcommands.load.batchSuccess=Loaded all plugins &e(%1)&a.
 pm.subcommands.load.alreadyLoaded=&cThe plugin is already loaded.
 pm.subcommands.load.success=The plugin has been loaded.
 pm.subcommands.load.help=Load a plugin which is not yet loaded.\nYou can enter the file name (if it does not contain spaces) or the name in the plugin.yml.
-#Permissions sub
+# Permissions sub
 pm.subcommands.permissions.noPermissions=&cThe plugin does not have permissions registered.
 pm.subcommands.permissions.header=&6Permissions of &a%1&6:
 pm.subcommands.permissions.description=Description
@@ -151,23 +154,23 @@ pm.subcommands.permissions.notOps=Not OPs
 pm.subcommands.permissions.undefined=Undefined
 pm.subcommands.permissions.childPermissions=Child Permissions
 pm.subcommands.permissions.help=List all permissions by a plugin.\nIt is only possible to show permissions which are listed in the plugin.yml.
-#Reload sub
+# Reload sub
 pm.subcommands.reload.success=The plugin &6%q &ahas been reloaded.
 pm.subcommands.reload.help=Unload and load a plugin again to release all its loaded resources and update it during runtime or try to fix some issues.
-#ReloadConfig sub
+# ReloadConfig sub
 pm.subcommands.reloadconfig.batchSuccess=Reloaded the config of all plugins &e(%1)&a.
 pm.subcommands.reloadconfig.success=The config of the plugin &6%1 &ahas been reloaded."
 pm.subcommands.reloadconfig.help=Reload the config of a given plugin.\nYou can easily reload the config of other plugins even if they do not have an own reload config command.\nThis may have no effect on some plugins if they cache config values or need other things executed on a config reload.
-#Restart sub
+# Restart sub
 pm.subcommands.restart.batchSuccess=Restarted all plugins &e(%1)&a.
 pm.subcommands.restart.success=The plugin &6%1 &ahas been restarted.
 pm.subcommands.restart.help=Enable and disable a plugin to release all its loaded resources (eg. config files).\nThis does not reload the classes and actually can break many plugins which can not be restarted!
-#Unload sub
+# Unload sub
 pm.subcommands.unload.unloadError=&cCould not unload the plugin &6%1&c. &7(%2)
 pm.subcommands.unload.batchSuccess=Unloaded all plugins &e(%1)&a.
 pm.subcommands.unload.success=The plugin has been unloaded.
 pm.subcommands.unload.help=Unload a plugin and release all its loaded resources.\nIf you are testing new plugins you can just unload them again if they do not fit your needs.
-#Update sub
+# Update sub
 pm.subcommands.update.batchSuccess=Successfully updated the plugin &6%1 &ato the newest version.
 pm.subcommands.update.batchUpToDate=The plugin &6%1 &ais already up to date.
 pm.subcommands.update.batchSpigetError=&cCould not reach the spiget api or plugin &6%1 &cis not on spigotmc. Please try again later.

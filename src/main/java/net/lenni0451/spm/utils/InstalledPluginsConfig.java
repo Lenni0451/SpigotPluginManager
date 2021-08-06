@@ -38,7 +38,7 @@ public class InstalledPluginsConfig {
                 if (!new File("plugins", (info = iterator.next()).getFileName()).exists()) {
                     iterator.remove();
 
-                    Logger.sendConsole("§cThe plugin §6" + info.getName() + " §chas been removed from the config because the file could not be found anymore.");
+                    Logger.sendConsole(I18n.t("pm.installedPlugins.notFound", info.getName()));
                 }
             }
             this.setInstalledPlugins(installedPlugins);
