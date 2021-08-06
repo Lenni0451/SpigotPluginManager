@@ -2,11 +2,12 @@ package net.lenni0451.spm.commands.subs;
 
 import com.google.gson.JsonObject;
 import net.lenni0451.spm.PluginManager;
-import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
 import net.lenni0451.spm.utils.DownloadUtils;
 import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import net.lenni0451.spm.utils.PluginInfo;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
@@ -16,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class Update_Sub implements ISubCommand {
+public class Update_Sub implements ISubCommandMultithreaded {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
@@ -111,7 +112,7 @@ public class Update_Sub implements ISubCommand {
                 DownloadUtils.downloadSpigotMcPlugin(info.getId(), new File("plugins", info.getFileName()));
                 PluginManager.getInstance().getInstalledPlugins().setPlugin(info.getName(), info.getId(), response.get("version").getAsJsonObject().get("id").getAsString(), info.getFileName());
                 if (PluginManager.getInstance().getConfig().getBoolean("AutoReloadUpdated")) {
-                    PluginManager.getInstance().getPluginUtils().reloadPlugin(plugin);
+                    Bukkit.getScheduler().runTask(PluginManager.getInstance(), () -> PluginManager.getInstance().getPluginUtils().reloadPlugin(plugin));
                 }
             } catch (Throwable e) {
                 throw new UpdatedFailedException();
