@@ -2,6 +2,7 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -28,7 +29,7 @@ public class Restart_Sub implements ISubCommand {
                     PluginManager.getInstance().getPluginUtils().disablePlugin(plugin);
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §acould not be disabled." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.disableError", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
 
@@ -42,15 +43,15 @@ public class Restart_Sub implements ISubCommand {
                 try {
                     PluginManager.getInstance().getPluginUtils().enablePlugin(plugin);
                 } catch (Throwable e) {
-                    Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §acould not be enabled." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.enableError", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
 
-            Logger.sendPrefixMessage(sender, "§aRestarted all plugins §e(" + plugins.size() + ")§a.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.batchSuccess", plugins.size()));
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
                 return true;
             }
 
@@ -58,17 +59,17 @@ public class Restart_Sub implements ISubCommand {
                 PluginManager.getInstance().getPluginUtils().disablePlugin(plugin.get());
             } catch (Throwable e) {
                 e.printStackTrace();
-                Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §acould not be disabled." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.disableError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 return true;
             }
             try {
                 PluginManager.getInstance().getPluginUtils().enablePlugin(plugin.get());
             } catch (Throwable e) {
                 e.printStackTrace();
-                Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §acould not be enabled." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.enableError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 return true;
             }
-            Logger.sendPrefixMessage(sender, "§aThe plugin §6" + plugin.get().getName() + " §ahas been restarted.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.success"));
         }
 
         return true;
@@ -90,10 +91,7 @@ public class Restart_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Enable and disable a plugin to release");
-        lines.add("all its loaded resources (eg. config files).");
-        lines.add("This does not reload the classes and actually");
-        lines.add("can break many plugins which can not be restarted!");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.restart.help"));
     }
 
 }

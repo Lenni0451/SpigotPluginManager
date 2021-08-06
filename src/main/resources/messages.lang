@@ -169,3 +169,9 @@ pm.subcommands.reload.help=Unload and load a plugin again to release all its loa
 pm.subcommands.reloadconfig.batchSuccess=Reloaded the config of all plugins &e(%1)&a.
 pm.subcommands.reloadconfig.success=The config of the plugin &6%1 &ahas been reloaded."
 pm.subcommands.reloadconfig.help=Reload the config of a given plugin.\nYou can easily reload the config of other plugins even if they do not have an own reload config command.\nThis may have no effect on some plugins if they cache config values or need other things executed on a config reload.
+#Restart sub
+pm.subcommands.restart.disableError=&cCould not disable the plugin &6%1&c. &7(%2)
+pm.subcommands.restart.enableError=&cCould not enable the plugin &6%1&c. &7(%2)
+pm.subcommands.restart.batchSuccess=Restarted all plugins &e%1&a.
+pm.subcommands.restart.success=The plugin &6%1 &ahas been restarted.
+pm.subcommands.restart.help=Enable and disable a plugin to release all its loaded resources (eg. config files).\nThis does not reload the classes and actually can break many plugins which can not be restarted!
