@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
 import net.lenni0451.spm.utils.DownloadUtils;
+import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import net.lenni0451.spm.utils.PluginInfo;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,43 +31,45 @@ public class Update_Sub implements ISubCommand {
 
                 try {
                     this.checkForUpdate(sender, true, plugin);
-                    Logger.sendPrefixMessage(sender, "§aSuccessfully updated the plugin §6" + plugin.getName() + " §ato the newest version.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.batchSuccess", plugin.getName()));
                 } catch (AlreadyUpToDateException e) {
-                    Logger.sendPrefixMessage(sender, "§aThe plugin §6" + plugin.getName() + " §ais already up to date.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.batchUpToDate", plugin.getName()));
                 } catch (IllegalArgumentException e) {
                     //Do nothing as it would cause spam with batch actions
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Logger.sendPrefixMessage(sender, "§cCould not reach the spiget api or plugin §6" + plugin.getName() + " §cis not on spigotmc. Please try again later.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.batchSpigetError", plugin.getName()));
                 } catch (UpdatedFailedException e) {
-                    Logger.sendPrefixMessage(sender, "§cCould not save the plugin file of §6" + plugin.getName() + "§c.");
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.batchWriteError", plugin.getName()));
                 } catch (Throwable e) {
-                    Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.getName() + " §ccould not be updated." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                    e.printStackTrace();
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.error", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
-            Logger.sendPrefixMessage(sender, "§aChecked all plugins in the config for updates.");
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.batchSuccess"));
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin could not be found.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
                 return true;
             }
 
             try {
                 this.checkForUpdate(sender, false, plugin.get());
-                Logger.sendPrefixMessage(sender, "§aSuccessfully updated the plugin to the newest version.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.success"));
             } catch (AlreadyUpToDateException e) {
-                Logger.sendPrefixMessage(sender, "§aThe plugin is already up to date.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.upToDate"));
             } catch (IllegalArgumentException e) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §cis not in the config file.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.notInConfig", plugin.get().getName()));
 //					Logger.sendPrefixMessage(sender, "§aYou can add it using §6/pm addupdater <Plugin> <Plugin Id>§a."); //TODO: Add command in the future
             } catch (IOException e) {
                 e.printStackTrace();
-                Logger.sendPrefixMessage(sender, "§cCould not reach the spiget api or plugin is not on spigotmc. Please try again later.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.spigetError"));
             } catch (UpdatedFailedException e) {
-                Logger.sendPrefixMessage(sender, "§cCould not save the plugin file.");
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.writeError"));
             } catch (Throwable e) {
-                Logger.sendPrefixMessage(sender, "§cThe plugin §6" + plugin.get().getName() + " §ccould not be updated." + (e.getMessage() != null ? (" §7(" + e.getMessage() + ")") : ""));
+                e.printStackTrace();
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.error", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
             }
         }
 
@@ -88,9 +92,7 @@ public class Update_Sub implements ISubCommand {
 
     @Override
     public void getHelp(List<String> lines) {
-        lines.add("Update plugins previously downloaded");
-        lines.add("using the '/pm download' command.");
-        lines.add("This only works with plugins from spigotmc.");
+        Collections.addAll(lines, I18n.mt("pm.subcommands.update.help"));
     }
 
     private void checkForUpdate(final CommandSender messageReceiver, final boolean sendPluginName, final Plugin plugin) throws IOException {
@@ -101,9 +103,9 @@ public class Update_Sub implements ISubCommand {
         if (response == null) throw new IOException();
         if (!response.get("version").getAsJsonObject().get("id").getAsString().equalsIgnoreCase(info.getInstalledVersion())) {
             if (sendPluginName) {
-                Logger.sendPrefixMessage(messageReceiver, "§aThe plugin §6" + plugin.getName() + " §ahas an update available.");
+                Logger.sendPrefixMessage(messageReceiver, I18n.t("pm.subcommands.update.nameUpdateAvailable", plugin.getName()));
             } else {
-                Logger.sendPrefixMessage(messageReceiver, "§aThe plugin has an update available.");
+                Logger.sendPrefixMessage(messageReceiver, I18n.t("pm.subcommands.update.updateAvailable"));
             }
             try {
                 DownloadUtils.downloadSpigotMcPlugin(info.getId(), new File("plugins", info.getFileName()));
@@ -115,7 +117,7 @@ public class Update_Sub implements ISubCommand {
                 throw new UpdatedFailedException();
             }
         } else {
-            throw new AlreadyUpToDateException(); //Just some random exception to send the correct message if plugin is up to date
+            throw new AlreadyUpToDateException();
         }
     }
 
