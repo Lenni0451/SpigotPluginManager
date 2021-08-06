@@ -6,7 +6,6 @@ import net.lenni0451.spm.PluginManager;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
