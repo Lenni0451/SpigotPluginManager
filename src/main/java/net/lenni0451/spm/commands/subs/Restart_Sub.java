@@ -29,7 +29,7 @@ public class Restart_Sub implements ISubCommand {
                     PluginManager.getInstance().getPluginUtils().disablePlugin(plugin);
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.disableError", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.disableError", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
 
@@ -43,7 +43,7 @@ public class Restart_Sub implements ISubCommand {
                 try {
                     PluginManager.getInstance().getPluginUtils().enablePlugin(plugin);
                 } catch (Throwable e) {
-                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.enableError", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.enableError", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
 
@@ -59,14 +59,14 @@ public class Restart_Sub implements ISubCommand {
                 PluginManager.getInstance().getPluginUtils().disablePlugin(plugin.get());
             } catch (Throwable e) {
                 e.printStackTrace();
-                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.disableError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.disableError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 return true;
             }
             try {
                 PluginManager.getInstance().getPluginUtils().enablePlugin(plugin.get());
             } catch (Throwable e) {
                 e.printStackTrace();
-                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.enableError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.enableError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 return true;
             }
             Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.success"));

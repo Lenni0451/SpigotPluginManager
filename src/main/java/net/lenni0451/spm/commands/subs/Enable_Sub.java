@@ -34,7 +34,7 @@ public class Enable_Sub implements ISubCommand {
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.notFound"));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
                 return true;
             }
 

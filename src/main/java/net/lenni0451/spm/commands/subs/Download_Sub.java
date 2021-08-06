@@ -62,7 +62,7 @@ public class Download_Sub implements ISubCommandMultithreaded {
             try {
                 JsonObject response = DownloadUtils.getSpigotMcPluginInfo(id);
                 if (response == null) {
-                    Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.notFound"));
+                    Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
                     return true;
                 }
                 if (response.has("external") && response.get("external").getAsBoolean()) {

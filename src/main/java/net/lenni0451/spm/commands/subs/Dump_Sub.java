@@ -46,7 +46,7 @@ public class Dump_Sub implements ISubCommandMultithreaded {
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.dump.notFound"));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
                 return true;
             }
             List<String> lines = this.getPluginInfos(plugin.get());
@@ -132,19 +132,19 @@ public class Dump_Sub implements ISubCommandMultithreaded {
                 String readablePermDefault;
                 switch (permDefault) {
                     case TRUE:
-                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.everybody");
+                        readablePermDefault = I18n.t("pm.subcommands.permissions.everybody");
                         break;
                     case FALSE:
-                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.nobody");
+                        readablePermDefault = I18n.t("pm.subcommands.permissions.nobody");
                         break;
                     case OP:
-                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.ops");
+                        readablePermDefault = I18n.t("pm.subcommands.permissions.ops");
                         break;
                     case NOT_OP:
-                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.notops");
+                        readablePermDefault = I18n.t("pm.subcommands.permissions.notOps");
                         break;
                     default:
-                        readablePermDefault = I18n.t("pm.subcommands.dump.permissions.undefined");
+                        readablePermDefault = I18n.t("pm.subcommands.permissions.undefined");
                 }
 
                 lines.add(" - " + permName);

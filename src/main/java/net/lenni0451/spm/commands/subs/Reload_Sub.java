@@ -31,14 +31,14 @@ public class Reload_Sub implements ISubCommand {
                 PluginManager.getInstance().getPluginUtils().unloadPlugin(plugin.get());
             } catch (Throwable e) {
                 e.printStackTrace();
-                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.reload.unloadError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.unload.unloadError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 return true;
             }
             try {
                 PluginManager.getInstance().getPluginUtils().loadPlugin(plugin.get());
             } catch (Throwable e) {
                 e.printStackTrace();
-                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.reload.loadError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.load.loadError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 return true;
             }
             Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.reload.success", plugin.get().getName()));

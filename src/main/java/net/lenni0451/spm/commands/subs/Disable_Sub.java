@@ -36,7 +36,7 @@ public class Disable_Sub implements ISubCommand {
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
-                Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.disable.notFound"));
+                Logger.sendPrefixMessage(sender, I18n.t("pm.general.pluginNotFound"));
                 return true;
             }
 
