@@ -3,7 +3,6 @@ author: Lenni0451
 version: 2.6
 main: net.lenni0451.spm.PluginManager
 softdepend: [MVdWUpdater, Gson-Spigot]
-api-version: 1.16
 
 commands:
   reload:
