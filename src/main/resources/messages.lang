@@ -155,11 +155,11 @@ pm.subcommands.permissions.undefined=Undefined
 pm.subcommands.permissions.childPermissions=Child Permissions
 pm.subcommands.permissions.help=List all permissions by a plugin.\nIt is only possible to show permissions which are listed in the plugin.yml.
 # Reload sub
-pm.subcommands.reload.success=The plugin &6%q &ahas been reloaded.
+pm.subcommands.reload.success=The plugin &6%1 &ahas been reloaded.
 pm.subcommands.reload.help=Unload and load a plugin again to release all its loaded resources and update it during runtime or try to fix some issues.
 # ReloadConfig sub
 pm.subcommands.reloadconfig.batchSuccess=Reloaded the config of all plugins &e(%1)&a.
-pm.subcommands.reloadconfig.success=The config of the plugin &6%1 &ahas been reloaded."
+pm.subcommands.reloadconfig.success=The config of the plugin &6%1 &ahas been reloaded.
 pm.subcommands.reloadconfig.help=Reload the config of a given plugin.\nYou can easily reload the config of other plugins even if they do not have an own reload config command.\nThis may have no effect on some plugins if they cache config values or need other things executed on a config reload.
 # Restart sub
 pm.subcommands.restart.batchSuccess=Restarted all plugins &e(%1)&a.

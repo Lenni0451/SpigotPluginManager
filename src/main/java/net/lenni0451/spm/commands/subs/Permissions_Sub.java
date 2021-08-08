@@ -43,7 +43,7 @@ public class Permissions_Sub implements ISubCommand {
                 String message = " §7- §6" + permName;
                 String hoverMessage = "";
                 if (!permDescription.isEmpty())
-                    hoverMessage += "§" + I18n.t("pm.subcommands.permissions.description") + ": §6" + permDescription + "\n";
+                    hoverMessage += "§a" + I18n.t("pm.subcommands.permissions.description") + ": §6" + permDescription + "\n";
                 hoverMessage += "§a" + I18n.t("pm.subcommands.permissions.default") + ": §6";
                 switch (permDefault) {
                     case TRUE:

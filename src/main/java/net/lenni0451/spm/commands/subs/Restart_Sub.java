@@ -69,7 +69,7 @@ public class Restart_Sub implements ISubCommand {
                 Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.enable.enableError", plugin.get().getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 return true;
             }
-            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.success"));
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.restart.success", plugin.get().getName()));
         }
 
         return true;
