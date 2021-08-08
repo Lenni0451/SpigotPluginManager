@@ -80,6 +80,7 @@ public class PluginManager extends JavaPlugin {
                             final File pluginFile = this.getFile();
                             final byte[] newData = DownloadUtils.download(downloadURL);
                             Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.downloadSuccess"));
+                            Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.checkChangelog", "https://github.com/Lenni0451/SpigotPluginManager/releases/tag/" + newestVersion));
                             Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.updater.selfReload"));
                             Bukkit.getScheduler().runTaskLater(this, () -> {
                                 try {

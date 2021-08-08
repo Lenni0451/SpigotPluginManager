@@ -17,6 +17,7 @@ pm.softdepend.found=The soft depend &6%1 &ais installed and will be used.
 # Updater
 pm.updater.found=A new update of &6PluginManager &ais available &e(%1 -> %2)&a.
 pm.updater.downloadSuccess=Successfully downloaded new &6PluginManager &aversion.
+pm.updater.checkChangelog=You should check out the changelog here &6%1&a.
 pm.updater.selfReload=PluginManager is reloading itself in some seconds...
 pm.updater.reloadSuccess=PluginManager successfully reloaded itself!
 pm.updater.downloadFail=&cCould not auto download the latest &6PluginManager &cversion.
