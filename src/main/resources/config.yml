@@ -29,3 +29,7 @@ AutoReloadUpdated: false
 #Allow the use of batch actions
 #Default: true
 AllowBatchActions: true
+
+#Only allow the use of pm through console
+#Default: false
+OnlyConsole: false

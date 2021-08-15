@@ -54,6 +54,10 @@ public class PluginManager_Command implements CommandExecutor {
             Logger.sendPermissionMessage(sender);
             return true;
         }
+        if (PluginManager.getInstance().getConfig().getBoolean("OnlyConsole") && !Bukkit.getConsoleSender().equals(sender)) {
+            Logger.sendPrefixMessage(sender, I18n.t("pm.general.onlyConsole"));
+            return true;
+        }
 
         if (args.length == 0) {
             sender.sendMessage("§6--------------------------------------------------");

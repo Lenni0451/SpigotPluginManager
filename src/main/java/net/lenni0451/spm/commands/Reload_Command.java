@@ -3,6 +3,7 @@ package net.lenni0451.spm.commands;
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,10 @@ public class Reload_Command implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("bukkit.command.reload")) {
             Logger.sendPermissionMessage(sender);
+            return true;
+        }
+        if (PluginManager.getInstance().getConfig().getBoolean("OnlyConsole") && !Bukkit.getConsoleSender().equals(sender)) {
+            Logger.sendPrefixMessage(sender, I18n.t("pm.general.onlyConsole"));
             return true;
         }
 
