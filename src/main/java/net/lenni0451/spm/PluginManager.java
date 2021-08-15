@@ -1,5 +1,6 @@
 package net.lenni0451.spm;
 
+import com.tchristofferson.configupdater.ConfigUpdater;
 import net.lenni0451.spm.commands.PluginManager_Command;
 import net.lenni0451.spm.commands.Reload_Command;
 import net.lenni0451.spm.softdepends.SoftDepends;
@@ -10,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class PluginManager extends JavaPlugin {
@@ -27,6 +29,11 @@ public class PluginManager extends JavaPlugin {
     public PluginManager() {
         instance = this;
 
+        try {
+            ConfigUpdater.update(this, "config.yml", new File(this.getDataFolder(), "config.yml"), new ArrayList<>());
+        } catch (Throwable t) {
+            throw new RuntimeException("Unable to update config to the latest version", t);
+        }
         this.saveDefaultConfig();
         I18n.init();
 
