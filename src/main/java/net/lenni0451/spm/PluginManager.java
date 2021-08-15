@@ -60,6 +60,13 @@ public class PluginManager extends JavaPlugin {
         if (this.getConfig().getBoolean("CheckForUpdates")) {
             this.checkUpdates();
         }
+        if (I18n.wasUpdated()) {
+            Bukkit.getScheduler().runTask(PluginManager.getInstance(), () -> {
+                for (String translationLine : I18n.mt("pm.updater.missingTranslations")) {
+                    Logger.sendConsole("§a" + translationLine);
+                }
+            });
+        }
     }
 
     public void checkUpdates() {

@@ -4,12 +4,14 @@
 # Use # for comments. They are not supported at the end of the line as you may use # in translations
 # The default color of messages is &a (green)
 # Some translations support multiple lines. To split the individual lines use \n
+# If you have missing translations they will automatically get added to the end of the file and a notification will appear in the console
 
 # General translations
 pm.general.noPermission=&cI'm sorry but you don't have access to this command.
 pm.general.pluginNotFound=&cThe plugin could not be found
 pm.general.checkConsole=Check console
 pm.general.onlyPlayer=&cYou have to run this command as a player.
+pm.general.onlyConsole=&cIngame commands are disabled. Please use the console.
 
 # Soft depends
 pm.softdepend.found=The soft depend &6%1 &ais installed and will be used.
@@ -24,9 +26,10 @@ pm.updater.downloadFail=&cCould not auto download the latest &6PluginManager &cv
 pm.updater.downloadHere=You can download it here: &6%1
 pm.updater.latestVersion=You are using the latest version of &6PluginManager&a.
 pm.updater.error=&cAn unknown error occurred whilst checking for a new &6PluginManager &cversion!.
+pm.updater.missingTranslations=&cYou have missing translations in your &6messages.lang &cfile\nIf you just installed an update this is normal and can be ignored if you do not want custom translations
 
 # Installed plugins
-pm.installedPlugins.notFound=&cThe plugin §6%1 §chas been removed from the config because the file could not be found anymore.
+pm.installedPlugins.notFound=&cThe plugin &6%1 &chas been removed from the config because the file could not be found anymore.
 
 # PluginUtils
 # loadPlugin method
