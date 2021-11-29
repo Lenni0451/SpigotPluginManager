@@ -45,6 +45,7 @@ public class Delete_Sub implements ISubCommand {
         }
 
         Optional<File> file = PluginManager.getInstance().getPluginUtils().getPluginFile(plugin.get());
+        File dataDir = new File("plugins/" + plugin.get().getDescription().getName());
         if (!file.isPresent()) {
             Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.fileNotFound"));
             return true;
@@ -52,6 +53,7 @@ public class Delete_Sub implements ISubCommand {
         PluginManager.getInstance().getInstalledPlugins().removePlugin(plugin.get().getName());
         try {
             if (!file.get().delete()) file.get().deleteOnExit();
+            else FileUtils.delete(dataDir);
         } catch (Throwable ignored) {
         }
         if (!file.get().exists()) {

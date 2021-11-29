@@ -10,4 +10,9 @@ public class FileUtils {
         return files;
     }
 
+    public static void delete(final File file) {
+        if (file.isDirectory()) for (File f : listFiles(file)) delete(f);
+        file.delete();
+    }
+
 }
