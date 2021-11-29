@@ -29,12 +29,12 @@ public class PluginManager extends JavaPlugin {
     public PluginManager() {
         instance = this;
 
+        this.saveDefaultConfig();
         try {
             ConfigUpdater.update(this, "config.yml", new File(this.getDataFolder(), "config.yml"), new ArrayList<>());
         } catch (Throwable t) {
             throw new RuntimeException("Unable to update config to the latest version", t);
         }
-        this.saveDefaultConfig();
         I18n.init();
 
         this.pluginUtils = new PluginUtils();
