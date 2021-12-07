@@ -382,7 +382,7 @@ public class PluginUtils {
 
                         if (dependPos > pluginPos) {
                             plugins.remove(pluginPos);
-                            plugins.add(dependPos + 1, plugin);
+                            plugins.add(Math.min(dependPos + 1, plugins.size()), plugin);
 
                             i = 0;
                         }
