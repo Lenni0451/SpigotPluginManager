@@ -47,7 +47,7 @@ public class Update_Sub implements ISubCommandMultithreaded {
                     Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.error", plugin.getName(), e.getMessage() == null ? I18n.t("pm.general.checkConsole") : e.getMessage()));
                 }
             }
-            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.batchSuccess"));
+            Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.batchDone"));
         } else {
             Optional<Plugin> plugin = PluginManager.getInstance().getPluginUtils().getPlugin(args[0]);
             if (!plugin.isPresent()) {
