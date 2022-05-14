@@ -1,11 +1,11 @@
 package net.lenni0451.spm.utils;
 
-import com.google.common.collect.Lists;
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.messages.I18n;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -58,9 +58,9 @@ public class InstalledPluginsConfig {
 
 
     public List<PluginInfo> getInstalledPlugins() {
-        List<PluginInfo> installedPluginsInfos = Lists.newArrayList();
+        List<PluginInfo> installedPluginsInfos = new ArrayList<>();
         List<String> installedPlugins = (List<String>) this.installedPluginsFile.getList("PluginNames");
-        if (installedPlugins == null) installedPlugins = Lists.newArrayList();
+        if (installedPlugins == null) installedPlugins = new ArrayList<>();
 
         for (String installedPlugin : installedPlugins) {
             if (this.installedPluginsFile.contains("Plugins." + installedPlugin)) {
@@ -78,7 +78,7 @@ public class InstalledPluginsConfig {
     }
 
     public void setInstalledPlugins(final List<PluginInfo> plugins) {
-        List<String> installedPlugins = Lists.newArrayList();
+        List<String> installedPlugins = new ArrayList<>();
         this.installedPluginsFile.set("Plugins", new HashMap<>());
         for (PluginInfo info : plugins) {
             this.installedPluginsFile.set("Plugins." + info.getName() + ".Id", info.getId());
