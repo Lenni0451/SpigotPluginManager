@@ -3,6 +3,7 @@ package net.lenni0451.spm;
 import com.tchristofferson.configupdater.ConfigUpdater;
 import net.lenni0451.spm.commands.PluginManager_Command;
 import net.lenni0451.spm.commands.Reload_Command;
+import net.lenni0451.spm.messages.I18n;
 import net.lenni0451.spm.softdepends.SoftDepends;
 import net.lenni0451.spm.tabcomplete.PluginManager_TabComplete;
 import net.lenni0451.spm.utils.*;

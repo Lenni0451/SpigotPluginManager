@@ -1,6 +1,10 @@
-package net.lenni0451.spm.utils;
+package net.lenni0451.spm.messages;
 
 import net.lenni0451.spm.PluginManager;
+import net.lenni0451.spm.messages.lines.CommentLine;
+import net.lenni0451.spm.messages.lines.TextLine;
+import net.lenni0451.spm.messages.lines.TranslationLine;
+import net.lenni0451.spm.utils.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -105,35 +109,70 @@ public class I18n {
         if (!MESSAGES_FILE.exists()) return;
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(MESSAGES_FILE), StandardCharsets.UTF_8));
-            List<Tuple<String, String>> lines = new ArrayList<>();
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (!line.startsWith("#") && line.split("=").length >= 2) {
-                    String[] parts = line.split("=");
-                    lines.add(new Tuple<>(parts[0], StringUtils.arrayToString(parts, 1, "=")));
-                } else {
-                    lines.add(new Tuple<>(line, null));
+            List<IMessagesLine> lines = new ArrayList<>();
+            Map<String, List<TranslationLine>> translations = new HashMap<>();
+            boolean hasDuplicates = false;
+            {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    line = line.trim();
+
+                    if (line.startsWith("#")) {
+                        lines.add(new CommentLine(line.substring(1).trim()));
+                    } else if (line.split("=").length >= 2) {
+                        String[] parts = line.split("=");
+                        TranslationLine translationLine = new TranslationLine(parts[0], StringUtils.arrayToString(parts, 1, "="));
+                        if (translations.containsKey(translationLine.getKey())) {
+                            hasDuplicates = true;
+                        }
+                        lines.add(translationLine);
+                        translations.computeIfAbsent(translationLine.getKey(), key -> new ArrayList<>()).add(translationLine);
+                    } else {
+                        lines.add(new TextLine(line));
+                    }
+                }
+                br.close();
+            }
+            if (hasDuplicates) {
+                for (Map.Entry<String, List<TranslationLine>> entry : translations.entrySet()) {
+                    if (entry.getValue().size() > 1) {
+                        lines.removeAll(entry.getValue());
+                    }
                 }
             }
-            br.close();
             for (Map.Entry<String, String> entry : TRANSLATIONS.entrySet()) {
                 LABEL_ADD:
                 {
-                    for (Tuple<String, String> tuple : lines) {
-                        if (tuple.a().equals(entry.getKey()) && tuple.b() != null) break LABEL_ADD;
+                    for (IMessagesLine line : lines) {
+                        if (!(line instanceof TranslationLine)) continue;
+                        TranslationLine translationLine = (TranslationLine) line;
+                        if (translationLine.getKey().equals(entry.getKey())) break LABEL_ADD;
                     }
                     if (!HAS_UPDATE) {
                         HAS_UPDATE = true;
-                        lines.add(new Tuple<>("", null));
-                        lines.add(new Tuple<>("#Your lang file has missing translations:", null));
+                        lines.add(new TextLine(""));
+                        lines.add(new CommentLine("Your lang file has missing translations:"));
                     }
-                    lines.add(new Tuple<>(entry.getKey(), entry.getValue()));
+                    lines.add(new TranslationLine(entry.getKey(), entry.getValue()));
+                }
+            }
+            if (hasDuplicates) {
+                HAS_UPDATE = true;
+                lines.add(new TextLine(""));
+                lines.add(new CommentLine("Your lang file has duplicate translations which have been removed:"));
+                for (Map.Entry<String, List<TranslationLine>> entry : translations.entrySet()) {
+                    if (entry.getValue().size() > 1) {
+                        lines.add(new CommentLine(entry.getKey()));
+                        for (TranslationLine translationLine : entry.getValue()) {
+                            lines.add(new CommentLine(" - " + translationLine.getValue()));
+                        }
+                    }
                 }
             }
             if (HAS_UPDATE) {
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(MESSAGES_FILE), StandardCharsets.UTF_8));
-                for (Tuple<String, String> tuple : lines) {
-                    bw.write(tuple.a() + (tuple.b() == null ? "" : ("=" + tuple.b())));
+                for (IMessagesLine line : lines) {
+                    bw.write(line.getLine());
                     bw.newLine();
                 }
                 bw.close();

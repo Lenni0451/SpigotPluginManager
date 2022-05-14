@@ -2,6 +2,7 @@ package net.lenni0451.spm.utils;
 
 import com.google.common.collect.Lists;
 import net.lenni0451.spm.PluginManager;
+import net.lenni0451.spm.messages.I18n;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

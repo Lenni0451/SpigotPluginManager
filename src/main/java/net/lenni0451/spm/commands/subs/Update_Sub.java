@@ -3,8 +3,8 @@ package net.lenni0451.spm.commands.subs;
 import com.google.gson.JsonObject;
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
+import net.lenni0451.spm.messages.I18n;
 import net.lenni0451.spm.utils.DownloadUtils;
-import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import net.lenni0451.spm.utils.PluginInfo;
 import org.bukkit.Bukkit;
@@ -62,7 +62,7 @@ public class Update_Sub implements ISubCommandMultithreaded {
                 Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.upToDate"));
             } catch (IllegalArgumentException e) {
                 Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.notInConfig", plugin.get().getName()));
-//					Logger.sendPrefixMessage(sender, "§aYou can add it using §6/pm addupdater <Plugin> <Plugin Id>§a."); //TODO: Add command in the future
+//                Logger.sendPrefixMessage(sender, "§aYou can add it using §6/pm addupdater <Plugin> <Plugin Id>§a."); //TODO: Add command in the future
             } catch (IOException e) {
                 e.printStackTrace();
                 Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.update.spigetError"));

@@ -2,8 +2,8 @@ package net.lenni0451.spm.commands.subs;
 
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommand;
+import net.lenni0451.spm.messages.I18n;
 import net.lenni0451.spm.utils.FileUtils;
-import net.lenni0451.spm.utils.I18n;
 import net.lenni0451.spm.utils.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;

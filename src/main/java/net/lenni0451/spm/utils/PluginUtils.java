@@ -1,5 +1,6 @@
 package net.lenni0451.spm.utils;
 
+import net.lenni0451.spm.messages.I18n;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
