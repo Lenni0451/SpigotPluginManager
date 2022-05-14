@@ -20,17 +20,13 @@ public class Find_Sub implements ISubCommand {
         List<Plugin> plugins = new ArrayList<>();
         for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) {
             List<String> commands = PluginManager.getInstance().getPluginUtils().getCommands(plugin);
-            if (commands.contains(args[0]) || commands.contains(" " + args[0])) {
-                plugins.add(plugin);
-            }
+            if (commands.contains(args[0]) || commands.contains(" " + args[0])) plugins.add(plugin);
         }
         if (plugins.isEmpty()) {
             Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.find.noPlugin"));
         } else {
             Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.find.listHeader"));
-            for (Plugin plugin : plugins) {
-                sender.sendMessage(" §7- §6" + plugin.getName());
-            }
+            for (Plugin plugin : plugins) sender.sendMessage(" §7- §6" + plugin.getName());
         }
 
         return true;

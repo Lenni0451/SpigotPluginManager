@@ -50,9 +50,7 @@ public class Reload_Sub implements ISubCommand {
     @Override
     public void getTabComplete(List<String> tabs, String[] args) {
         if (args.length == 0) {
-            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) {
-                tabs.add(plugin.getName());
-            }
+            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) tabs.add(plugin.getName());
         }
     }
 

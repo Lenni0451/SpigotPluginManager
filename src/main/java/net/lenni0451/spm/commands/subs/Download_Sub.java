@@ -43,15 +43,11 @@ public class Download_Sub implements ISubCommandMultithreaded {
             if (NumberUtils.isInteger(url)) {
                 id = Integer.parseInt(url);
             } else {
-                if (url.endsWith("/")) {
-                    url = url.substring(0, url.length() - 1);
-                }
+                if (url.endsWith("/")) url = url.substring(0, url.length() - 1);
                 String urlPart = url.substring(url.lastIndexOf("/") + 1);
                 if (urlPart.contains(".")) {
                     urlPart = urlPart.substring(urlPart.lastIndexOf(".") + 1);
-                    if (NumberUtils.isInteger(urlPart)) {
-                        id = Integer.parseInt(urlPart);
-                    }
+                    if (NumberUtils.isInteger(urlPart)) id = Integer.parseInt(urlPart);
                 }
             }
             if (id <= 0) {

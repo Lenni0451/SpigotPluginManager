@@ -64,8 +64,9 @@ public class Delete_Sub implements ISubCommand {
                 try (FileOutputStream fos = new FileOutputStream(file.get())) {
                     fos.write(new byte[0]);
                 }
-                if (file.get().length() != 0)
+                if (file.get().length() != 0) {
                     throw new IllegalStateException(I18n.t("pm.subcommands.delete.overwriteError"));
+                }
                 Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.delete.nextStartDelete"));
             } catch (Throwable t) {
                 for (String s : I18n.mt("pm.subcommands.delete.manualDelete")) {
@@ -80,9 +81,7 @@ public class Delete_Sub implements ISubCommand {
     @Override
     public void getTabComplete(List<String> tabs, String[] args) {
         if (args.length == 0) {
-            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) {
-                tabs.add(plugin.getName());
-            }
+            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) tabs.add(plugin.getName());
         }
     }
 

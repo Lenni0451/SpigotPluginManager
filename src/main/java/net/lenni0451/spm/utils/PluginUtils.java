@@ -223,9 +223,7 @@ public class PluginUtils {
             Field f = this.getPluginManager().getClass().getDeclaredField("plugins");
             f.setAccessible(true);
             List<Plugin> plugins = (List<Plugin>) f.get(this.getPluginManager());
-            if (!plugins.contains(targetPlugin)) {
-                plugins.add(targetPlugin);
-            }
+            if (!plugins.contains(targetPlugin)) plugins.add(targetPlugin);
         } catch (Throwable e) {
             e.printStackTrace(); //We maybe even want to see why the plugin could not be added
 //            throw new IllegalStateException("Unable to add to plugin list");
@@ -313,9 +311,7 @@ public class PluginUtils {
                 Map.Entry<String, Command> entry = iterator.next();
                 if (entry.getValue() instanceof PluginCommand) {
                     PluginCommand command = (PluginCommand) entry.getValue();
-                    if (command.getPlugin().equals(plugin)) {
-                        iterator.remove();
-                    }
+                    if (command.getPlugin().equals(plugin)) iterator.remove();
                 }
             }
         }
@@ -354,9 +350,7 @@ public class PluginUtils {
         List<Plugin> plugins = new ArrayList<>();
 
         Arrays.stream(this.getPlugins()).forEach(plugin -> {
-            if (!ignoredPlugins.contains(plugin.getName())) {
-                plugins.add(plugin);
-            }
+            if (!ignoredPlugins.contains(plugin.getName())) plugins.add(plugin);
         });
 
 
@@ -369,8 +363,7 @@ public class PluginUtils {
             {
                 for (Plugin reloadPlugin : plugins) {
                     if (reloadPlugin.getDescription().getLoadBefore().contains(plugin.getName())) {
-                        if (!deps.contains(reloadPlugin.getName()))
-                            deps.add(reloadPlugin.getName());
+                        if (!deps.contains(reloadPlugin.getName())) deps.add(reloadPlugin.getName());
                     }
                 }
             }
@@ -425,9 +418,7 @@ public class PluginUtils {
                         commandAliases.add(alias.toString().toLowerCase());
                     }
                 } else if (aliasesObject instanceof String[]) {
-                    for (String alias : (String[]) aliasesObject) {
-                        commandAliases.add(alias.toLowerCase());
-                    }
+                    for (String alias : (String[]) aliasesObject) commandAliases.add(alias.toLowerCase());
                 }
             }
         }
@@ -469,9 +460,7 @@ public class PluginUtils {
 
                     try {
                         PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(pluginFile);
-                        if (desc.getName().equalsIgnoreCase(plugin.getName())) {
-                            return Optional.of(pluginFile);
-                        }
+                        if (desc.getName().equalsIgnoreCase(plugin.getName())) return Optional.of(pluginFile);
                     } catch (Throwable ignored) {
                     }
                 }

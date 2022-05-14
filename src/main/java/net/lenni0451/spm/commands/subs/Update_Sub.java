@@ -80,9 +80,7 @@ public class Update_Sub implements ISubCommandMultithreaded {
     @Override
     public void getTabComplete(List<String> tabs, String[] args) {
         if (args.length == 0) {
-            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) {
-                tabs.add(plugin.getName());
-            }
+            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) tabs.add(plugin.getName());
         }
     }
 

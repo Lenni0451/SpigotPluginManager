@@ -28,16 +28,12 @@ public class DownloadUtils {
         connection.setDoInput(true);
         connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
 
-        if (connection.getResponseCode() != 200) {
-            return null;
-        }
+        if (connection.getResponseCode() != 200) return null;
 
         BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         StringBuilder responseBuilder = new StringBuilder();
         String line;
-        while ((line = br.readLine()) != null) {
-            responseBuilder.append(line);
-        }
+        while ((line = br.readLine()) != null) responseBuilder.append(line);
         br.close();
 
         return jsonParser.parse(responseBuilder.toString()).getAsJsonObject();
@@ -58,17 +54,13 @@ public class DownloadUtils {
         connection.setDoInput(true);
         connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
 
-        if (connection.getResponseCode() != 200) {
-            return false;
-        }
+        if (connection.getResponseCode() != 200) return false;
 
         BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
         FileOutputStream fos = new FileOutputStream(file);
         byte[] buffer = new byte[1024];
         int length;
-        while ((length = bis.read(buffer)) != -1) {
-            fos.write(buffer, 0, length);
-        }
+        while ((length = bis.read(buffer)) != -1) fos.write(buffer, 0, length);
         fos.close();
         bis.close();
         return true;
@@ -87,17 +79,13 @@ public class DownloadUtils {
         connection.setDoInput(true);
         connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
 
-        if (connection.getContentLength() <= 0) {
-            throw new IOException();
-        }
+        if (connection.getContentLength() <= 0) throw new IOException();
 
         BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
         FileOutputStream fos = new FileOutputStream(file);
         byte[] buffer = new byte[1024];
         int length;
-        while ((length = bis.read(buffer)) != -1) {
-            fos.write(buffer, 0, length);
-        }
+        while ((length = bis.read(buffer)) != -1) fos.write(buffer, 0, length);
         fos.close();
         bis.close();
     }
@@ -115,17 +103,13 @@ public class DownloadUtils {
         connection.setDoInput(true);
         connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
 
-        if (connection.getContentLength() <= 0) {
-            throw new IOException();
-        }
+        if (connection.getContentLength() <= 0) throw new IOException();
 
         BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int length;
-        while ((length = bis.read(buffer)) != -1) {
-            baos.write(buffer, 0, length);
-        }
+        while ((length = bis.read(buffer)) != -1) baos.write(buffer, 0, length);
         bis.close();
 
         return baos.toByteArray();
@@ -146,9 +130,7 @@ public class DownloadUtils {
         BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         StringBuilder responseBuilder = new StringBuilder();
         String line;
-        while ((line = br.readLine()) != null) {
-            responseBuilder.append(line);
-        }
+        while ((line = br.readLine()) != null) responseBuilder.append(line);
         br.close();
 
         String urlBase = "https://github.com/Lenni0451/SpigotPluginManager/releases/tag/";

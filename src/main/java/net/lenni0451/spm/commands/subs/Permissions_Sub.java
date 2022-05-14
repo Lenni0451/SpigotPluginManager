@@ -42,8 +42,9 @@ public class Permissions_Sub implements ISubCommand {
 
                 String message = " §7- §6" + permName;
                 String hoverMessage = "";
-                if (!permDescription.isEmpty())
+                if (!permDescription.isEmpty()) {
                     hoverMessage += "§a" + I18n.t("pm.subcommands.permissions.description") + ": §6" + permDescription + "\n";
+                }
                 hoverMessage += "§a" + I18n.t("pm.subcommands.permissions.default") + ": §6";
                 switch (permDefault) {
                     case TRUE:
@@ -85,9 +86,7 @@ public class Permissions_Sub implements ISubCommand {
     @Override
     public void getTabComplete(List<String> tabs, String[] args) {
         if (args.length == 0) {
-            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) {
-                tabs.add(plugin.getName());
-            }
+            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) tabs.add(plugin.getName());
         }
     }
 

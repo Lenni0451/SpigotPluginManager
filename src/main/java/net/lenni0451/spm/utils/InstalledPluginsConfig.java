@@ -60,9 +60,7 @@ public class InstalledPluginsConfig {
     public List<PluginInfo> getInstalledPlugins() {
         List<PluginInfo> installedPluginsInfos = Lists.newArrayList();
         List<String> installedPlugins = (List<String>) this.installedPluginsFile.getList("PluginNames");
-        if (installedPlugins == null) {
-            installedPlugins = Lists.newArrayList();
-        }
+        if (installedPlugins == null) installedPlugins = Lists.newArrayList();
 
         for (String installedPlugin : installedPlugins) {
             if (this.installedPluginsFile.contains("Plugins." + installedPlugin)) {
@@ -118,9 +116,7 @@ public class InstalledPluginsConfig {
 
     public PluginInfo getPluginInfo(final String name) {
         for (PluginInfo info : this.getInstalledPlugins()) {
-            if (info.getName().equalsIgnoreCase(name)) {
-                return info;
-            }
+            if (info.getName().equalsIgnoreCase(name)) return info;
         }
         return null;
     }

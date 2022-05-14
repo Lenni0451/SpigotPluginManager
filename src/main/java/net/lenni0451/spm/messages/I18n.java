@@ -122,9 +122,7 @@ public class I18n {
                     } else if (line.split("=").length >= 2) {
                         String[] parts = line.split("=");
                         TranslationLine translationLine = new TranslationLine(parts[0], StringUtils.arrayToString(parts, 1, "="));
-                        if (translations.containsKey(translationLine.getKey())) {
-                            hasDuplicates = true;
-                        }
+                        if (translations.containsKey(translationLine.getKey())) hasDuplicates = true;
                         lines.add(translationLine);
                         translations.computeIfAbsent(translationLine.getKey(), key -> new ArrayList<>()).add(translationLine);
                     } else {
@@ -135,9 +133,7 @@ public class I18n {
             }
             if (hasDuplicates) {
                 for (Map.Entry<String, List<TranslationLine>> entry : translations.entrySet()) {
-                    if (entry.getValue().size() > 1) {
-                        lines.removeAll(entry.getValue());
-                    }
+                    if (entry.getValue().size() > 1) lines.removeAll(entry.getValue());
                 }
             }
             for (Map.Entry<String, String> entry : TRANSLATIONS.entrySet()) {

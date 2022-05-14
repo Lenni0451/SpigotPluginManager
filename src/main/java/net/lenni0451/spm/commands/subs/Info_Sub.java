@@ -34,11 +34,8 @@ public class Info_Sub implements ISubCommand {
         sender.sendMessage(" " + I18n.t("pm.subcommands.info.version", description.getVersion()));
         String authors = StringUtils.listToString(description.getAuthors());
         sender.sendMessage(" " + I18n.t("pm.subcommands.info.authors", authors.isEmpty() ? "§4-" : authors));
-        if (plugin.get().isEnabled()) {
-            sender.sendMessage(" " + I18n.t("pm.subcommands.info.pluginEnabled"));
-        } else {
-            sender.sendMessage(" " + I18n.t("pm.subcommands.info.pluginDisabled"));
-        }
+        if (plugin.get().isEnabled()) sender.sendMessage(" " + I18n.t("pm.subcommands.info.pluginEnabled"));
+        else sender.sendMessage(" " + I18n.t("pm.subcommands.info.pluginDisabled"));
 
         return true;
     }
@@ -46,9 +43,7 @@ public class Info_Sub implements ISubCommand {
     @Override
     public void getTabComplete(List<String> tabs, String[] args) {
         if (args.length == 0) {
-            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) {
-                tabs.add(plugin.getName());
-            }
+            for (Plugin plugin : PluginManager.getInstance().getPluginUtils().getPlugins()) tabs.add(plugin.getName());
         }
     }
 

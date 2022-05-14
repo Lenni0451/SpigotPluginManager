@@ -30,9 +30,7 @@ public class Help_Sub implements ISubCommand {
             Logger.sendPrefixMessage(sender, I18n.t("pm.commands.pluginmanager.correctUsage", usage));
         }
         sender.sendMessage(" ");
-        for (String line : lines) {
-            sender.sendMessage(" §a" + line);
-        }
+        for (String line : lines) sender.sendMessage(" §a" + line);
 
         return true;
     }

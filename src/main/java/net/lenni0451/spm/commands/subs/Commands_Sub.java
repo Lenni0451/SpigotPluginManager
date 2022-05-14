@@ -36,11 +36,8 @@ public class Commands_Sub implements ISubCommand {
             Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.commands.commandsOf", plugin.get().getName()));
             for (String command : commands) {
                 String message;
-                if (command.startsWith(" ")) {
-                    message = "  §7- §6" + command.substring(1);
-                } else {
-                    message = " §7- §6" + command;
-                }
+                if (command.startsWith(" ")) message = "  §7- §6" + command.substring(1);
+                else message = " §7- §6" + command;
 
                 if (sender instanceof Player) {
                     TextComponent textComponent = new TextComponent(message);

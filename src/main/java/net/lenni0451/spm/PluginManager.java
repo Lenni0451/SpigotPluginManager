@@ -64,9 +64,7 @@ public class PluginManager extends JavaPlugin {
                 Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.softdepend.found", softDepend.name()));
             }
         }
-        if (this.getConfig().getBoolean("CheckForUpdates")) {
-            this.checkUpdates();
-        }
+        if (this.getConfig().getBoolean("CheckForUpdates")) this.checkUpdates();
         if (I18n.wasUpdated()) {
             Bukkit.getScheduler().runTask(PluginManager.getInstance(), () -> {
                 for (String translationLine : I18n.mt("pm.updater.missingTranslations")) {
@@ -76,7 +74,7 @@ public class PluginManager extends JavaPlugin {
         }
     }
 
-    public void checkUpdates() {
+    private void checkUpdates() {
         final String downloadURL = "https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar";
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             try {

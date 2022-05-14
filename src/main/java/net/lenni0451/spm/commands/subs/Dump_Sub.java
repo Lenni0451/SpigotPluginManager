@@ -111,11 +111,8 @@ public class Dump_Sub implements ISubCommandMultithreaded {
             lines.add(I18n.t("pm.subcommands.dump.commands"));
 
             for (String command : commands) {
-                if (command.startsWith(" ")) {
-                    lines.add("  -" + command);
-                } else {
-                    lines.add(" - " + command);
-                }
+                if (command.startsWith(" ")) lines.add("  -" + command);
+                else lines.add(" - " + command);
             }
         }
 
@@ -154,9 +151,7 @@ public class Dump_Sub implements ISubCommandMultithreaded {
                 lines.add("   " + I18n.t("pm.subcommands.dump.default", readablePermDefault));
                 if (!permission.getChildren().keySet().isEmpty()) {
                     lines.add("   " + I18n.t("pm.subcommands.dump.childPermissions"));
-                    for (String subPerm : permission.getChildren().keySet()) {
-                        lines.add("    - " + subPerm);
-                    }
+                    for (String subPerm : permission.getChildren().keySet()) lines.add("    - " + subPerm);
                 }
             }
         }

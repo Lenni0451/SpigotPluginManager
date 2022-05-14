@@ -36,9 +36,7 @@ public class Restart_Sub implements ISubCommand {
             Collections.reverse(plugins);
 
             for (Plugin plugin : plugins) {
-                if (plugin.equals(PluginManager.getInstance())) {
-                    continue;
-                }
+                if (plugin.equals(PluginManager.getInstance())) continue;
 
                 try {
                     PluginManager.getInstance().getPluginUtils().enablePlugin(plugin);
