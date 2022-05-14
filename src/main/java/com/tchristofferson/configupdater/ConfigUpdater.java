@@ -10,15 +10,16 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConfigUpdater {
 
     //Used for separating keys in the keyBuilder inside parseComments method
     private static final char SEPARATOR = '.';
+
+    public static void update(Plugin plugin, String resourceName, File toUpdate, String... ignoredSections) throws IOException {
+        update(plugin, resourceName, toUpdate, Arrays.asList(ignoredSections));
+    }
 
     public static void update(Plugin plugin, String resourceName, File toUpdate, List<String> ignoredSections) throws IOException {
         Preconditions.checkArgument(toUpdate.exists(), "The toUpdate file doesn't exist!");
@@ -51,14 +52,14 @@ public class ConfigUpdater {
             } else {
                 for (Map.Entry<String, String> entry : ignoredSectionsValues.entrySet()) {
                     if (entry.getKey().equals(fullKey)) {
-                        writer.write(entry.getValue() + "\n");
+                        writer.write(ignoredSectionsValues.get(fullKey) + "\n");
                         continue keyLoop;
                     } else if (KeyBuilder.isSubKeyOf(entry.getKey(), fullKey, SEPARATOR)) {
                         continue keyLoop;
-                    } else {
-                        writeCommentIfExists(comments, writer, fullKey, indents);
                     }
                 }
+
+                writeCommentIfExists(comments, writer, fullKey, indents);
             }
 
             Object currentValue = currentConfig.get(fullKey);
@@ -147,12 +148,23 @@ public class ConfigUpdater {
 
         String currentIgnoredSection = null;
         String line;
-        while ((line = reader.readLine()) != null) {
+        lineLoop : while ((line = reader.readLine()) != null) {
             String trimmedLine = line.trim();
 
-            if (trimmedLine.isEmpty() || trimmedLine.startsWith("#") || trimmedLine.startsWith("-"))
+            if (trimmedLine.isEmpty() || trimmedLine.startsWith("#"))
                 continue;
 
+            if (trimmedLine.startsWith("-")) {
+                for (String ignoredSection : ignoredSections) {
+                    boolean isIgnoredParent = ignoredSection.equals(keyBuilder.toString());
+
+                    if (isIgnoredParent || keyBuilder.isSubKeyOf(ignoredSection)) {
+                        valueBuilder.append("\n").append(line);
+                        continue lineLoop;
+                    }
+                }
+            }
+            
             keyBuilder.parseLine(trimmedLine);
             String fullKey = keyBuilder.toString();
 

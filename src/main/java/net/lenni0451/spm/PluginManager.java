@@ -12,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class PluginManager extends JavaPlugin {
@@ -32,7 +31,7 @@ public class PluginManager extends JavaPlugin {
 
         this.saveDefaultConfig();
         try {
-            ConfigUpdater.update(this, "config.yml", new File(this.getDataFolder(), "config.yml"), new ArrayList<>());
+            ConfigUpdater.update(this, "config.yml", new File(this.getDataFolder(), "config.yml"));
         } catch (Throwable t) {
             throw new RuntimeException("Unable to update config to the latest version", t);
         }
