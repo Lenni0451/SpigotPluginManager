@@ -9,31 +9,31 @@ public class Logger {
     public static final String PREFIX = "§3PM §7| §a";
 
     /**
-     * Send a message to a CommandSender
+     * Send a message to a {@link CommandSender}
      *
      * @param receiver The receiver of the message
      * @param message  The message
      */
-    public static void sendMessage(CommandSender receiver, String message) {
+    public static void sendMessage(final CommandSender receiver, final String message) {
         receiver.sendMessage(message);
     }
 
     /**
-     * Send a message with the PluginManager prefix to a command sender
+     * Send a message to a {@link CommandSender} with the PM prefix
      *
      * @param receiver The receiver of the message
      * @param message  The message
      */
-    public static void sendPrefixMessage(CommandSender receiver, String message) {
+    public static void sendPrefixMessage(final CommandSender receiver, final String message) {
         sendMessage(receiver, PREFIX + message);
     }
 
     /**
-     * Send a CommandSender that he does not have enough permissions for a command
+     * Send a message to a {@link CommandSender} that he has no permission
      *
      * @param receiver The receiver of the message
      */
-    public static void sendPermissionMessage(CommandSender receiver) {
+    public static void sendPermissionMessage(final CommandSender receiver) {
         sendPrefixMessage(receiver, I18n.t("pm.general.noPermission"));
     }
 
@@ -42,7 +42,7 @@ public class Logger {
      *
      * @param message The message
      */
-    public static void sendConsole(String message) {
+    public static void sendConsole(final String message) {
         sendPrefixMessage(Bukkit.getConsoleSender(), message);
     }
 

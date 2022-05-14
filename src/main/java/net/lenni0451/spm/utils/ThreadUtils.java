@@ -7,17 +7,20 @@ import java.util.Set;
 public class ThreadUtils {
 
     /**
-     * Get a set of all running threads
+     * Get a {@link Set} of all running {@link Thread}s
+     *
+     * @return The {@link Set}
      */
     public static Set<Thread> getALlThreads() {
         return Thread.getAllStackTraces().keySet();
     }
 
     /**
-     * Check if a thread has been started from a class loaded by a given classloader
+     * Check if the given {@link Thread} is started by a {@link Class} loaded from the given {@link ClassLoader}
      *
-     * @param thread      The thread to check
-     * @param classLoader The classloader of the starter class
+     * @param thread      The {@link Thread} to check
+     * @param classLoader The {@link ClassLoader} of the {@link Class} to check
+     * @return {@code true} if the {@link Thread} is started by a {@link Class} loaded from the given {@link ClassLoader}
      */
     public static boolean isThreadFromClassLoader(final Thread thread, final ClassLoader classLoader) {
         if (classLoader.equals(thread.getClass().getClassLoader())) return true;
@@ -26,9 +29,10 @@ public class ThreadUtils {
     }
 
     /**
-     * Get all threads started by a class loaded from the given classloader
+     * Get a {@link Set} of all {@link Thread}s started by a {@link Class} loaded from the given {@link ClassLoader}
      *
-     * @param classLoader The classloader of the starter class
+     * @param classLoader The {@link ClassLoader} of the {@link Class} to check
+     * @return The {@link Set}
      */
     public static Set<Thread> getAllThreadsFromClassLoader(final ClassLoader classLoader) {
         Set<Thread> threads = new HashSet<>();

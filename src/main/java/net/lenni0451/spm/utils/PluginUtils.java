@@ -19,78 +19,95 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PluginUtils {
 
     /**
-     * @return The plugin directory
+     * Get the {@code plugins} directory
+     *
+     * @return The {@link File}
      */
     public File getPluginsDirectory() {
         return new File(".", "plugins");
     }
 
+    /**
+     * Get the update directory for plugins
+     *
+     * @return The {@link File}
+     */
     public File getUpdateDirectory() {
         return new File(this.getPluginsDirectory(), "update");
     }
 
     /**
-     * @return The current PluginManager instance
+     * Get the {@link PluginManager} instance of the server
+     *
+     * @return The {@link PluginManager} instance
      */
     public PluginManager getPluginManager() {
         return Bukkit.getPluginManager();
     }
 
     /**
-     * @return The current PluginLoader instance
+     * Get the {@link PluginLoader} instance of the server
+     *
+     * @return The {@link PluginLoader} instance
      */
     public PluginLoader getPluginLoader() {
         return net.lenni0451.spm.PluginManager.getInstance().getPluginLoader();
     }
 
     /**
-     * @return The array of all loaded plugins
+     * Get an array of all loaded {@link Plugin}s
+     *
+     * @return All loaded {@link Plugin}s
      */
     public Plugin[] getPlugins() {
         return this.getPluginManager().getPlugins();
     }
 
     /**
-     * Get a plugin by its name
+     * Get a {@link Plugin} instance by its name
      *
-     * @param name The name of the plugin you want to get
-     * @return An optional of the plugin instance of the plugin
+     * @param name The name of the {@link Plugin}
+     * @return The {@link Plugin} instance or {@link Optional#empty()} if not found
      */
     public Optional<Plugin> getPlugin(final String name) {
         return Arrays.stream(this.getPlugins()).filter(plugin -> plugin.getName().equalsIgnoreCase(name)).findFirst();
     }
 
     /**
-     * @param name The name of the plugin you want to check if its loaded
-     * @return If the plugin is loaded
+     * Check if a {@link Plugin} is loaded by its name
+     *
+     * @param name The name of the {@link Plugin}
+     * @return {@code true} if the {@link Plugin} is loaded
      */
     public boolean isPluginLoaded(final String name) {
         return this.getPlugin(name).isPresent();
     }
 
     /**
-     * @param name The name of the plugin you want to check if its enabled
-     * @return If the plugin is enabled
+     * Check if a {@link Plugin} is enabled by its name
+     *
+     * @param name The name of the {@link Plugin}
+     * @return {@code true} if the {@link Plugin} is enabled
      */
     public boolean isPluginEnabled(final String name) {
         return this.getPlugin(name).map(Plugin::isEnabled).orElse(false);
     }
 
     /**
-     * Enable a plugin by its name
+     * Enable a {@link Plugin} by its name
      *
-     * @param name The name of the plugin you want to enable
-     * @return If the plugin could be enabled (false if already enabled)
+     * @param name The name of the {@link Plugin}
+     * @return {@code true} if the {@link Plugin} was enabled successfully
      */
     public boolean enablePlugin(final String name) {
         return this.getPlugin(name).filter(this::enablePlugin).isPresent();
     }
 
     /**
-     * Enable a plugin by its instance
+     * Enable a {@link Plugin} by its instance
      *
-     * @param plugin The plugin you want to enable
-     * @return If the plugin could be enabled (false if already enabled)
+     * @param plugin The {@link Plugin} instance
+     * @return {@code true} if the {@link Plugin} was enabled successfully
      */
     public boolean enablePlugin(final Plugin plugin) {
         if (plugin.isEnabled()) {
@@ -102,20 +119,20 @@ public class PluginUtils {
     }
 
     /**
-     * Disable a plugin by its name
+     * Disable a {@link Plugin} by its name
      *
-     * @param name The name of the plugin you want to disable
-     * @return if the plugin could be disabled (false if already disabled)
+     * @param name The name of the {@link Plugin}
+     * @return {@code true} if the {@link Plugin} was disabled successfully
      */
     public boolean disablePlugin(final String name) {
         return this.getPlugin(name).filter(this::disablePlugin).isPresent();
     }
 
     /**
-     * Disable a plugin by its instance
+     * Disable a {@link Plugin} by its instance
      *
-     * @param plugin The plugin you want to disable
-     * @return if the plugin could be disabled (false if already disabled)
+     * @param plugin The {@link Plugin} instance
+     * @return {@code true} if the {@link Plugin} was disabled successfully
      */
     public boolean disablePlugin(final Plugin plugin) {
         if (!plugin.isEnabled()) {
@@ -137,18 +154,18 @@ public class PluginUtils {
 
 
     /**
-     * Reload the config of a plugin by its name
+     * Reload the config of a {@link Plugin} by its name
      *
-     * @param name The name of the plugin you want the config of to be reloaded
+     * @param name The name of the {@link Plugin}
      */
     public void reloadConfig(final String name) {
         this.getPlugin(name).ifPresent(this::reloadConfig);
     }
 
     /**
-     * Reload the config of a plugin by its instance
+     * Reload the config of a {@link Plugin} by its instance
      *
-     * @param plugin The plugin you want the config of to be reloaded
+     * @param plugin The {@link Plugin} instance
      */
     public void reloadConfig(final Plugin plugin) {
         plugin.reloadConfig();
@@ -156,10 +173,12 @@ public class PluginUtils {
 
 
     /**
-     * Reload a plugin by unloading it and loading it again
+     * Reload a {@link Plugin} by its name<br>
+     * This first unloads the {@link Plugin} and then loads it again
      *
-     * @param plugin The plugin you want to reload
-     * @return The new loaded instance of the plugin
+     * @param plugin The {@link Plugin} instance
+     * @return The new {@link Plugin} instance
+     * @throws IllegalStateException If anything goes wrong
      */
     public Plugin reloadPlugin(final Plugin plugin) {
         this.unloadPlugin(plugin);
@@ -168,21 +187,25 @@ public class PluginUtils {
 
 
     /**
-     * Load a plugin by its old instance
+     * Load a {@link Plugin} by its instance<br>
+     * See {@link #loadPlugin(String)} for more information
      *
-     * @param plugin The old plugin instance
-     * @return The plugin instance if loaded
+     * @param plugin The {@link Plugin} instance
+     * @return The new {@link Plugin} instance
+     * @throws IllegalStateException If anything goes wrong
      */
     public Plugin loadPlugin(final Plugin plugin) {
         return this.loadPlugin(plugin.getName());
     }
 
     /**
-     * Load a plugin by its name
+     * Load a {@link Plugin} by its name<br>
+     * This tries to get the {@link Plugin} {@link File} by name
+     * and if not found scans all {@link PluginDescriptionFile}s for the name
      *
-     * @param name The plugin name you want to load
-     * @return The plugin instance if loaded
-     * @throws IllegalStateException If something went wrong
+     * @param name The name of the {@link Plugin}
+     * @return The new {@link Plugin} instance
+     * @throws IllegalStateException If anything goes wrong
      */
     public Plugin loadPlugin(final String name) {
         AtomicReference<File> targetFile = new AtomicReference<>(new File(this.getPluginsDirectory(), name + (name.toLowerCase().endsWith(".jar") ? "" : ".jar")));
@@ -234,19 +257,23 @@ public class PluginUtils {
 
 
     /**
-     * Unload a plugin by its name
+     * Unload a {@link Plugin} by its name<br>
+     * See {@link #unloadPlugin(Plugin)} for more information
      *
-     * @param name The name of the plugin you want to unload
+     * @param name The name of the {@link Plugin}
+     * @throws IllegalStateException If anything goes wrong
      */
     public void unloadPlugin(final String name) {
         this.getPlugin(name).ifPresent(this::unloadPlugin);
     }
 
     /**
-     * Unload a plugin by its instance
+     * Unload a {@link Plugin} by its instance<br>
+     * This closes the {@link URLClassLoader} of the {@link Plugin} which causes
+     * the {@link Plugin} no longer being able to load new {@link Class}es
      *
-     * @param plugin The plugin you want to unload
-     * @throws IllegalStateException If the plugin could not be unloaded
+     * @param plugin The {@link Plugin} instance
+     * @throws IllegalStateException If anything goes wrong
      */
     public void unloadPlugin(final Plugin plugin) {
         this.disablePlugin(plugin);
@@ -333,9 +360,7 @@ public class PluginUtils {
         } else {
 //            Logger.sendConsole("§cIt seems like spigot no longer uses URLClassLoader.");
 //            Logger.sendConsole("§cPlease report this to the plugin dev!");
-            for (String s : I18n.mt("pm.pluginutils.unloadPlugin.unknownClassLoader")) {
-                Logger.sendConsole(s);
-            }
+            for (String s : I18n.mt("pm.pluginutils.unloadPlugin.unknownClassLoader")) Logger.sendConsole(s);
         }
 
         System.gc(); //Hopefully remove all leftover plugin classes and references
@@ -343,7 +368,10 @@ public class PluginUtils {
 
 
     /**
-     * @return All plugins in the load order
+     * Get a {@link List} of all {@link Plugin}s sorted by their dependencies<br>
+     * Loading all {@link Plugin}s in the correct order is important for the correct functioning of the {@link Plugin}s
+     *
+     * @return The {@link List}
      */
     public List<Plugin> getPluginsByLoadOrder() {
         List<String> ignoredPlugins = net.lenni0451.spm.PluginManager.getInstance().getConfig().getStringList("IgnoredPlugins");
@@ -390,12 +418,12 @@ public class PluginUtils {
 
 
     /**
-     * Get a list with all registered commands and aliases from a plugin
-     * <br>This only can get all commands registered using the standard Bukkit way
-     * <br>If a plugin uses some other way of registering commands they will not show up
+     * Get a {@link List} of all commands registered by {@link Plugin}s<br>
+     * This only works if they are registered as {@link PluginCommand}s<br>
+     * Anything using events or other methods to handle commands will not work
      *
-     * @param plugin The plugin of which you want the commands from
-     * @return The list of commands a plugin has registered
+     * @param plugin The instance of the {@link Plugin}
+     * @return The {@link List}
      */
     public List<String> getCommands(final Plugin plugin) {
         List<String> commands = new ArrayList<>();
@@ -441,10 +469,12 @@ public class PluginUtils {
 
 
     /**
-     * Get the location of the plugin jar
+     * Get the {@link File} of the {@link Plugin} jar<br>
+     * This tries calling the {@link JavaPlugin#getFile()} method first<br>
+     * If that fails, all {@link PluginDescriptionFile}s are searched for the name of the {@link Plugin}
      *
-     * @param plugin The plugin you want the location from
-     * @return An optional with the File if found
+     * @param plugin The instance of the {@link Plugin}
+     * @return The {@link File} of the {@link Plugin} jar or {@link Optional#empty()} if not found
      */
     public Optional<File> getPluginFile(final Plugin plugin) {
         try {
@@ -469,6 +499,12 @@ public class PluginUtils {
         return Optional.empty();
     }
 
+    /**
+     * Update a {@link Plugin} from the updates folder
+     *
+     * @param pluginFile The {@link File} of the {@link Plugin}
+     * @return {@code true} if the update was successful
+     */
     public boolean updatePlugin(final File pluginFile) {
         final File updateFile = new File(this.getUpdateDirectory(), pluginFile.getName());
         //TODO: Do some more advanced checking (Load plugin.yml and compare name, author, ...)

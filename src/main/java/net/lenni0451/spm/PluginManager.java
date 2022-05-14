@@ -18,6 +18,11 @@ public class PluginManager extends JavaPlugin {
 
     private static PluginManager instance;
 
+    /**
+     * Get the instance of {@link PluginManager}
+     *
+     * @return The instance
+     */
     public static PluginManager getInstance() {
         return instance;
     }
@@ -41,10 +46,20 @@ public class PluginManager extends JavaPlugin {
         this.installedPluginsInfo = new InstalledPluginsConfig();
     }
 
+    /**
+     * Get the instance of {@link PluginUtils}
+     *
+     * @return The instance
+     */
     public PluginUtils getPluginUtils() {
         return this.pluginUtils;
     }
 
+    /**
+     * Get the instance of {@link InstalledPluginsConfig}
+     *
+     * @return The instance
+     */
     public InstalledPluginsConfig getInstalledPlugins() {
         return this.installedPluginsInfo;
     }

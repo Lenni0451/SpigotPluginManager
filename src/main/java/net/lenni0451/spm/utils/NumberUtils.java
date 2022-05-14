@@ -3,14 +3,14 @@ package net.lenni0451.spm.utils;
 public class NumberUtils {
 
     /**
-     * Get if an string is an integer
+     * Check if a {@link String} is an int
      *
-     * @param string The string you want to check
-     * @return If the given string represents a integer
+     * @param string The {@link String} to check
+     * @return {@code true} if the {@link String} is an int
      */
     public static boolean isInteger(final String string) {
         try {
-            Integer.valueOf(string);
+            Integer.parseInt(string);
             return true;
         } catch (Exception ignored) {
         }

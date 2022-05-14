@@ -22,7 +22,7 @@ public class I18n {
     private static boolean HAS_UPDATE = false;
 
     /**
-     * Initialize the translations
+     * Load all translations and update the messages.lang file
      */
     public static void init() {
         try { //Load default translations to not show raw translation strings if a translation is missing
@@ -35,10 +35,10 @@ public class I18n {
     }
 
     /**
-     * Get the translation of a translation key
+     * Get a translation by its key
      *
      * @param translation The translation key
-     * @param args        Arguments the translation can use
+     * @param args        Arguments to replace in the translation
      * @return The translated string
      */
     public static String t(final String translation, final Object... args) {
@@ -51,18 +51,20 @@ public class I18n {
     }
 
     /**
-     * Get the multi line translation of a translation key
+     * Get a multiline translation by its key
      *
      * @param translation The translation key
-     * @param args        Arguments the translation can use
-     * @return The multi line translated string
+     * @param args        Arguments to replace in the translation
+     * @return The translated string array
      */
     public static String[] mt(final String translation, final Object... args) {
         return t(translation, args).split(Pattern.quote("\\n"));
     }
 
     /**
-     * @return If the messages.lang file has missing translations
+     * Get if the messages.lang file has been updated
+     *
+     * @return {@code true} if it has been updated
      */
     public static boolean wasUpdated() {
         return HAS_UPDATE;
