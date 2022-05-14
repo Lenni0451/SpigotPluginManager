@@ -6,13 +6,77 @@ import net.lenni0451.spm.PluginManager;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 public class DownloadUtils {
 
-    //	private static final Gson gson = new GsonBuilder().create();
     private static final JsonParser jsonParser = new JsonParser();
+
+    /**
+     * Open a connection to an url
+     *
+     * @param url The url to open
+     * @return The opened connection or null if the response code is not 200
+     * @throws IOException when the connection could not be opened
+     */
+    public static HttpURLConnection openConnection(final String url) throws IOException {
+        HttpsURLConnection.setFollowRedirects(true);
+        HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
+        connection.setDoInput(true);
+        connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+
+        if (connection.getResponseCode() != 200) {
+            connection.disconnect();
+            return null;
+        }
+
+        return connection;
+    }
+
+    /**
+     * Read the bytes from a connection and write them to an output stream
+     *
+     * @param connection The connection to read from
+     * @param os         The output stream to write to
+     * @throws IOException when the connection could not be read or the output stream could not be written to
+     */
+    public static void readWriteBytes(final HttpURLConnection connection, final OutputStream os) throws IOException {
+        InputStream is = connection.getInputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = is.read(buffer)) != -1) os.write(buffer, 0, length);
+        is.close();
+    }
+
+    /**
+     * Read the bytes from a connection and return them
+     *
+     * @param connection The connection to read from
+     * @return The bytes read from the connection
+     * @throws IOException when the connection could not be read
+     */
+    public static byte[] readBytes(final HttpURLConnection connection) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        readWriteBytes(connection, baos);
+        return baos.toByteArray();
+    }
+
+    /**
+     * Read a string from a connection and return it
+     *
+     * @param connection The connection to read from
+     * @return The string read from the connection
+     * @throws IOException when the connection could not be read
+     */
+    public static String readString(final HttpURLConnection connection) throws IOException {
+        StringBuilder responseBuilder = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line = br.readLine()) != null) responseBuilder.append(line);
+        br.close();
+        return responseBuilder.toString();
+    }
 
     /**
      * Get the information about a plugin on spigotmc<br>
@@ -23,20 +87,11 @@ public class DownloadUtils {
      * @throws IOException when the plugin was not found
      */
     public static JsonObject getSpigotMcPluginInfo(final int pluginId) throws IOException {
-        URL apiUrl = new URL("https://api.spiget.org/v2/resources/" + pluginId);
-        HttpsURLConnection connection = (HttpsURLConnection) apiUrl.openConnection();
-        connection.setDoInput(true);
-        connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+        HttpURLConnection connection = openConnection("https://api.spiget.org/v2/resources/" + pluginId);
+        if (connection == null) return null;
 
-        if (connection.getResponseCode() != 200) return null;
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        StringBuilder responseBuilder = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) responseBuilder.append(line);
-        br.close();
-
-        return jsonParser.parse(responseBuilder.toString()).getAsJsonObject();
+        String response = readString(connection);
+        return jsonParser.parse(response).getAsJsonObject();
     }
 
     /**
@@ -48,21 +103,12 @@ public class DownloadUtils {
      * @throws IOException when the plugin could not be saved
      */
     public static boolean downloadSpigotMcPlugin(final int pluginId, final File file) throws IOException {
-        HttpsURLConnection.setFollowRedirects(true);
-        URL apiUrl = new URL("https://api.spiget.org/v2/resources/" + pluginId + "/download");
-        HttpsURLConnection connection = (HttpsURLConnection) apiUrl.openConnection();
-        connection.setDoInput(true);
-        connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+        HttpURLConnection connection = openConnection("https://api.spiget.org/v2/resources/" + pluginId + "/download");
+        if (connection == null) return false;
 
-        if (connection.getResponseCode() != 200) return false;
-
-        BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
         FileOutputStream fos = new FileOutputStream(file);
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = bis.read(buffer)) != -1) fos.write(buffer, 0, length);
+        readWriteBytes(connection, fos);
         fos.close();
-        bis.close();
         return true;
     }
 
@@ -74,20 +120,12 @@ public class DownloadUtils {
      * @throws IOException when the url is invalid/the plugin could not be found
      */
     public static void downloadPlugin(final String url, final File file) throws IOException {
-        URL downloadUrl = new URL(url);
-        URLConnection connection = downloadUrl.openConnection();
-        connection.setDoInput(true);
-        connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+        HttpURLConnection connection = openConnection(url);
+        if (connection == null || connection.getContentLength() <= 0) throw new IOException();
 
-        if (connection.getContentLength() <= 0) throw new IOException();
-
-        BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
         FileOutputStream fos = new FileOutputStream(file);
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = bis.read(buffer)) != -1) fos.write(buffer, 0, length);
+        readWriteBytes(connection, fos);
         fos.close();
-        bis.close();
     }
 
     /**
@@ -98,21 +136,10 @@ public class DownloadUtils {
      * @throws IOException When the URL is invalid
      */
     public static byte[] download(final String url) throws IOException {
-        URL downloadUrl = new URL(url);
-        URLConnection connection = downloadUrl.openConnection();
-        connection.setDoInput(true);
-        connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+        HttpURLConnection connection = openConnection(url);
+        if (connection == null || connection.getContentLength() <= 0) throw new IOException();
 
-        if (connection.getContentLength() <= 0) throw new IOException();
-
-        BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = bis.read(buffer)) != -1) baos.write(buffer, 0, length);
-        bis.close();
-
-        return baos.toByteArray();
+        return readBytes(connection);
     }
 
     /**
@@ -122,22 +149,14 @@ public class DownloadUtils {
      * @throws IOException When the github url could not be accessed
      */
     public static String getNewestVersion() throws IOException {
-        URL url = new URL("https://github.com/Lenni0451/SpigotPluginManager/releases/latest");
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setDoInput(true);
-        connection.setRequestProperty("user-agent", PluginManager.getInstance().getConfig().getString("UserAgent"));
+        HttpURLConnection connection = openConnection("https://github.com/Lenni0451/SpigotPluginManager/releases/latest");
+        if (connection == null) throw new IOException();
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        StringBuilder responseBuilder = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) responseBuilder.append(line);
-        br.close();
+        String response = readString(connection);
 
         String urlBase = "https://github.com/Lenni0451/SpigotPluginManager/releases/tag/";
-        String source = responseBuilder.toString();
-        String version = source.substring(source.indexOf(urlBase) + urlBase.length());
+        String version = response.substring(response.indexOf(urlBase) + urlBase.length());
         version = version.substring(0, version.indexOf("&"));
-
         return version;
     }
 
