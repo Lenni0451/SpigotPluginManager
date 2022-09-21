@@ -12,12 +12,19 @@ version = project.maven_version
 
 repositories {
     mavenCentral()
+    ivy {
+        url "https://cdn.getbukkit.org/spigot"
+        patternLayout {
+            artifact "/[organisation]-[module]-latest.jar"
+        }
+        metadataSources {
+            artifact()
+        }
+    }
 }
 
 dependencies {
-    if (new File(projectDir, "libs").exists()) {
-        implementation fileTree(include: ["*.jar"], dir: "libs")
-    }
+    compileOnly "spigot:1.8.8-R0.1-SNAPSHOT"
 }
 
 java {
