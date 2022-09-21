@@ -1,4 +1,8 @@
-out/
-.idea/
-*.jar
+/.gradle/
+/.idea/
+/.vscode/
+/bin/
+/build/
+/out/
 *.iml
+/libs/*.jar

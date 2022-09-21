@@ -4,8 +4,6 @@ import com.google.gson.JsonObject;
 import net.lenni0451.spm.PluginManager;
 import net.lenni0451.spm.commands.subs.types.ISubCommandMultithreaded;
 import net.lenni0451.spm.messages.I18n;
-import net.lenni0451.spm.softdepends.MVdWUpdater_Adapter;
-import net.lenni0451.spm.softdepends.SoftDepends;
 import net.lenni0451.spm.utils.DownloadUtils;
 import net.lenni0451.spm.utils.Logger;
 import net.lenni0451.spm.utils.NumberUtils;
@@ -70,27 +68,13 @@ public class Download_Sub implements ISubCommandMultithreaded {
                     return true;
                 }
                 if (response.has("premium") && response.get("premium").getAsBoolean()) {
-                    if (SoftDepends.MVdWUpdater.isInstalled()) {
-                        if (!MVdWUpdater_Adapter.hasResource(id)) {
-                            for (String s : I18n.mt("pm.subcommands.download.notBought", response.get("price").getAsString() + response.get("currency").getAsString())) {
-                                Logger.sendPrefixMessage(sender, s);
-                            }
-                            return true;
-                        }
-                    } else {
-                        for (String s : I18n.mt("pm.subcommands.download.isPremium", response.get("price").getAsString() + response.get("currency").getAsString())) {
-                            Logger.sendPrefixMessage(sender, s);
-                        }
-                        return true;
+                    for (String s : I18n.mt("pm.subcommands.download.isPremium", response.get("price").getAsString() + response.get("currency").getAsString())) {
+                        Logger.sendPrefixMessage(sender, s);
                     }
+                    return true;
                 }
 
-                boolean success;
-                if (response.has("premium") && response.get("premium").getAsBoolean()) {
-                    success = MVdWUpdater_Adapter.downloadPlugin(file, id);
-                } else {
-                    success = DownloadUtils.downloadSpigotMcPlugin(id, file);
-                }
+                boolean success = DownloadUtils.downloadSpigotMcPlugin(id, file);
                 if (success) {
                     Logger.sendPrefixMessage(sender, I18n.t("pm.subcommands.download.success", file.getName()));
                     try {

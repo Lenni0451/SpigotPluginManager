@@ -4,7 +4,6 @@ import com.tchristofferson.configupdater.ConfigUpdater;
 import net.lenni0451.spm.commands.PluginManager_Command;
 import net.lenni0451.spm.commands.Reload_Command;
 import net.lenni0451.spm.messages.I18n;
-import net.lenni0451.spm.softdepends.SoftDepends;
 import net.lenni0451.spm.tabcomplete.PluginManager_TabComplete;
 import net.lenni0451.spm.utils.*;
 import org.bukkit.Bukkit;
@@ -74,11 +73,6 @@ public class PluginManager extends JavaPlugin {
         this.getCommand("pluginmanager").setAliases(Collections.singletonList("pm"));
         this.getCommand("pluginmanager").setTabCompleter(new PluginManager_TabComplete());
 
-        for (SoftDepends softDepend : SoftDepends.values()) {
-            if (softDepend.isInstalled()) {
-                Logger.sendPrefixMessage(Bukkit.getConsoleSender(), I18n.t("pm.softdepend.found", softDepend.name()));
-            }
-        }
         if (this.getConfig().getBoolean("CheckForUpdates")) this.checkUpdates();
         if (I18n.wasUpdated()) {
             Bukkit.getScheduler().runTask(PluginManager.getInstance(), () -> {

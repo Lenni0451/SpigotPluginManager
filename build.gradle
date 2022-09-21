@@ -1,0 +1,63 @@
+plugins {
+    id "java"
+    id "maven-publish"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+compileJava.options.encoding = "UTF-8"
+
+archivesBaseName = project.maven_name
+group = project.maven_group
+version = project.maven_version
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    if (new File(projectDir, "libs").exists()) {
+        implementation fileTree(include: ["*.jar"], dir: "libs")
+    }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    failOnError = false
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "reposilite"
+            url = "https://maven.lenni0451.net/snapshots"
+            credentials {
+                username = "${System.env.REPOSILITE_USERNAME}"
+                password = "${System.env.REPOSILITE_PASSWORD}"
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            artifactId = project.maven_name
+            groupId = project.maven_group
+            version = project.maven_version
+
+            from components.java
+        }
+    }
+}
+
+processResources {
+    inputs.property "version", project.maven_version
+
+    filesMatching("plugin.yml") {
+        expand "version": project.maven_version
+    }
+}
