@@ -40,7 +40,7 @@ publishing {
     repositories {
         maven {
             name = "reposilite"
-            url = "https://maven.lenni0451.net/snapshots"
+            url = ((project.updatable == "true") ? "https://maven.lenni0451.net/releases" : "https://maven.lenni0451.net/snapshots")
             credentials {
                 username = "${System.env.REPOSILITE_USERNAME}"
                 password = "${System.env.REPOSILITE_PASSWORD}"
@@ -62,9 +62,13 @@ publishing {
 }
 
 processResources {
-    inputs.property "version", project.maven_version
+    inputs.properties(
+            "version": project.maven_version + ((project.updatable == "false") ? "-SNAPSHOT" : "")
+    )
 
     filesMatching("plugin.yml") {
-        expand "version": project.maven_version
+        expand(
+                "version": project.maven_version + ((project.updatable == "false") ? "-SNAPSHOT" : "")
+        )
     }
 }

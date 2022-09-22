@@ -29,5 +29,6 @@ implementation "net.lenni0451:SpigotPluginManager:3.7.2"
 `````
 
 ## Building
+First of all make sure you set ``updatable`` to ``false`` in the ``gradle.properties`` file if it is not already. This will prevent SpigotPluginManager from updating itself on startup.\
 To build SpigotPluginManager yourself you just need to run ``gradlew build`` in the project root.\
 You can find the compiled jar in the ``build/libs/`` folder.

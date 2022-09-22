@@ -84,6 +84,8 @@ public class PluginManager extends JavaPlugin {
     }
 
     private void checkUpdates() {
+        if (this.getDescription().getVersion().endsWith("-SNAPSHOT")) return; //Snapshots are not updatable
+
         final String downloadURL = "https://github.com/Lenni0451/SpigotPluginManager/releases/latest/download/PluginManager.jar";
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             try {
