@@ -31,10 +31,10 @@ public class Download_Sub implements ISubCommandMultithreaded {
         		filename += args[i];
         	}
         }
-        args[2] = args[2].replace("/", "").replace("\\", "");
+        filename = filename.replace("/", "").replace("\\", "");
 
         String url = args[1];
-        File file = new File(PluginManager.getInstance().getPluginUtils().getPluginsDirectory(), args[2] + (args[2].toLowerCase().endsWith(".jar") ? "" : ".jar"));
+        File file = new File(PluginManager.getInstance().getPluginUtils().getPluginsDirectory(), filename + (filename.toLowerCase().endsWith(".jar") ? "" : ".jar"));
         if (args[0].equalsIgnoreCase("direct")) {
             try {
                 DownloadUtils.downloadPlugin(url, file);
@@ -123,8 +123,9 @@ public class Download_Sub implements ISubCommandMultithreaded {
             }
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("direct") || args[0].equalsIgnoreCase("spigot"))) {
-	        try {
-	            for (File file : PluginManager.getInstance().getPluginUtils().getPluginsDirectory().listFiles()) {
+        	File[] files = PluginManager.getInstance().getPluginUtils().getPluginsDirectory().listFiles();
+        	if (files != null) {
+	            for (File file : files) {
 	            	if (file.isFile() && file.getName().toLowerCase().endsWith(".jar")) {
 	            		String filename= file.getName();
 	            		if (filename.contains(" ")) {
@@ -133,8 +134,7 @@ public class Download_Sub implements ISubCommandMultithreaded {
 	            		tabs.add(filename);
 	            	}
 	            }
-	        } catch(Throwable ignored) {
-	        }
+        	}
         }
     }
 
