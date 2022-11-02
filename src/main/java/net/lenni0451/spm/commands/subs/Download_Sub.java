@@ -30,6 +30,7 @@ public class Download_Sub implements ISubCommandMultithreaded {
         	for(int i = 3; i < args.length; i++) {
         		filename += args[i];
         	}
+        	filename = filename.substring(1, filename.length() - 1);
         }
         filename = filename.replace("/", "").replace("\\", "");
 
