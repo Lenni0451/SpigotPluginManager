@@ -16,8 +16,7 @@ If you want to download the latest (maybe unstable build) refer to my [Jenkins s
 
 
 To Add this as a dependency add this to your project:
-#
-## Gradle
+### Gradle
 ````` groovy
 repositories {
     maven { url "https://maven.lenni0451.net/releases" }
@@ -27,9 +26,8 @@ dependencies {
     implementation("net.lenni0451:SpigotPluginManager:2.7.2") // Update version
 }
 `````
-#
-## Maven
 
+### Maven
 `````xml
 
             <repository>
@@ -45,7 +43,7 @@ dependencies {
             </dependency>
 
 `````
-#
+
 ## Building
 First of all make sure you set ``updatable`` to ``false`` in the ``gradle.properties`` file if it is not already. This will prevent SpigotPluginManager from updating itself on startup.\
 To build SpigotPluginManager yourself you just need to run ``gradlew build`` in the project root.\
