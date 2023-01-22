@@ -29,18 +29,17 @@ dependencies {
 
 ### Maven
 `````xml
+<repository>
+    <id>lenni0451-maven-releases</id>
+    <name>Lenni0451 Maven Repository</name>
+    <url>https://maven.lenni0451.net/releases</url>
+</repository>
 
-            <repository>
-                <id>lenni0451-maven-releases</id>
-                <name>Lenni0451 Maven Repository</name>
-                <url>https://maven.lenni0451.net/releases</url>
-            </repository>
-
-            <dependency>
-                <groupId>net.lenni0451</groupId>
-                <artifactId>SpigotPluginManager</artifactId>
-                <version>2.7.2</version>
-            </dependency>
+<dependency>
+    <groupId>net.lenni0451</groupId>
+    <artifactId>SpigotPluginManager</artifactId>
+    <version>2.7.2</version>
+</dependency>
 
 `````
 
