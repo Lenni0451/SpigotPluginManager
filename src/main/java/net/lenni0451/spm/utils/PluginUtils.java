@@ -252,6 +252,12 @@ public class PluginUtils {
 //            throw new IllegalStateException("Unable to add to plugin list");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.notAdded"));
         }
+        try { //Synchronize the commands between client/server on newer versions
+            Method syncCommands = Bukkit.getServer().getClass().getDeclaredMethod("syncCommands");
+            syncCommands.setAccessible(true);
+            syncCommands.invoke(Bukkit.getServer());
+        } catch (Throwable ignored) {
+        }
         return targetPlugin;
     }
 
@@ -363,6 +369,12 @@ public class PluginUtils {
             for (String s : I18n.mt("pm.pluginutils.unloadPlugin.unknownClassLoader")) Logger.sendConsole(s);
         }
 
+        try { //Synchronize the commands between client/server on newer versions
+            Method syncCommands = Bukkit.getServer().getClass().getDeclaredMethod("syncCommands");
+            syncCommands.setAccessible(true);
+            syncCommands.invoke(Bukkit.getServer());
+        } catch (Throwable ignored) {
+        }
         System.gc(); //Hopefully remove all leftover plugin classes and references
     }
 
