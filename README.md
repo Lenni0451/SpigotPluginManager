@@ -1,4 +1,4 @@
-# SpigotPluginManager
+# PluginManager
 A fresh and easy to use plugin manager for spigot.\
 PluginManager (Yes, a really creative name) aims to be the perfect replacement for every other plugin manager you ever had. It has many already seen featured and also new ones like an easy to use gui.
 
@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.lenni0451:SpigotPluginManager:2.7.2") // Update version
+    implementation("net.lenni0451:SpigotPluginManager:3.0.0") // TODO: Update version
 }
 `````
 
@@ -44,6 +44,6 @@ dependencies {
 `````
 
 ## Building
-First of all make sure you set ``updatable`` to ``false`` in the ``gradle.properties`` file if it is not already. This will prevent SpigotPluginManager from updating itself on startup.\
+First of all make sure to add ``-SNAPSHOT`` to the ``version`` in the ``gradle.properties`` file if it is not already. This will prevent SpigotPluginManager from updating itself on startup.\
 To build SpigotPluginManager yourself you just need to run ``gradlew build`` in the project root.\
 You can find the compiled jar in the ``build/libs/`` folder.

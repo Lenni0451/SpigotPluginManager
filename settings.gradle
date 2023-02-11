@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'SpigotPluginManager'
+rootProject.name = "PluginManager"

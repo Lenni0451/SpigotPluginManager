@@ -1,30 +1,29 @@
 plugins {
     id "java"
     id "maven-publish"
+    id "signing"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
-compileJava.options.encoding = "UTF-8"
+compileJava.options.encoding = compileTestJava.options.encoding = javadoc.options.encoding = "UTF-8"
 
 archivesBaseName = project.maven_name
 group = project.maven_group
 version = project.maven_version
 
+configurations {
+    include
+
+    implementation.extendsFrom include
+    api.extendsFrom include
+}
+
 repositories {
     mavenCentral()
-    ivy {
-        url "https://cdn.getbukkit.org/spigot"
-        patternLayout {
-            artifact "/[organisation]-[module]-latest.jar"
-        }
-        metadataSources {
-            artifact()
-        }
-    }
 }
 
 dependencies {
-    compileOnly "spigot:1.8.8-R0.1-SNAPSHOT"
+    compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }
 
 java {
@@ -32,19 +31,55 @@ java {
     withJavadocJar()
 }
 
-javadoc {
-    failOnError = false
+processResources {
+    //Config file: "version: ${version}"
+    inputs.properties(
+            "version": project.maven_version
+    )
+    
+    filesMatching("plugin.yml") {
+        expand(
+                "version": project.maven_version
+        )
+    }
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+jar {
+    dependsOn configurations.include
+    from {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        configurations.include.collect {
+            zipTree(it)
+        }
+    } {
+        exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
+    }
 }
 
 publishing {
     repositories {
         maven {
             name = "reposilite"
-            url = ((project.updatable == "true") ? "https://maven.lenni0451.net/releases" : "https://maven.lenni0451.net/snapshots")
-            credentials {
-                username = "${System.env.REPOSILITE_USERNAME}"
-                password = "${System.env.REPOSILITE_PASSWORD}"
+            def releasesUrl = "https://maven.lenni0451.net/releases"
+            def snapshotsUrl = "https://maven.lenni0451.net/snapshots"
+            url = project.maven_version.endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
+
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
             }
+        }
+        maven {
+            name = "ossrh"
+            def releasesUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = project.maven_version.endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
+
+            credentials(PasswordCredentials)
             authentication {
                 basic(BasicAuthentication)
             }
@@ -57,18 +92,37 @@ publishing {
             version = project.maven_version
 
             from components.java
+
+            pom {
+                name = rootProject.name
+                description = "A fresh and easy to use plugin manager for spigot"
+                url = "https://github.com/Lenni0451/SpigotPluginManager"
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "https://github.com/Lenni0451/SpigotPluginManager/blob/main/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "Lenni0451"
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/Lenni0451/SpigotPluginManager.git"
+                    developerConnection = "scm:git:ssh://github.com/Lenni0451/SpigotPluginManager.git"
+                    url = "github.com/Lenni0451/GradleTemplate"
+                }
+            }
         }
     }
 }
 
-processResources {
-    inputs.properties(
-            "version": project.maven_version + ((project.updatable == "false") ? "-SNAPSHOT" : "")
-    )
+signing {
+    sign configurations.archives
+    sign publishing.publications.maven
+}
 
-    filesMatching("plugin.yml") {
-        expand(
-                "version": project.maven_version + ((project.updatable == "false") ? "-SNAPSHOT" : "")
-        )
-    }
+project.tasks.withType(PublishToMavenRepository).forEach {
+    it.dependsOn(project.tasks.withType(Sign))
 }
