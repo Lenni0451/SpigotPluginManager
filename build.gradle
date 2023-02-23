@@ -20,10 +20,28 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        name = "Sonatype Snapshots"
+        url = 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        name = "SpigotMC Hub"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+
+        content {
+            includeGroup "org.bukkit"
+            includeGroup "org.spigotmc"
+        }
+    }
 }
 
 dependencies {
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+    compileOnly "org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT"
+
+    include "org.json:json:20220924"
+    include "com.vdurmont:semver4j:3.1.0"
+    include "com.tchristofferson:ConfigUpdater:2.0-SNAPSHOT"
 }
 
 java {
@@ -36,7 +54,7 @@ processResources {
     inputs.properties(
             "version": project.maven_version
     )
-    
+
     filesMatching("plugin.yml") {
         expand(
                 "version": project.maven_version
