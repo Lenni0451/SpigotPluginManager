@@ -10,11 +10,15 @@ import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class PluginUtils {
 
@@ -46,12 +50,23 @@ public class PluginUtils {
     }
 
     /**
-     * Get the {@link PluginLoader} instance of the server
+     * Get the {@link PluginDescriptionFile} of a plugin jar
      *
-     * @return The {@link PluginLoader} instance
+     * @param file The plugin jar
+     * @return The {@link PluginDescriptionFile}
+     * @throws InvalidDescriptionException If the plugin.yml is invalid
      */
-    public PluginLoader getPluginLoader() {
-        return net.lenni0451.spm.PluginManager.getInstance().getPluginLoader();
+    public PluginDescriptionFile getPluginDescription(final File file) throws InvalidDescriptionException {
+        try (JarFile jar = new JarFile(file)) {
+            JarEntry entry = jar.getJarEntry("plugin.yml");
+            if (entry == null) throw new InvalidDescriptionException(new FileNotFoundException("Jar does not contain plugin.yml"));
+
+            try (InputStream is = jar.getInputStream(entry)) {
+                return new PluginDescriptionFile(is);
+            }
+        } catch (Throwable t) {
+            throw new InvalidDescriptionException(t);
+        }
     }
 
     /**
@@ -216,7 +231,7 @@ public class PluginUtils {
                     .filter(file -> file.getName().toLowerCase().endsWith(".jar") || (!file.getName().toLowerCase().endsWith(".jar") && !net.lenni0451.spm.PluginManager.getInstance().getConfig().getBoolean("IgnoreNonJarPlugins")))
                     .filter(file -> {
                         try {
-                            PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(file);
+                            PluginDescriptionFile desc = this.getPluginDescription(file);
                             return desc.getName().equalsIgnoreCase(name);
                         } catch (InvalidDescriptionException ignored) {
                             //Here we do not need to care about invalid plugin ymls
@@ -231,13 +246,16 @@ public class PluginUtils {
         this.updatePlugin(targetFile.get());
 
         try {
-            targetPlugin = this.getPluginLoader().loadPlugin(targetFile.get());
+            targetPlugin = this.getPluginManager().loadPlugin(targetFile.get());
         } catch (UnknownDependencyException e) {
 //            throw new IllegalStateException("Missing Dependency");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.missingDependency"));
         } catch (InvalidPluginException e) {
 //            throw new IllegalStateException("Invalid plugin file");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginFile"));
+        } catch (InvalidDescriptionException e) {
+//            throw new IllegalStateException("Invalid plugin description");
+            throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginDescription"));
         }
 
         targetPlugin.onLoad();
@@ -501,7 +519,7 @@ public class PluginUtils {
                     }
 
                     try {
-                        PluginDescriptionFile desc = this.getPluginLoader().getPluginDescription(pluginFile);
+                        PluginDescriptionFile desc = this.getPluginDescription(pluginFile);
                         if (desc.getName().equalsIgnoreCase(plugin.getName())) return Optional.of(pluginFile);
                     } catch (Throwable ignored) {
                     }

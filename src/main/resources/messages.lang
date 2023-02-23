@@ -36,6 +36,7 @@ pm.installedPlugins.notFound=&cThe plugin &6%1 &chas been removed from the confi
 pm.pluginutils.loadPlugin.fileNotFound=Plugin file not found
 pm.pluginutils.loadPlugin.missingDependency=Missing Dependency
 pm.pluginutils.loadPlugin.invalidPluginFile=Invalid plugin file
+pm.pluginutils.loadPlugin.invalidPluginDescription=Invalid plugin description
 pm.pluginutils.loadPlugin.notAdded=Unable to add to plugin list
 # unloadPlugin method
 pm.pluginutils.unloadPlugin.pluginListError=Unable to get plugins list
