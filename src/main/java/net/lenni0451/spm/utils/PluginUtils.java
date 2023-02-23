@@ -302,36 +302,45 @@ public class PluginUtils {
     public void unloadPlugin(final Plugin plugin) {
         this.disablePlugin(plugin);
 
-        PluginManager pluginManager = this.getPluginManager();
-
         List<Plugin> plugins;
         Map<String, Plugin> lookupNames;
         SimpleCommandMap commandMap;
         Map<String, Command> knownCommands;
         Map<Event, SortedSet<RegisteredListener>> listeners;
 
+        Object pluginContainer = this.getPluginManager();
+        try {
+            Field paperPluginManager = Bukkit.getServer().getClass().getDeclaredField("paperPluginManager");
+            paperPluginManager.setAccessible(true);
+            pluginContainer = paperPluginManager.get(Bukkit.getServer());
+
+            Field instanceManager = pluginContainer.getClass().getDeclaredField("instanceManager");
+            instanceManager.setAccessible(true);
+            pluginContainer = instanceManager.get(pluginContainer);
+        } catch (Throwable ignored) {
+        }
         try { //Get plugins list
-            Field f = pluginManager.getClass().getDeclaredField("plugins");
+            Field f = pluginContainer.getClass().getDeclaredField("plugins");
             f.setAccessible(true);
-            plugins = (List<Plugin>) f.get(pluginManager);
+            plugins = (List<Plugin>) f.get(pluginContainer);
         } catch (Throwable e) {
             e.printStackTrace();
 //            throw new IllegalStateException("Unable to get plugins list");
             throw new IllegalStateException(I18n.t("pm.pluginutils.unloadPlugin.pluginListError"));
         }
         try { //Get lookup names
-            Field f = pluginManager.getClass().getDeclaredField("lookupNames");
+            Field f = pluginContainer.getClass().getDeclaredField("lookupNames");
             f.setAccessible(true);
-            lookupNames = (Map<String, Plugin>) f.get(pluginManager);
+            lookupNames = (Map<String, Plugin>) f.get(pluginContainer);
         } catch (Throwable e) {
             e.printStackTrace();
 //            throw new IllegalStateException("Unable to get lookup names");
             throw new IllegalStateException(I18n.t("pm.pluginutils.unloadPlugin.lookupNamesError"));
         }
         try { //Get command map
-            Field f = pluginManager.getClass().getDeclaredField("commandMap");
+            Field f = pluginContainer.getClass().getDeclaredField("commandMap");
             f.setAccessible(true);
-            commandMap = (SimpleCommandMap) f.get(pluginManager);
+            commandMap = (SimpleCommandMap) f.get(pluginContainer);
         } catch (Throwable e) {
             e.printStackTrace();
 //            throw new IllegalStateException("Unable to get command map");
@@ -347,15 +356,16 @@ public class PluginUtils {
             throw new IllegalStateException(I18n.t("pm.pluginutils.unloadPlugin.knownCommandsError"));
         }
         try {
-            Field f = pluginManager.getClass().getDeclaredField("listeners");
+            Field f = pluginContainer.getClass().getDeclaredField("listeners");
             f.setAccessible(true);
-            listeners = (Map<Event, SortedSet<RegisteredListener>>) f.get(pluginManager);
+            listeners = (Map<Event, SortedSet<RegisteredListener>>) f.get(pluginContainer);
         } catch (Throwable e) {
             listeners = null;
         }
 
         plugins.remove(plugin);
         lookupNames.remove(plugin.getName());
+        lookupNames.remove(plugin.getName().toLowerCase());
         { //Remove plugin commands
             Iterator<Map.Entry<String, Command>> iterator = knownCommands.entrySet().iterator();
             while (iterator.hasNext()) {
@@ -370,6 +380,22 @@ public class PluginUtils {
             for (Set<RegisteredListener> registeredListeners : listeners.values()) {
                 registeredListeners.removeIf(registeredListener -> registeredListener.getPlugin().equals(plugin));
             }
+        }
+        try {
+            Class<?> entryPointHandler = Class.forName("io.papermc.paper.plugin.entrypoint.LaunchEntryPointHandler");
+            Object instance = entryPointHandler.getDeclaredField("INSTANCE").get(null);
+            Map<?, ?> storage = (Map<?, ?>) instance.getClass().getMethod("getStorage").invoke(instance);
+            for (Object providerStorage : storage.values()) {
+                Iterable<?> providers = (Iterable<?>) providerStorage.getClass().getMethod("getRegisteredProviders").invoke(providerStorage);
+                Iterator<?> it = providers.iterator();
+                while (it.hasNext()) {
+                    Object provider = it.next();
+                    Object meta = provider.getClass().getMethod("getMeta").invoke(provider);
+                    String metaName = (String) meta.getClass().getMethod("getName").invoke(meta);
+                    if (metaName.equals(plugin.getName())) it.remove();
+                }
+            }
+        } catch (Throwable ignored) {
         }
 
         if (plugin.getClass().getClassLoader() instanceof URLClassLoader) {
