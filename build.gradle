@@ -41,10 +41,7 @@ publishing {
         maven {
             name = "reposilite"
             url = ((project.updatable == "true") ? "https://maven.lenni0451.net/releases" : "https://maven.lenni0451.net/snapshots")
-            credentials {
-                username = "${System.env.REPOSILITE_USERNAME}"
-                password = "${System.env.REPOSILITE_PASSWORD}"
-            }
+            credentials(PasswordCredentials)
             authentication {
                 basic(BasicAuthentication)
             }
