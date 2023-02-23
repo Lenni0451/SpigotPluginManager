@@ -18,6 +18,7 @@ pm.softdepend.found=The soft depend &6%1 &ais installed and will be used.
 
 # Updater
 pm.updater.found=A new update of &6PluginManager &ais available &e(%1 -> %2)&a.
+pm.updater.newMajor=------------------------------\nA new major update of &6PluginManager &ais available &e(%1 -> %2)&a.\nCheck the Github/SpigotMC page for more information about this new Version.\n------------------------------
 pm.updater.downloadSuccess=Successfully downloaded new &6PluginManager &aversion.
 pm.updater.checkChangelog=You should check out the changelog here &6%1&a.
 pm.updater.selfReload=PluginManager is reloading itself in some seconds...
