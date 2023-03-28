@@ -27,7 +27,7 @@ public class Load_Sub implements ISubCommand {
                         continue;
                     }
                     try {
-                        PluginDescriptionFile desc = PluginManager.getInstance().getPluginLoader().getPluginDescription(pluginFile);
+                        PluginDescriptionFile desc = PluginManager.getInstance().getPluginUtils().getPluginDescription(pluginFile);
                         String name = desc.getName();
                         if (!PluginManager.getInstance().getPluginUtils().getPlugin(name).isPresent()) {
                             names.add(desc.getName());
