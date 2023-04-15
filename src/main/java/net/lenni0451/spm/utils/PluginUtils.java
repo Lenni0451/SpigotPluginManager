@@ -252,6 +252,7 @@ public class PluginUtils {
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.missingDependency"));
         } catch (InvalidPluginException e) {
 //            throw new IllegalStateException("Invalid plugin file");
+            e.printStackTrace();
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginFile"));
         } catch (InvalidDescriptionException e) {
 //            throw new IllegalStateException("Invalid plugin description");
