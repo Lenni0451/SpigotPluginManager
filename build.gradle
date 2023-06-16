@@ -27,6 +27,13 @@ dependencies {
     compileOnly "spigot:1.8.8-R0.1-SNAPSHOT"
 }
 
+jar {
+    from {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        zipTree(project(":PaperSupport").jar.archiveFile)
+    }
+}
+
 java {
     withSourcesJar()
     withJavadocJar()

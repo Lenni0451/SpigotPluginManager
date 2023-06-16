@@ -1,8 +1,8 @@
-/.gradle/
+.gradle/
 /.idea/
 /.vscode/
 /bin/
-/build/
+build/
 /out/
 *.iml
 /run

@@ -246,7 +246,13 @@ public class PluginUtils {
         this.updatePlugin(targetFile.get());
 
         try {
-            targetPlugin = this.getPluginManager().loadPlugin(targetFile.get());
+            try {
+                Class.forName("io.papermc.paper.plugin.entrypoint.EntrypointHandler");
+                Class<?> PaperSupport = Class.forName("net.lenni0451.spm.utils.PaperSupport");
+                targetPlugin = (Plugin) PaperSupport.getDeclaredMethod("loadPlugin", File.class).invoke(null, targetFile.get());
+            } catch (ClassNotFoundException e) {
+                targetPlugin = this.getPluginManager().loadPlugin(targetFile.get());
+            }
         } catch (UnknownDependencyException e) {
 //            throw new IllegalStateException("Missing Dependency");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.missingDependency"));
@@ -256,6 +262,10 @@ public class PluginUtils {
         } catch (InvalidDescriptionException e) {
 //            throw new IllegalStateException("Invalid plugin description");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginDescription"));
+        } catch (Exception e) {
+            //Only for paper support
+//            throw new IllegalStateException("Invalid plugin file");
+            throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginFile"));
         }
 
         targetPlugin.onLoad();
