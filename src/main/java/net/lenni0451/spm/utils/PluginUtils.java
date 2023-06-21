@@ -22,6 +22,9 @@ import java.util.jar.JarFile;
 
 public class PluginUtils {
 
+    public static final String PAPER_SUPPORT_CLASS_NAME = "io.papermc.paper.plugin.entrypoint.EntrypointHandler";
+
+
     /**
      * Get the {@code plugins} directory
      *
@@ -240,31 +243,26 @@ public class PluginUtils {
                     }).findAny().ifPresent(targetFile::set);
         }
         if (targetFile.get() == null) {
-//            throw new IllegalStateException("Plugin file not found");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.fileNotFound"));
         }
         this.updatePlugin(targetFile.get());
 
         try {
             try {
-                Class.forName("io.papermc.paper.plugin.entrypoint.EntrypointHandler");
+                Class.forName(PAPER_SUPPORT_CLASS_NAME);
                 Class<?> PaperSupport = Class.forName("net.lenni0451.spm.utils.PaperSupport");
                 targetPlugin = (Plugin) PaperSupport.getDeclaredMethod("loadPlugin", File.class).invoke(null, targetFile.get());
             } catch (ClassNotFoundException e) {
                 targetPlugin = this.getPluginManager().loadPlugin(targetFile.get());
             }
         } catch (UnknownDependencyException e) {
-//            throw new IllegalStateException("Missing Dependency");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.missingDependency"));
         } catch (InvalidPluginException e) {
-//            throw new IllegalStateException("Invalid plugin file");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginFile"));
         } catch (InvalidDescriptionException e) {
-//            throw new IllegalStateException("Invalid plugin description");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginDescription"));
         } catch (Exception e) {
             //Only for paper support
-//            throw new IllegalStateException("Invalid plugin file");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginFile"));
         }
 
@@ -277,7 +275,6 @@ public class PluginUtils {
             if (!plugins.contains(targetPlugin)) plugins.add(targetPlugin);
         } catch (Throwable e) {
             e.printStackTrace(); //We maybe even want to see why the plugin could not be added
-//            throw new IllegalStateException("Unable to add to plugin list");
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.notAdded"));
         }
         try { //Synchronize the commands between client/server on newer versions
@@ -335,7 +332,6 @@ public class PluginUtils {
             plugins = (List<Plugin>) f.get(pluginContainer);
         } catch (Throwable e) {
             e.printStackTrace();
-//            throw new IllegalStateException("Unable to get plugins list");
             throw new IllegalStateException(I18n.t("pm.pluginutils.unloadPlugin.pluginListError"));
         }
         try { //Get lookup names
@@ -344,7 +340,6 @@ public class PluginUtils {
             lookupNames = (Map<String, Plugin>) f.get(pluginContainer);
         } catch (Throwable e) {
             e.printStackTrace();
-//            throw new IllegalStateException("Unable to get lookup names");
             throw new IllegalStateException(I18n.t("pm.pluginutils.unloadPlugin.lookupNamesError"));
         }
         try { //Get command map
@@ -353,7 +348,6 @@ public class PluginUtils {
             commandMap = (SimpleCommandMap) f.get(pluginContainer);
         } catch (Throwable e) {
             e.printStackTrace();
-//            throw new IllegalStateException("Unable to get command map");
             throw new IllegalStateException(I18n.t("pm.pluginutils.unloadPlugin.commandMapError"));
         }
         try { //Get known commands
@@ -362,7 +356,6 @@ public class PluginUtils {
             knownCommands = (Map<String, Command>) f.get(commandMap);
         } catch (Throwable e) {
             e.printStackTrace();
-//            throw new IllegalStateException("Unable to get known commands");
             throw new IllegalStateException(I18n.t("pm.pluginutils.unloadPlugin.knownCommandsError"));
         }
         try {
@@ -414,12 +407,9 @@ public class PluginUtils {
             try {
                 classLoader.close();
             } catch (Throwable t) {
-//                throw new IllegalStateException("Unable to close the class loader");
                 throw new IllegalStateException(I18n.t("pm.pluginutils.unloadPlugin.closeClassLoaderError"));
             }
         } else {
-//            Logger.sendConsole("§cIt seems like spigot no longer uses URLClassLoader.");
-//            Logger.sendConsole("§cPlease report this to the plugin dev!");
             for (String s : I18n.mt("pm.pluginutils.unloadPlugin.unknownClassLoader")) Logger.sendConsole(s);
         }
 
