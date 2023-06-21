@@ -22,7 +22,10 @@ import java.util.jar.JarFile;
 
 public class PluginUtils {
 
-    public static final String PAPER_SUPPORT_CLASS_NAME = "io.papermc.paper.plugin.entrypoint.EntrypointHandler";
+    public static final String PAPER_ENTRYPOINT_HANDLER = "io.papermc.paper.plugin.entrypoint.EntrypointHandler";
+    public static final String PAPER_LAUNCH_ENTRYPOINT_HANDLER = "io.papermc.paper.plugin.entrypoint.LaunchEntryPointHandler";
+    public static final String PAPER_SUPPORT = "net.lenni0451.spm.utils.PaperSupport";
+    public static final String PAPER_PLUGIN_PROVIDER_STORAGE = "net.lenni0451.spm.storage.SingularRuntimePluginProviderStorage";
 
 
     /**
@@ -249,8 +252,8 @@ public class PluginUtils {
 
         try {
             try {
-                Class.forName(PAPER_SUPPORT_CLASS_NAME);
-                Class<?> PaperSupport = Class.forName("net.lenni0451.spm.utils.PaperSupport");
+                Class.forName(PAPER_ENTRYPOINT_HANDLER);
+                Class<?> PaperSupport = Class.forName(PAPER_SUPPORT);
                 targetPlugin = (Plugin) PaperSupport.getDeclaredMethod("loadPlugin", File.class).invoke(null, targetFile.get());
             } catch (ClassNotFoundException e) {
                 targetPlugin = this.getPluginManager().loadPlugin(targetFile.get());
@@ -262,6 +265,7 @@ public class PluginUtils {
         } catch (InvalidDescriptionException e) {
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginDescription"));
         } catch (Exception e) {
+            e.printStackTrace();
             //Only for paper support
             throw new IllegalStateException(I18n.t("pm.pluginutils.loadPlugin.invalidPluginFile"));
         }
@@ -385,7 +389,7 @@ public class PluginUtils {
             }
         }
         try {
-            Class<?> entryPointHandler = Class.forName("io.papermc.paper.plugin.entrypoint.LaunchEntryPointHandler");
+            Class<?> entryPointHandler = Class.forName(PAPER_LAUNCH_ENTRYPOINT_HANDLER);
             Object instance = entryPointHandler.getDeclaredField("INSTANCE").get(null);
             Map<?, ?> storage = (Map<?, ?>) instance.getClass().getMethod("getStorage").invoke(instance);
             for (Object providerStorage : storage.values()) {
