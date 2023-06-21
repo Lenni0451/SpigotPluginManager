@@ -149,15 +149,12 @@ public class DownloadUtils {
      * @throws IOException When the github url could not be accessed
      */
     public static String getNewestVersion() throws IOException {
-        HttpURLConnection connection = openConnection("https://github.com/Lenni0451/SpigotPluginManager/releases/latest");
+        HttpURLConnection connection = openConnection("https://api.github.com/repos/Lenni0451/SpigotPluginManager/releases/latest");
         if (connection == null) throw new IOException();
 
         String response = readString(connection);
-
-        String urlBase = "https://github.com/Lenni0451/SpigotPluginManager/releases/tag/";
-        String version = response.substring(response.indexOf(urlBase) + urlBase.length());
-        version = version.substring(0, version.indexOf("&"));
-        return version;
+        JsonObject jsonObject = jsonParser.parse(response).getAsJsonObject();
+        return jsonObject.get("tag_name").getAsString();
     }
 
 }
