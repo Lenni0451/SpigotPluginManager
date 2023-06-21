@@ -103,6 +103,11 @@ public class PluginManager extends JavaPlugin {
                                     Class.forName(ThreadUtils.class.getName());
                                     Class.forName(ReflectionUtils.class.getName());
                                     Class.forName(FileOutputStream.class.getName());
+                                    try {
+                                        Class.forName(PluginUtils.PAPER_SUPPORT);
+                                        Class.forName(PluginUtils.PAPER_PLUGIN_PROVIDER_STORAGE);
+                                    } catch (Throwable ignored) {
+                                    }
                                 }
 
                                 final File pluginFile = this.getFile();
