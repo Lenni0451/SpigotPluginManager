@@ -1,6 +1,7 @@
 package net.lenni0451.pluginmanager.pipelines;
 
 import net.lenni0451.pluginmanager.pipelines.impl.disable.DisableInitNode;
+import net.lenni0451.pluginmanager.pipelines.impl.disable.DisableInterruptThreadsNode;
 import net.lenni0451.pluginmanager.pipelines.impl.disable.DisablePipelineNodes;
 import net.lenni0451.pluginmanager.pipelines.impl.disable.DisablePluginNode;
 import net.lenni0451.pluginmanager.pipelines.impl.enable.EnableInitNode;
@@ -21,6 +22,7 @@ public class PipelineManager {
     private final Pipeline<DisablePipelineNodes> disable = new Pipeline<>("disable", DisablePipelineNodes.INIT, registry -> {
         registry.accept(DisablePipelineNodes.INIT, new DisableInitNode());
         registry.accept(DisablePipelineNodes.GET_PLUGIN_MANAGER, new GetPluginManagerNode<>());
+        registry.accept(DisablePipelineNodes.INTERRUPT_THREADS, new DisableInterruptThreadsNode());
         registry.accept(DisablePipelineNodes.DISABLE_PLUGIN, new DisablePluginNode());
     });
 
