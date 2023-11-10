@@ -39,9 +39,9 @@ dependencies {
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
     compileOnly "org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT"
 
-    include "org.json:json:20220924"
+    include "org.json:json:20231013"
     include "com.vdurmont:semver4j:3.1.0"
-    include "com.tchristofferson:ConfigUpdater:2.0-SNAPSHOT"
+    include "com.tchristofferson:ConfigUpdater:2.1-SNAPSHOT"
 }
 
 java {
