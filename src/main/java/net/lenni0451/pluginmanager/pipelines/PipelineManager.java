@@ -16,7 +16,7 @@ public class PipelineManager {
     private final Pipeline<EnablePipelineNodes> enable = new Pipeline<>("enable", EnablePipelineNodes.INIT, registry -> {
         registry.accept(EnablePipelineNodes.INIT, new EnableInitNode());
         registry.accept(EnablePipelineNodes.GET_PLUGIN_MANAGER, new GetPluginManagerNode<>());
-        registry.accept(EnablePipelineNodes.DISABLE_PLUGIN, new EnablePluginNode());
+        registry.accept(EnablePipelineNodes.ENABLE_PLUGIN, new EnablePluginNode());
     });
     private final Pipeline<DisablePipelineNodes> disable = new Pipeline<>("disable", DisablePipelineNodes.INIT, registry -> {
         registry.accept(DisablePipelineNodes.INIT, new DisableInitNode());
