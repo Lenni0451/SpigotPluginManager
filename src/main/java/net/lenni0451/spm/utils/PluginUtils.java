@@ -255,7 +255,7 @@ public class PluginUtils {
                 Class.forName(PAPER_ENTRYPOINT_HANDLER);
                 Class<?> PaperSupport = Class.forName(PAPER_SUPPORT);
                 targetPlugin = (Plugin) PaperSupport.getDeclaredMethod("loadPlugin", File.class).invoke(null, targetFile.get());
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | IllegalStateException e) {
                 targetPlugin = this.getPluginManager().loadPlugin(targetFile.get());
             }
         } catch (UnknownDependencyException e) {
