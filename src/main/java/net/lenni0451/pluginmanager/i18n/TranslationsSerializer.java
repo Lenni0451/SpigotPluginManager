@@ -28,9 +28,9 @@ public class TranslationsSerializer {
             if (!Modifier.isStatic(field.getModifiers())) continue;
             if (!field.getType().equals(String.class)) continue;
 
-            paths.put(path + field.getName().toLowerCase(), field);
+            paths.put(path + field.getName(), field);
         }
-        for (Class<?> clazz : current.getDeclaredClasses()) paths.putAll(buildPaths(clazz, path + clazz.getSimpleName().toLowerCase() + "."));
+        for (Class<?> clazz : current.getDeclaredClasses()) paths.putAll(buildPaths(clazz, path + clazz.getSimpleName() + "."));
         return paths;
     }
 
