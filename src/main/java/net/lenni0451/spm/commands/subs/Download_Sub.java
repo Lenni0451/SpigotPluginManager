@@ -18,17 +18,24 @@ public class Download_Sub implements ISubCommandMultithreaded {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 3) return false;
+        if (args.length < 3) return false;
         if (!args[0].equalsIgnoreCase("direct") && !args[0].equalsIgnoreCase("spigot")) return false;
         if (!sender.hasPermission("pluginmanager.commands.download." + args[0].toLowerCase())) {
             Logger.sendPermissionMessage(sender);
             return true;
         }
 
-        args[2] = args[2].replace("/", "").replace("\\", "");
+        String filename = args[2];
+        if(args.length > 3 && filename.startsWith("\"") && args[args.length-1].endsWith("\"")) {
+        	for(int i = 3; i < args.length; i++) {
+        		filename += args[i];
+        	}
+        	filename = filename.substring(1, filename.length() - 1);
+        }
+        filename = filename.replace("/", "").replace("\\", "");
 
         String url = args[1];
-        File file = new File(PluginManager.getInstance().getPluginUtils().getPluginsDirectory(), args[2] + (args[2].toLowerCase().endsWith(".jar") ? "" : ".jar"));
+        File file = new File(PluginManager.getInstance().getPluginUtils().getPluginsDirectory(), filename + (filename.toLowerCase().endsWith(".jar") ? "" : ".jar"));
         if (args[0].equalsIgnoreCase("direct")) {
             try {
                 DownloadUtils.downloadPlugin(url, file);
@@ -116,6 +123,20 @@ public class Download_Sub implements ISubCommandMultithreaded {
                 urlPart = urlPart.substring(0, urlPart.lastIndexOf("."));
                 tabs.add(urlPart + ".jar");
             }
+        }
+        if (args.length == 2 && (args[0].equalsIgnoreCase("direct") || args[0].equalsIgnoreCase("spigot"))) {
+        	File[] files = PluginManager.getInstance().getPluginUtils().getPluginsDirectory().listFiles();
+        	if (files != null) {
+	            for (File file : files) {
+	            	if (file.isFile() && file.getName().toLowerCase().endsWith(".jar")) {
+	            		String filename= file.getName();
+	            		if (filename.contains(" ")) {
+	            			filename = "\"" + filename + "\"";
+	            		}
+	            		tabs.add(filename);
+	            	}
+	            }
+        	}
         }
     }
 
